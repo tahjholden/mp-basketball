@@ -1,0 +1,1 @@
+INSERT INTO "public"."coach" ("id", "display_name", "email", "role", "created_at") VALUES ('5979b34c-969c-4df0-a773-91bff3b8032c', 'Gary Williams', 'gary@mpb.com', 'Senior Advisor', '2025-05-19 16:55:56.865098'), ('692ad0cd-8e13-4c49-9b3c-7335991b81cf', 'Tahj Holden', 'tahj@mpb.com', 'Head Coach', '2025-05-19 16:55:56.865098');
