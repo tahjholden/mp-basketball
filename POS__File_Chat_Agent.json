@@ -1,10 +1,10 @@
 {
-  "name": "File Chat Agent",
+  "name": "POS__File_Chat_Agent",
   "nodes": [
     {
       "parameters": {
         "method": "POST",
-        "url": "=https://htvyruodlvdbpfsnmuhz.supabase.co/storage/v1/object/list/practicefiles",
+        "url": "=https://htvyruodlvdbpfsnmuhz.supabase.co/storage/v1/object/list/files",
         "authentication": "genericCredentialType",
         "genericAuthType": "httpCustomAuth",
         "sendBody": true,
@@ -156,7 +156,7 @@
     },
     {
       "parameters": {
-        "url": "=https://htvyruodlvdbpfsnmuhz.supabase.co/storage/v1/object/practicefiles/{{ $json.name }}",
+        "url": "=https://htvyruodlvdbpfsnmuhz.supabase.co/storage/v1/object/files/{{ $json.name }}",
         "authentication": "genericCredentialType",
         "genericAuthType": "httpCustomAuth",
         "options": {}
