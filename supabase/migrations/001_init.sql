@@ -21,6 +21,10 @@ CREATE TABLE IF NOT EXISTS actor (
 );
 
 --------------------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS person (
+  uid TEXT PRIMARY KEY REFERENCES actor(uid) ON DELETE CASCADE
+);
+
 -- PROFILE : holds PDP / attributes per actor
 --------------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS profile (
@@ -31,14 +35,17 @@ CREATE TABLE IF NOT EXISTS profile (
 );
 
 --------------------------------------------------------------------------------
--- OBSERVATION : DevNote, CoachReflection, etc.
+-- JOURNAL_ENTRY : personal notes and reflections
 --------------------------------------------------------------------------------
-CREATE TABLE IF NOT EXISTS observation (
+CREATE TABLE IF NOT EXISTS journal_entry (
   uid         TEXT PRIMARY KEY,
   actor_uid   TEXT NOT NULL REFERENCES actor(uid) ON DELETE CASCADE,
-  obs_type    TEXT NOT NULL CHECK (obs_type IN ('DevNote','CoachReflection','PlayerReflection')),
+  subject_id  TEXT REFERENCES person(uid),
+  obs_type    TEXT NOT NULL CHECK (obs_type IN ('Reflection','GoalProgress','Idea')),
   payload     JSONB NOT NULL,
   timestamp   TIMESTAMPTZ NOT NULL,
+  session_uid TEXT REFERENCES intervention(uid),
+  tagged_skills JSONB DEFAULT '[]'::jsonb,
   predicted_tag_uid TEXT,     -- filled by GPT tagger later
   org_uid     TEXT DEFAULT 'ORG-DEFAULT'
 );
@@ -154,7 +161,7 @@ CREATE OR REPLACE FUNCTION update_pdp(obs_uid TEXT) RETURNS VOID LANGUAGE plpgsq
 DECLARE
   v_actor_uid TEXT;
 BEGIN
-  SELECT actor_uid INTO v_actor_uid FROM observation WHERE uid = obs_uid;
+  SELECT actor_uid INTO v_actor_uid FROM journal_entry WHERE uid = obs_uid;
   UPDATE profile
      SET attributes_json = jsonb_set(attributes_json, '{last_observation}', to_jsonb(obs_uid), true)
    WHERE actor_uid = v_actor_uid;
@@ -165,9 +172,9 @@ $$;
 -- Trigger: call update_pdp after DevNote / CoachReflection insert
 --------------------------------------------------------------------------------
 CREATE TRIGGER trg_update_pdp
-AFTER INSERT ON observation
+AFTER INSERT ON journal_entry
 FOR EACH ROW
-WHEN (NEW.obs_type IN ('DevNote','CoachReflection'))
+WHEN (NEW.obs_type IN ('Reflection','GoalProgress','Idea'))
 EXECUTE PROCEDURE update_pdp(NEW.uid);
 
 --------------------------------------------------------------------------------

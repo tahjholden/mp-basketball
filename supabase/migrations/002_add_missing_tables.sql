@@ -30,19 +30,19 @@ CREATE TABLE IF NOT EXISTS coach (
 );
 
 --------------------------------------------------------------------------------
--- observation_logs table
+-- journal_entry_logs table
 --------------------------------------------------------------------------------
-CREATE TABLE IF NOT EXISTS observation_logs (
+CREATE TABLE IF NOT EXISTS journal_entry_logs (
   uid             TEXT PRIMARY KEY,
-  observation_uid TEXT NOT NULL REFERENCES observation(uid) ON DELETE CASCADE,
+  observation_uid TEXT NOT NULL REFERENCES journal_entry(uid) ON DELETE CASCADE,
   log_entry       JSONB NOT NULL,
   created_at      TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
 --------------------------------------------------------------------------------
--- observation table updates
+-- journal_entry table updates
 --------------------------------------------------------------------------------
-ALTER TABLE observation
-  ADD COLUMN IF NOT EXISTS player_id   TEXT REFERENCES actor(uid),
+ALTER TABLE journal_entry
+  ADD COLUMN IF NOT EXISTS subject_id   TEXT REFERENCES person(uid),
   ADD COLUMN IF NOT EXISTS session_uid TEXT REFERENCES intervention(uid),
   ADD COLUMN IF NOT EXISTS tagged_skills JSONB DEFAULT '[]'::jsonb;
