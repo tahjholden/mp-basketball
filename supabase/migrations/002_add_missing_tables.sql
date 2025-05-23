@@ -11,21 +11,17 @@ CREATE TABLE IF NOT EXISTS flagged_entities (
   created_at     TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   org_uid        TEXT DEFAULT 'ORG-DEFAULT'
 );
-
 --------------------------------------------------------------------------------
--- Remove legacy player and coach tables if they exist
-DROP TABLE IF EXISTS player CASCADE;
-DROP TABLE IF EXISTS coach  CASCADE;
-
+codex/rename-actor-table-and-update-references
+-- person_role table (replaces player/coach subtypes)
 --------------------------------------------------------------------------------
--- person table (replaces player and coach)
---------------------------------------------------------------------------------
-CREATE TABLE IF NOT EXISTS person (
-  uid         TEXT PRIMARY KEY REFERENCES actor(uid) ON DELETE CASCADE,
-  jersey_num  TEXT,
-  position    TEXT,
-  role        TEXT
+CREATE TABLE IF NOT EXISTS person_role (
+  uid         TEXT PRIMARY KEY,
+  person_uid  TEXT NOT NULL REFERENCES person(uid) ON DELETE CASCADE,
+  role        TEXT NOT NULL,
+  attributes  JSONB DEFAULT '{}'
 );
+
 
 --------------------------------------------------------------------------------
 -- journal_entry_logs table
@@ -40,9 +36,9 @@ CREATE TABLE IF NOT EXISTS journal_entry_logs (
 --------------------------------------------------------------------------------
 -- journal_entry table updates
 --------------------------------------------------------------------------------
-codex/refactor-observation-schema-and-workflows
-ALTER TABLE journal_entry
-  ADD COLUMN IF NOT EXISTS subject_id   TEXT REFERENCES person(uid),
+codex/rename-actor-table-and-update-references
+ALTER TABLE observation
+  ADD COLUMN IF NOT EXISTS player_id   TEXT REFERENCES person(uid),
 
   ADD COLUMN IF NOT EXISTS session_uid TEXT REFERENCES intervention(uid),
   ADD COLUMN IF NOT EXISTS tagged_skills JSONB DEFAULT '[]'::jsonb;

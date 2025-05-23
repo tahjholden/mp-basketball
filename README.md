@@ -11,7 +11,10 @@ Supabase + n8n workflows for MPOS-Basketball MVP.
 
 ### Apply database migrations
 
-The migration scripts live under `./supabase/migrations`. Set `SUPABASE_DB_URL` to your Postgres connection string and link the CLI:
+codex/rename-actor-table-and-update-references
+   ```bash
+   supabase db remote set "$SUPABASE_DB_URL"
+   ```
 
 ```bash
 supabase db remote set "$SUPABASE_DB_URL"

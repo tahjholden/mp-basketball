@@ -7,19 +7,21 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 CREATE EXTENSION IF NOT EXISTS vector;
 
 --------------------------------------------------------------------------------
--- ACTOR : players, coaches, teams, groups
+-- PERSON : users, family, mentors, groups
 --------------------------------------------------------------------------------
-CREATE TABLE IF NOT EXISTS actor (
+CREATE TABLE IF NOT EXISTS person (
   uid           TEXT PRIMARY KEY,
   first_name    TEXT,
   last_name     TEXT,
   display_name  TEXT NOT NULL,
-  actor_type    TEXT NOT NULL CHECK (actor_type IN ('Player','Coach','Team','Group')),
+  role_type     TEXT NOT NULL CHECK (role_type IN ('User','FamilyMember','Mentor','Group')),
   org_uid       TEXT DEFAULT 'ORG-DEFAULT',
   created_at    TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
 --------------------------------------------------------------------------------
+
+
 CREATE TABLE IF NOT EXISTS person (
   uid TEXT PRIMARY KEY REFERENCES actor(uid) ON DELETE CASCADE
 );
@@ -27,8 +29,8 @@ CREATE TABLE IF NOT EXISTS person (
 -- PROFILE : holds PDP / attributes per actor
 --------------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS profile (
-  id               TEXT PRIMARY KEY,         -- keeps column name “id” as in your UI
-  actor_uid        TEXT NOT NULL REFERENCES actor(uid) ON DELETE CASCADE,
+  id               TEXT PRIMARY KEY,         -- keeps column name "id" as in your UI
+  person_uid       TEXT NOT NULL REFERENCES person(uid) ON DELETE CASCADE,
   attributes_json  JSONB NOT NULL DEFAULT '{}',
   created_at       TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
@@ -38,9 +40,9 @@ CREATE TABLE IF NOT EXISTS profile (
 --------------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS journal_entry (
   uid         TEXT PRIMARY KEY,
-  actor_uid   TEXT NOT NULL REFERENCES actor(uid) ON DELETE CASCADE,
-  subject_id  TEXT REFERENCES person(uid),
-  obs_type    TEXT NOT NULL CHECK (obs_type IN ('Reflection','GoalProgress','Idea')),
+codex/rename-actor-table-and-update-references
+  person_uid  TEXT NOT NULL REFERENCES person(uid) ON DELETE CASCADE,
+  obs_type    TEXT NOT NULL CHECK (obs_type IN ('DevNote','CoachReflection','PlayerReflection')),
   payload     JSONB NOT NULL,
   timestamp   TIMESTAMPTZ NOT NULL,
   session_uid TEXT REFERENCES intervention(uid),
@@ -61,11 +63,11 @@ CREATE TABLE IF NOT EXISTS intervention (
 );
 
 --------------------------------------------------------------------------------
--- METRIC : generic metrics per actor
+-- METRIC : generic metrics per person
 --------------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS metric (
   uid          TEXT PRIMARY KEY,
-  actor_uid    TEXT NOT NULL REFERENCES actor(uid) ON DELETE CASCADE,
+  person_uid   TEXT NOT NULL REFERENCES person(uid) ON DELETE CASCADE,
   metric_type  TEXT NOT NULL,
   value        JSONB NOT NULL,
   timestamp    TIMESTAMPTZ NOT NULL DEFAULT NOW(),
@@ -137,8 +139,10 @@ CREATE TABLE IF NOT EXISTS routine_instance (
 --------------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS habit_exposure (
   uid               TEXT PRIMARY KEY,
-  routine_instance_uid TEXT NOT NULL REFERENCES routine_instance(uid) ON DELETE CASCADE,
-  player_uid        TEXT NOT NULL REFERENCES actor(uid)         ON DELETE CASCADE,
+codex/rename-actor-table-and-update-references
+  session_drill_uid TEXT NOT NULL REFERENCES session_drill(uid) ON DELETE CASCADE,
+  person_uid        TEXT NOT NULL REFERENCES person(uid)        ON DELETE CASCADE,
+
   tag_uid           TEXT NOT NULL REFERENCES tag(uid)           ON DELETE CASCADE,
   count             INT  NOT NULL DEFAULT 1
 );
@@ -176,12 +180,14 @@ CREATE INDEX IF NOT EXISTS idx_tag_relation_child ON tag_relation(tag_id_child);
 --------------------------------------------------------------------------------
 CREATE OR REPLACE FUNCTION update_pdp(obs_uid TEXT) RETURNS VOID LANGUAGE plpgsql AS $$
 DECLARE
-  v_actor_uid TEXT;
+  v_person_uid TEXT;
 BEGIN
-  SELECT actor_uid INTO v_actor_uid FROM journal_entry WHERE uid = obs_uid;
+codex/rename-actor-table-and-update-references
+  SELECT person_uid INTO v_person_uid FROM observation WHERE uid = obs_uid;
+
   UPDATE profile
      SET attributes_json = jsonb_set(attributes_json, '{last_observation}', to_jsonb(obs_uid), true)
-   WHERE actor_uid = v_actor_uid;
+   WHERE person_uid = v_person_uid;
 END;
 $$;
 
@@ -203,22 +209,25 @@ DECLARE
 BEGIN
   -- loop over tags attached to the routine
   FOR rec IN
-      SELECT dt.tag_uid, a.uid AS player_uid
-        FROM routine_tag dt
-        CROSS JOIN actor a
-        WHERE dt.routine_uid = NEW.routine_uid
-          AND a.actor_type = 'Player'
+codex/rename-actor-table-and-update-references
+      SELECT dt.tag_uid, pr.person_uid
+        FROM drill_tag dt
+        CROSS JOIN person_role pr
+        WHERE dt.drill_uid = NEW.drill_uid
+          AND pr.role = 'Player'
   LOOP
-    INSERT INTO habit_exposure(uid, routine_instance_uid, player_uid, tag_uid, count)
+    INSERT INTO player_exposure(uid, session_drill_uid, person_uid, tag_uid, count)
     VALUES (
       uuid_generate_v4()::text,
       NEW.uid,
-      rec.player_uid,
+      rec.person_uid,
       rec.tag_uid,
       1
     )
-    ON CONFLICT (routine_instance_uid, player_uid, tag_uid) DO UPDATE
-    SET count = habit_exposure.count + 1;
+codex/rename-actor-table-and-update-references
+    ON CONFLICT (session_drill_uid, person_uid, tag_uid) DO UPDATE
+    SET count = player_exposure.count + 1;
+
   END LOOP;
   RETURN NEW;
 END;
@@ -235,10 +244,10 @@ EXECUTE PROCEDURE expand_exposure();
 --------------------------------------------------------------------------------
 -- Basic RLS Templates (disabled by default)
 --------------------------------------------------------------------------------
-ALTER TABLE actor ENABLE ROW LEVEL SECURITY;
-ALTER TABLE actor FORCE ROW LEVEL SECURITY;
+ALTER TABLE person ENABLE ROW LEVEL SECURITY;
+ALTER TABLE person FORCE ROW LEVEL SECURITY;
 -- Example policy: allow org members read
-CREATE POLICY actor_select_org ON actor
+CREATE POLICY person_select_org ON person
   FOR SELECT USING (org_uid = current_setting('request.jwt.claims', true)::jsonb->>'org_uid');
 
 -- Repeat similar RLS policies for other tables as needed.
