@@ -24,7 +24,7 @@ done
 You can also run a single file:
 
 ```bash
-supabase db execute < supabase/seed/player_rows.sql
+supabase db execute < supabase/seed/actor_rows.sql
 ```
 
 ## Loading CSV seed files
