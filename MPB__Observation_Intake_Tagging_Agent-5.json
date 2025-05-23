@@ -3,7 +3,7 @@
   "nodes": [
     {
       "parameters": {
-        "url": "https://htvyruodlvdbpfsnmuhz.supabase.co/rest/v1/observation?select=*&tagged=eq.false&order=created_at.asc",
+        "url": "https://htvyruodlvdbpfsnmuhz.supabase.co/rest/v1/journal_entry?select=*&tagged=eq.false&order=created_at.asc",
         "authentication": "predefinedCredentialType",
         "nodeCredentialType": "supabaseApi",
         "sendHeaders": true,
@@ -60,7 +60,7 @@
     {
       "parameters": {
         "method": "POST",
-        "url": "https://htvyruodlvdbpfsnmuhz.supabase.co/rest/v1/observation?on_conflict=id",
+        "url": "https://htvyruodlvdbpfsnmuhz.supabase.co/rest/v1/journal_entry?on_conflict=id",
         "sendHeaders": true,
         "headerParameters": {
           "parameters": [
@@ -232,7 +232,8 @@
     },
     {
       "parameters": {
-        "jsCode": "const obs = $json;\nconst players = Array.isArray(obs.players) ? obs.players : [];\nconst playerNames = Array.isArray(obs.player_names) ? obs.player_names : [];\n\nconst aliasMap = {};\nplayers.forEach(player => {\n  if (player.display_name) aliasMap[player.display_name.trim().toLowerCase()] = player.id;\n  if (player.aliases) {\n    const aliases = Array.isArray(player.aliases) ? player.aliases : String(player.aliases).split(\",\");\n    aliases.forEach(a => {\n      if (a && a.trim()) aliasMap[a.trim().toLowerCase()] = player.id;\n    });\n  }\n});\n\nconst outputs = [];\nconst unmatched = [];\nconst attendanceFlags = Array.isArray(obs.attendance_flags) ? obs.attendance_flags : [];\n\n// Flag unspecified attendance for admin review\nif (attendanceFlags.some(f => typeof f === \"string\" && f.toLowerCase().includes(\"unspecified\"))) {\n  outputs.push({\n    json: {\n      ...obs,\n      flagged_for_admin: true,\n      flag_reason: \"Unspecified player absence; check for transcription/name errors\"\n    }\n  });\n}\n\n// Emit one item per matched player\nplayerNames.forEach(name => {\n  const key = name.trim().toLowerCase();\n  if (aliasMap[key]) {\n    outputs.push({\n      json: {\n        ...obs,\n        player_id: aliasMap[key],\n        player_names: [name] // Only this player in this output\n      }\n    });\n  } else {\n    unmatched.push(name);\n  }\n});\n\n// Flag any unmatched names, once per observation\nif (unmatched.length > 0) {\n  outputs.push({\n    json: {\n      ...obs,\n      player_id: null,\n      player_names: unmatched,\n      flagged_for_admin: true,\n      flag_reason: \"Player not found in player/alias table\",\n      category: \"player\"\n    }\n  });\n}\n\nreturn outputs;"
+codex/refactor-observation-schema-and-workflows
+        "jsCode": "const obs = $json;\nconst players = Array.isArray(obs.players) ? obs.players : [];\nconst playerNames = Array.isArray(obs.player_names) ? obs.player_names : [];\n\nconst aliasMap = {};\nplayers.forEach(player => {\n  if (player.display_name) aliasMap[player.display_name.trim().toLowerCase()] = player.id;\n  if (player.aliases) {\n    const aliases = Array.isArray(player.aliases) ? player.aliases : String(player.aliases).split(\",\");\n    aliases.forEach(a => {\n      if (a && a.trim()) aliasMap[a.trim().toLowerCase()] = player.id;\n    });\n  }\n});\n\nconst outputs = [];\nconst unmatched = [];\nconst attendanceFlags = Array.isArray(obs.attendance_flags) ? obs.attendance_flags : [];\n\n// Flag unspecified attendance for admin review\nif (attendanceFlags.some(f => typeof f === \"string\" && f.toLowerCase().includes(\"unspecified\"))) {\n  outputs.push({\n    json: {\n      ...obs,\n      flagged_for_admin: true,\n      flag_reason: \"Unspecified player absence; check for transcription/name errors\"\n    }\n  });\n}\n\n// Emit one item per matched player\nplayerNames.forEach(name => {\n  const key = name.trim().toLowerCase();\n  if (aliasMap[key]) {\n    outputs.push({\n      json: {\n        ...obs,\n        subject_id: aliasMap[key],\n        player_names: [name] // Only this player in this output\n      }\n    });\n  } else {\n    unmatched.push(name);\n  }\n});\n\n// Flag any unmatched names, once per observation\nif (unmatched.length > 0) {\n  outputs.push({\n    json: {\n      ...obs,\n      subject_id: null,\n      unmatched_names: unmatched,\n      flagged_for_admin: true,\n      flag_reason: \"Player not found in player/alias table\",\n      category: \"player\"\n    }\n  });\n}\n\nreturn outputs;\n"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -289,7 +290,7 @@
         "messages": {
           "values": [
             {
-              "content": "=You are an assistant for Max Potential Basketball. A coach just submitted the following observation note:\n\n\"{{ $json[\"body\"][\"Entry\"] }}\"\n\nYour tasks:\n1. Return the original note as \"raw_note\".\n2. Identify and return the following in a JSON object:\n  - observation_type (practice, game, film, etc., infer from context if possible)\n  - player_names (if mentioned, otherwise empty array)\n  - attendance_flags (list any absences, injuries, or notes on who was/wasn't present)\n  - tagged_skills (skills mentioned, from a basketball context)\n  - tagged_constraints (constraints or situational factors)\n  - session_notes (summary or recommended actions)\n\nFormat your output as a JSON object with keys: raw_note, observation_type, player_names, attendance_flags, tagged_skills, tagged_constraints, session_notes. Return ONLY the JSON object, with no extra explanation, formatting, or Markdown. Do not wrap your response in code blocks.",
+              "content": "=You are an assistant for Max Potential Basketball. A coach just submitted the following observation note:\n\n\"{{ $json[\"body\"][\"Entry\"] }}\"\n\nYour tasks:\n1. Return the original note as \"raw_note\".\n2. Identify and return the following in a JSON object:\n  - obs_type (practice, game, film, etc., infer from context if possible)\n  - player_names (if mentioned, otherwise empty array)\n  - attendance_flags (list any absences, injuries, or notes on who was/wasn't present)\n  - tagged_skills (skills mentioned, from a basketball context)\n  - tagged_constraints (constraints or situational factors)\n  - session_notes (summary or recommended actions)\n\nFormat your output as a JSON object with keys: raw_note, obs_type, player_names, attendance_flags, tagged_skills, tagged_constraints, session_notes. Return ONLY the JSON object, with no extra explanation, formatting, or Markdown. Do not wrap your response in code blocks.",
               "role": "system"
             }
           ]
@@ -405,7 +406,7 @@
     },
     {
       "parameters": {
-        "tableId": "observation",
+        "tableId": "journal_entry",
         "dataToSend": "autoMapInputData"
       },
       "type": "n8n-nodes-base.supabase",
@@ -457,7 +458,7 @@
     },
     {
       "parameters": {
-        "jsCode": "// Adjust the keys as per your observation schema\nreturn items.map(item => ({\n  json: {\n    player_id: item.json.player_id || null,\n    coach_id: item.json.coach_id || null,\n    session_uid: item.json.session_uid || null,\n    raw_note: item.json.raw_note || null,\n    tagged_skills: item.json.tagged_skills || [],\n    tagged_constraints: item.json.tagged_constraints || [],\n    reflection_quality_score: item.json.reflection_quality_score || null,\n    created_at: item.json.created_at || new Date().toISOString(),\n    observation_type: item.json.observation_type || null,\n    player_names: item.json.player_names || [],\n    attendance_flags: item.json.attendance_flags || [],\n    session_notes: item.json.session_notes || null,\n    raw_entry: item.json.raw_entry || null,\n    tagged: item.json.tagged || false\n  }\n}));"
+        "jsCode": "// Adjust the keys as per your observation schema\nreturn items.map(item => ({\n  json: {\n    subject_id: item.json.subject_id || null,\n    coach_id: item.json.coach_id || null,\n    session_uid: item.json.session_uid || null,\n    raw_note: item.json.raw_note || null,\n    tagged_skills: item.json.tagged_skills || [],\n    tagged_constraints: item.json.tagged_constraints || [],\n    reflection_quality_score: item.json.reflection_quality_score || null,\n    created_at: item.json.created_at || new Date().toISOString(),\n    obs_type: item.json.obs_type || null,\n    player_names: item.json.player_names || [],\n    attendance_flags: item.json.attendance_flags || [],\n    session_notes: item.json.session_notes || null,\n    raw_entry: item.json.raw_entry || null,\n    tagged: item.json.tagged || false\n  }\n}));"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,

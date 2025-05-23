@@ -38,7 +38,7 @@
     {
       "parameters": {
         "operation": "getAll",
-        "tableId": "observation",
+        "tableId": "journal_entry",
         "returnAll": true
       },
       "type": "n8n-nodes-base.supabase",
@@ -58,7 +58,7 @@
     },
     {
       "parameters": {
-        "jsCode": "// Get all observations (fetched as .json array)\nconst obs = $input.all().map(i => i.json);\n\n// Group by player_id\nconst playerGroups = {};\nobs.forEach(item => {\n  const pid = item.player_id;\n  if (!playerGroups[pid]) playerGroups[pid] = [];\n  playerGroups[pid].push(item);\n});\n\nconst summaries = [];\n\nfor (const player_id in playerGroups) {\n  const allSkills = [];\n  const allConstraints = [];\n  playerGroups[player_id].forEach(obs => {\n    if (Array.isArray(obs.tagged_skills)) allSkills.push(...obs.tagged_skills);\n    if (Array.isArray(obs.tagged_constraints)) allConstraints.push(...obs.tagged_constraints);\n  });\n\n  // Count occurrences\n  const countTags = arr =>\n    arr.reduce((acc, tag) => {\n      acc[tag] = (acc[tag] || 0) + 1;\n      return acc;\n    }, {});\n\n  const skillsSummary = countTags(allSkills);\n  const constraintsSummary = countTags(allConstraints);\n\n  summaries.push({\n    json: {\n      player_id,\n      skills_summary: skillsSummary,\n      constraints_summary: constraintsSummary,\n      last_updated: new Date().toISOString()\n    }\n  });\n}\n\nreturn summaries;"
+        "jsCode": "// Get all observations (fetched as .json array)\nconst obs = $input.all().map(i => i.json);\n\n// Group by subject_id\nconst playerGroups = {};\nobs.forEach(item => {\n  const pid = item.subject_id;\n  if (!playerGroups[pid]) playerGroups[pid] = [];\n  playerGroups[pid].push(item);\n});\n\nconst summaries = [];\n\nfor (const subject_id in playerGroups) {\n  const allSkills = [];\n  const allConstraints = [];\n  playerGroups[subject_id].forEach(obs => {\n    if (Array.isArray(obs.tagged_skills)) allSkills.push(...obs.tagged_skills);\n    if (Array.isArray(obs.tagged_constraints)) allConstraints.push(...obs.tagged_constraints);\n  });\n\n  // Count occurrences\n  const countTags = arr =>\n    arr.reduce((acc, tag) => {\n      acc[tag] = (acc[tag] || 0) + 1;\n      return acc;\n    }, {});\n\n  const skillsSummary = countTags(allSkills);\n  const constraintsSummary = countTags(allConstraints);\n\n  summaries.push({\n    json: {\n      subject_id,\n      skills_summary: skillsSummary,\n      constraints_summary: constraintsSummary,\n      last_updated: new Date().toISOString()\n    }\n  });\n}\n\nreturn summaries;"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -96,7 +96,7 @@
         },
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "=$items(\"Aggregate_Observations_Skills_Tags\").map(item => ({\n  player_id: item.json.player_id || undefined,\n  skills_summary: item.json.skills_summary,\n  constraints_summary: item.json.constraints_summary,\n  last_updated: $now,\n  // Add other fields as needed\n}))",
+        "jsonBody": "=$items(\"Aggregate_Observations_Skills_Tags\").map(item => ({\n  subject_id: item.json.subject_id || undefined,\n  skills_summary: item.json.skills_summary,\n  constraints_summary: item.json.constraints_summary,\n  last_updated: $now,\n  // Add other fields as needed\n}))",
         "options": {}
       },
       "type": "n8n-nodes-base.httpRequest",
@@ -164,8 +164,8 @@
               "fieldValue": "pending"
             },
             {
-              "fieldId": "player_id",
-              "fieldValue": "={{$json[\"player_id\"]}}"
+              "fieldId": "subject_id",
+              "fieldValue": "={{$json[\"subject_id\"]}}"
             }
           ]
         }
@@ -247,7 +247,7 @@
         "json": {
           "event_type": "update_pdp",
           "status": "pending",
-          "player_id": "8ce6193d-3041-4f11-8c1d-a63d1ed12569",
+          "subject_id": "8ce6193d-3041-4f11-8c1d-a63d1ed12569",
           "agent_id": "test_agent",
           "details": {
             "note": "Test event for PDP Agent"
