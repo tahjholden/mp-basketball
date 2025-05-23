@@ -1,0 +1,3 @@
+UID,Linked Thought,Date,Theme,Friction,Insight,Next Move,Prompt,Delivery Sent?,Project UID
+Formula,Linked,Date,Single line text,Long text,Long text,Long text,Long text,Checkbox,Linked
+DS-{RECORD_ID()},Thought_Log,,,,,,,,Project_Manager

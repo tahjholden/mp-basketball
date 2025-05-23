@@ -1,0 +1,32 @@
+
+MPB SYSTEM – SESSION CUE VALIDATOR REPORT
+
+Session Name: {{Session_Title}}
+Coach: {{Coach_Name}}
+Date: {{Date}}
+
+PHASE-BY-PHASE CUE VALIDATION
+
+Block 1 – {{Block_1_Title}} [Phase: {{Phase_1}}]
+- Cues:
+  • “{{Cue_1}}” → ✅ Valid in Refine phase
+  • “{{Cue_2}}” → ⚠️ Warning: Intended for Adapt, used in Refine
+- Notes: Consider replacing “{{Cue_2}}” with “{{Alternative_Cue}}”
+
+Block 2 – {{Block_2_Title}} [Phase: {{Phase_2}}]
+- Cues:
+  • “{{Cue_3}}” → ✅ Valid
+  • “{{Cue_4}}” → ❌ Invalid in 0s decision drill (temporal mismatch)
+- Notes: This cue interrupts decision flow. Recommend substitution or cue reclassification.
+
+Flag Summary:
+- Total Cues: 7
+- Valid: 5
+- Warnings: 1
+- Invalid: 1
+
+NEXT ACTIONS
+- Review flagged cues.
+- Confirm drill-phase alignment.
+- Approve or edit session plan accordingly.
+

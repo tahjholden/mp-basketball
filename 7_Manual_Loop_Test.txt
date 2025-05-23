@@ -1,0 +1,36 @@
+
+MPB SYSTEM – MANUAL LOOP TEST
+
+Purpose: Validate full system logic from input → adaptation → feedback.
+
+Sample Player:
+- Name: Cole Holden
+- PDP Focus: Pressure Read
+- Friction Tag: Avoids Paint Under Pressure
+- Level: 3
+- Age: 10
+
+Session:
+- Coach Cue: “Be decisive with space”
+- Drill: 2v1 decision constraint
+- Coach Observation: “Cole passed early every time—avoiding contact”
+
+Manual Flow:
+1. Reflection Prompt:
+   - “What made it hard to hold your dribble near the rim today?”
+   - “Describe a moment you made a fast decision—what helped?”
+   - “What did you see before the defender stepped up?”
+
+2. Player Reflection:
+   - “I didn’t want to get blocked.”
+   - “It was easier when I knew the help was late.”
+
+3. PDP Adjustment:
+   - Add Tag: “Pre-contact hesitation”
+   - New Constraint: Add finish-through-contact cue
+
+4. Next Practice Drill:
+   - Constraint: Must finish after bump on first touch
+   - Cue: “Feel first, decide second”
+
+Goal: Create one full loop to hand off to automation team as standard.
