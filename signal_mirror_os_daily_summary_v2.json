@@ -1,0 +1,96 @@
+{
+  "name": "Signal Mirror OS \u2013 Daily Summary V2",
+  "flow": [
+    {
+      "id": 1,
+      "module": "airtable:WatchRecords",
+      "parameters": {
+        "table": "Thought Log",
+        "formula": "{Parsed?} = 0"
+      }
+    },
+    {
+      "id": 2,
+      "module": "flow:Router",
+      "parameters": {}
+    },
+    {
+      "id": 3,
+      "module": "tools:TextAggregator",
+      "parameters": {
+        "fields": [
+          "Entry Content"
+        ]
+      },
+      "routes_from": [
+        2
+      ]
+    },
+    {
+      "id": 4,
+      "module": "openai:CreateCompletion",
+      "parameters": {
+        "model": "gpt-4o",
+        "format": "json"
+      },
+      "routes_from": [
+        3
+      ]
+    },
+    {
+      "id": 5,
+      "module": "json:ParseJSON",
+      "parameters": {},
+      "routes_from": [
+        4
+      ]
+    },
+    {
+      "id": 6,
+      "module": "airtable:CreateRecord",
+      "parameters": {
+        "table": "Daily Summary"
+      },
+      "routes_from": [
+        5
+      ]
+    },
+    {
+      "id": 7,
+      "module": "tools:ArrayAggregator",
+      "parameters": {
+        "fields": [
+          "ID"
+        ]
+      },
+      "routes_from": [
+        2
+      ]
+    },
+    {
+      "id": 8,
+      "module": "tools:SetVariable",
+      "parameters": {
+        "name": "FlatIDs",
+        "value": "{{7.ID}}"
+      },
+      "routes_from": [
+        7
+      ]
+    },
+    {
+      "id": 9,
+      "module": "airtable:UpdateRecord",
+      "parameters": {
+        "table": "Thought Log"
+      },
+      "routes_from": [
+        8
+      ]
+    }
+  ],
+  "metadata": {
+    "version": 1,
+    "created": "2025-05-11T14:44:25.181666Z"
+  }
+}

@@ -1,0 +1,15 @@
+id,name,category,description,synonyms,pdp_group
+SK-OFFMOV-001,Off-Ball Movement,Skill,"Cutting, relocating, screening without the ball","cutting, relocating, movement off the ball, flare cuts",Offensive Tools
+SK-BALLHD-002,Ball Handling,Skill,"Control of the ball under pressure, direction changes","handle, dribbling, protect the ball",Core Execution
+SK-FINISH-003,Finishing,Skill,At-rim and short-range scoring ability,"layups, floaters, paint scoring",Offensive Tools
+SK-PASSNG-004,Passing,Skill,"Accurate ball movement, assist reads","dish, kickout, assist, drop-off",Offensive Tools
+SK-SHOOT-005,Shooting,Skill,"Catch-and-shoot, off-dribble jumpers, range","jump shot, spot-up, three-pointer",Offensive Tools
+SK-DEFROT-006,Help Defense,Skill,"Off-ball support, rotation, help-side coverage","help-side, rotation, rim protection",Defensive Concepts
+SK-CLOSEO-007,Closeout Technique,Skill,Approach to contest shots while staying balanced,"contest, closeout, hand-up defense",Defensive Concepts
+SK-BALLPR-008,Ball Pressure,Skill,"On-ball defense, forcing errors, disruption","pressure, pest defense, on-ball D",Defensive Concepts
+SK-MTTOUGH-009,Mental Toughness,Skill,"Resilience, composure, and grit under pressure","grit, focus, bounce back, inner strength",Mental Tools
+SK-FOCUSX-010,Focus,Skill,"Sustained attention to task, minimal distractions","attention, locked-in, present",Mental Tools
+SK-EFFORT-011,Effort / Work Rate,Skill,Consistent intensity and hustle,"grind, work rate, motor",Mental Tools
+SK-PHYSIC-012,Physicality,Skill,"Strength, contact tolerance, physical presence","strength, toughness, body control",Core Execution
+CT-LHONLY-013,Left-Hand Constraint,Constraint,Must finish or pass with left hand,"left only, left finish",Constraint
+CT-TRANS-014,Transition Decision-Making,Constraint,Force player to decide fast in transition,"fast break reads, open court choices",Constraint
