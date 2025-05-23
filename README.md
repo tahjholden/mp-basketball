@@ -83,3 +83,18 @@ node scripts/parametrize_workflow.js --workflow workflows/mpos-basketball.json -
 You can also set the values through environment variables `SUPABASE_URL` and `SUPABASE_CREDENTIAL_ID`.
 
 
+
+## Checking for schema drift
+
+Use `tools/schema_diff.py` to compare the SQL migrations with a live database.
+Provide the Postgres connection string via `--db-url` and optionally generate an
+HTML report:
+
+```bash
+python tools/schema_diff.py \
+  --db-url postgres://user:pass@host:5432/dbname \
+  --html diff.html
+```
+
+The script prints a unified diff to stdout and writes a side-by-side HTML diff if
+`--html` is specified. It also suggests the filename for the next migration.
