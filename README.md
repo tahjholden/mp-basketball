@@ -37,3 +37,23 @@ Supabase + n8n workflows for MPOS-Basketball MVP.
 - `SUPABASE_ACCESS_TOKEN` – required when pushing to a hosted Supabase project.
 - n8n stores service credentials in its own database or `.n8n` directory. Configure them via the n8n UI after importing the workflow.
 
+
+## Parametrizing a workflow
+
+Use `scripts/parametrize_workflow.js` to swap Supabase details in an exported n8n workflow.
+
+```bash
+node scripts/parametrize_workflow.js --workflow workflows/mpos-basketball.json --config my-config.json --output import.json
+```
+
+`my-config.json` example:
+
+```json
+{
+  "supabaseUrl": "https://your-project.supabase.co",
+  "supabaseCredentialId": "xyz123"
+}
+```
+
+You can also set the values through environment variables `SUPABASE_URL` and `SUPABASE_CREDENTIAL_ID`.
+
