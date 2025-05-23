@@ -1,0 +1,3 @@
+UID,Project Name,Source UID,Project Type,Linked Domain(s),Start Date,Target Date,Status,Friction Level,Progress Reflection,Tasks,Schedule View?,Visual Priority,# Done Tasks,Total Tasks,% Done
+Formula,Single line text,Linked,Single select,Linked,Date,Date,Single select,Rating,Long text,Linked,Checkbox,Single select,Rollup,Rollup,Formula
+PRJ-{RECORD_ID()},,Daily_Summary,,Domain_Map,,,,,,Project_Tasks,,,"COUNTA(FILTER(values, value => value = 'Done'))",COUNTA(values),"IF({Total Tasks} > 0, ROUND(({# Done Tasks} / {Total Tasks}) * 100, 0) & '%', '0%')"

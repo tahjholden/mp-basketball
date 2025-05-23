@@ -1,0 +1,4 @@
+﻿Test Name,UID,Test Type,Source Table,Linked Record UID,Test Cycle ID,System Pass?,Automation Verified?,Error Summary,Timestamp
+TESTLOG-001,,Reflection,CoachReflection,CR-001,TEST-2025-001,checked,checked,,2025-05-06 10:00
+TESTLOG-002,,PDP Update,PDPTracker,PDP-007,TEST-2025-001,,,No linked player found in PDP update.,2025-05-06 10:01
+TESTLOG-003,,Raw Comm,RawCommunicationLog,RCL-003,TEST-2025-001,checked,checked,,2025-05-06 10:02

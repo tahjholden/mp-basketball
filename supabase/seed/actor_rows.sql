@@ -1,3 +1,4 @@
+codex/create-new-actor-seed-files-and-update-join-tables
 INSERT INTO "public"."actor" ("uid", "first_name", "last_name", "display_name", "actor_type", "created_at") VALUES
 ('cb684abd-2e5b-4e7f-a381-6c6b59572872', 'Michael', 'Jordan', 'Michael Jordan', 'Player', '2025-01-01 00:00:00'),
 ('308f765a-47e1-4682-b952-78463fef0dd0', 'LeBron', 'James', 'LeBron James', 'Player', '2025-01-01 00:00:00'),

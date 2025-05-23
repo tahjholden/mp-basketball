@@ -1,0 +1,71 @@
+[
+  {
+    "id": "6302d261-f3ae-4d8f-ac5b-12ad6b3e2845",
+    "name": "Knowledge-Base Ingest",
+    "nodes": [
+      {
+        "id": "e66102aa-848e-4fee-925f-8bf26f5014e0",
+        "name": "Manual Trigger",
+        "type": "n8n-nodes-base.manualTrigger",
+        "parameters": {},
+        "position": [
+          0,
+          0
+        ],
+        "typeVersion": 1
+      }
+    ],
+    "connections": {},
+    "settings": {},
+    "staticData": {},
+    "meta": {
+      "description": "Imports files from Supabase Storage `practice_files`, splits, embeds with OpenAI, inserts chunks into mpb_docs table."
+    }
+  },
+  {
+    "id": "705c146e-b949-4778-8c10-059160b69742",
+    "name": "PDP Generator",
+    "nodes": [
+      {
+        "id": "3e379c18-38ab-44a5-bcea-057c5d7e14f9",
+        "name": "Manual Trigger",
+        "type": "n8n-nodes-base.manualTrigger",
+        "parameters": {},
+        "position": [
+          0,
+          0
+        ],
+        "typeVersion": 1
+      }
+    ],
+    "connections": {},
+    "settings": {},
+    "staticData": {},
+    "meta": {
+      "description": "Listens for new observations/tag summaries, composes GPT prompt from player context, writes draft JSON to pdp_drafts."
+    }
+  },
+  {
+    "id": "bdd2cc82-d473-4de8-9f31-7f4fab2657e0",
+    "name": "Practice Planner",
+    "nodes": [
+      {
+        "id": "41300fed-a456-45d1-8575-b5982c95ded2",
+        "name": "Manual Trigger",
+        "type": "n8n-nodes-base.manualTrigger",
+        "parameters": {},
+        "position": [
+          0,
+          0
+        ],
+        "typeVersion": 1
+      }
+    ],
+    "connections": {},
+    "settings": {},
+    "staticData": {},
+    "meta": {
+      "description": "Runs daily/coach-triggered planner: retrieves constraints from mpb_docs & drill_library via SQL agent, outputs plan JSON to practice_plans."
+    }
+  }
+]

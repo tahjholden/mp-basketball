@@ -1,0 +1,16 @@
+UID,Tag Name,Category,Scope,Tier Flag,Alias(es),Description
+TAC-45CUT-20250513,45 Cut,Origin Type,Team,Core,,Diagonal cut from wing to rim.
+TAC-BACKCU-20250513,Back Cut,Origin Type,Team,Core,,Basket cut behind defender toward hoop.
+TAC-FACECU-20250513,Face Cut,Origin Type,Team,Core,,"Cut in front of defender’s face, often corner to hoop."
+TAC-CROSSS-20250513,Cross Screen,Origin Type,Team,Core,,Horizontal off‑ball screen across lane.
+TAC-FLARES-20250513,Flare Screen,Origin Type,Team,Core,,Off‑ball screen sending cutter along 3‑pt line away from ball.
+TAC-BACKSC-20250513,Back Screen,Origin Type,Team,Core,,Off‑ball screen to free cutter toward hoop.
+TAC-BRUSHS-20250513,Brush Screen,Origin Type,Team,Core,Brush Cut,Non‑contact cut that impedes defender like a screen.
+TAC-FLEXSC-20250513,Flex Screen,Origin Type,Team,Core,,Cross screen near block for corner cutter.
+TAC-STAGGE-20250513,Stagger,Origin Type,Team,Advanced,,Two consecutive screens in same direction.
+TAC-DOUBLE-20250513,Double Drag,Origin Type,Team,Advanced,,Two staggered ball screens in transition.
+TAC-SPAINP-20250513,Spain PnR,Origin Type,Team,Advanced,Stack PnR,Ball screen plus backscreen on roller.
+TAC-DHO-20250513,DHO,Origin Type,Team,Core,Dribble Handoff,Ballhandler hands off to teammate.
+TAC-GHOSTS-20250513,Ghost Screen,Origin Type,Team,Advanced,Slide/Blur,Fake ball screen pop to space.
+TAC-FLIP-20250513,Flip,Origin Type,Team,Advanced,Varejao,Late angle‑change on ballscreen.
+TAC-RAMSCR-20250513,Ram Screen,Origin Type,Team,Advanced,,Screen then immediately set ballscreen.

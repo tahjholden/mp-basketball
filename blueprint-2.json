@@ -1,0 +1,2162 @@
+{
+    "name": "Signal Mirror OS",
+    "flow": [
+        {
+            "id": 1,
+            "module": "airtable:TriggerWatchRecords",
+            "version": 3,
+            "parameters": {
+                "base": "appNjKVuiw5ygyHHX",
+                "table": "tblhSOJbWxIWAV3iq",
+                "config": {
+                    "labelField": "Parsed?",
+                    "triggerField": "Created Time"
+                },
+                "formula": "{Parsed?} = 0",
+                "maxRecords": 10,
+                "__IMTCONN__": 3233958,
+                "useColumnId": false
+            },
+            "mapper": {},
+            "metadata": {
+                "designer": {
+                    "x": 0,
+                    "y": 0
+                },
+                "restore": {
+                    "parameters": {
+                        "base": {
+                            "label": "Signal Mirror OS"
+                        },
+                        "table": {
+                            "label": "Thought Log"
+                        },
+                        "config": {
+                            "nested": {
+                                "labelField": {
+                                    "label": "Parsed?"
+                                },
+                                "triggerField": {
+                                    "label": "Created Time"
+                                }
+                            }
+                        },
+                        "__IMTCONN__": {
+                            "data": {
+                                "scoped": "true",
+                                "connection": "airtable3"
+                            },
+                            "label": "SMOS (User ID: usrW5bY0tNiB0HKxO)"
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "__IMTCONN__",
+                        "type": "account:airtable3,airtable2",
+                        "label": "Connection",
+                        "required": true
+                    },
+                    {
+                        "name": "base",
+                        "type": "select",
+                        "label": "Base",
+                        "required": true
+                    },
+                    {
+                        "name": "useColumnId",
+                        "type": "boolean",
+                        "label": "Use Column ID",
+                        "required": true
+                    },
+                    {
+                        "name": "table",
+                        "type": "select",
+                        "label": "Table",
+                        "required": true
+                    },
+                    {
+                        "name": "config",
+                        "spec": [
+                            {
+                                "name": "triggerField",
+                                "type": "select",
+                                "label": "Trigger field",
+                                "required": true
+                            },
+                            {
+                                "name": "triggerField",
+                                "type": "hidden"
+                            },
+                            {
+                                "name": "labelField",
+                                "type": "select",
+                                "label": "Label field",
+                                "required": true
+                            }
+                        ],
+                        "type": "collection",
+                        "label": "Trigger configuration"
+                    },
+                    {
+                        "name": "maxRecords",
+                        "type": "integer",
+                        "label": "Limit",
+                        "required": true
+                    },
+                    {
+                        "name": "view",
+                        "type": "select",
+                        "label": "View"
+                    },
+                    {
+                        "name": "formula",
+                        "type": "text",
+                        "label": "Formula"
+                    }
+                ],
+                "interface": [
+                    {
+                        "name": "id",
+                        "type": "text",
+                        "label": "ID"
+                    },
+                    {
+                        "name": "createdTime",
+                        "type": "date",
+                        "label": "Created Time"
+                    },
+                    {
+                        "name": "UID",
+                        "type": "text",
+                        "label": "UID"
+                    },
+                    {
+                        "name": "Input Type",
+                        "type": "text",
+                        "label": "Input Type"
+                    },
+                    {
+                        "name": "Entry Content",
+                        "type": "text",
+                        "label": "Entry Content",
+                        "multiline": true
+                    },
+                    {
+                        "name": "Tags",
+                        "type": "array",
+                        "label": "Tags",
+                        "dynamic": true,
+                        "editable": true
+                    },
+                    {
+                        "name": "Linked Domain(s)",
+                        "type": "text",
+                        "label": "Linked Domain(s)",
+                        "multiline": true
+                    },
+                    {
+                        "name": "Source",
+                        "type": "text",
+                        "label": "Source"
+                    },
+                    {
+                        "name": "Parsed?",
+                        "type": "boolean",
+                        "label": "Parsed?"
+                    },
+                    {
+                        "name": "GPT Summary UID",
+                        "type": "text",
+                        "label": "GPT Summary UID",
+                        "multiline": true
+                    },
+                    {
+                        "name": "Daily Summary",
+                        "spec": {
+                            "label": "Record ID"
+                        },
+                        "type": "array",
+                        "label": "Daily Summary"
+                    },
+                    {
+                        "name": "Weekly Digest",
+                        "type": "text",
+                        "label": "Weekly Digest"
+                    },
+                    {
+                        "name": "Created Time",
+                        "type": "date",
+                        "label": "Created Time"
+                    },
+                    {
+                        "name": "Date",
+                        "time": false,
+                        "type": "date",
+                        "label": "Date"
+                    }
+                ]
+            }
+        },
+        {
+            "id": 14,
+            "module": "airtable:ActionSearchRecords",
+            "version": 3,
+            "parameters": {
+                "__IMTCONN__": 3233958
+            },
+            "mapper": {
+                "base": "appNjKVuiw5ygyHHX",
+                "table": "tblhSOJbWxIWAV3iq",
+                "formula": "IS_SAME(DATESTR({Created Time}), DATESTR(TODAY()))",
+                "maxRecords": "10",
+                "useColumnId": false
+            },
+            "metadata": {
+                "designer": {
+                    "x": 300,
+                    "y": 0
+                },
+                "restore": {
+                    "expect": {
+                        "base": {
+                            "mode": "chose",
+                            "label": "Signal Mirror OS"
+                        },
+                        "sort": {
+                            "mode": "chose"
+                        },
+                        "view": {
+                            "mode": "chose",
+                            "label": "Empty"
+                        },
+                        "table": {
+                            "mode": "chose",
+                            "label": "Thought Log"
+                        },
+                        "fields": {
+                            "mode": "chose"
+                        },
+                        "useColumnId": {
+                            "mode": "chose"
+                        }
+                    },
+                    "parameters": {
+                        "__IMTCONN__": {
+                            "data": {
+                                "scoped": "true",
+                                "connection": "airtable3"
+                            },
+                            "label": "SMOS (User ID: usrW5bY0tNiB0HKxO)"
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "__IMTCONN__",
+                        "type": "account:airtable3,airtable2",
+                        "label": "Connection",
+                        "required": true
+                    }
+                ],
+                "expect": [
+                    {
+                        "name": "base",
+                        "type": "select",
+                        "label": "Base",
+                        "required": true
+                    },
+                    {
+                        "name": "useColumnId",
+                        "type": "boolean",
+                        "label": "Use Column ID",
+                        "required": true
+                    },
+                    {
+                        "name": "table",
+                        "type": "select",
+                        "label": "Table",
+                        "required": true
+                    },
+                    {
+                        "name": "formula",
+                        "type": "text",
+                        "label": "Formula"
+                    },
+                    {
+                        "name": "maxRecords",
+                        "type": "integer",
+                        "label": "Limit"
+                    },
+                    {
+                        "name": "sort",
+                        "spec": [
+                            {
+                                "name": "field",
+                                "type": "select",
+                                "label": "Field",
+                                "dynamic": true,
+                                "options": []
+                            },
+                            {
+                                "name": "direction",
+                                "type": "select",
+                                "label": "Direction",
+                                "options": [
+                                    {
+                                        "label": "Descending",
+                                        "value": "desc"
+                                    },
+                                    {
+                                        "label": "Ascending",
+                                        "value": "asc"
+                                    }
+                                ]
+                            }
+                        ],
+                        "type": "array",
+                        "label": "Sort"
+                    },
+                    {
+                        "name": "view",
+                        "type": "select",
+                        "label": "View"
+                    },
+                    {
+                        "name": "fields",
+                        "type": "select",
+                        "label": "Output Fields",
+                        "multiple": true
+                    }
+                ],
+                "interface": [
+                    {
+                        "name": "__IMTLENGTH__",
+                        "type": "uinteger",
+                        "label": "Total number of bundles"
+                    },
+                    {
+                        "name": "__IMTINDEX__",
+                        "type": "uinteger",
+                        "label": "Bundle order position"
+                    },
+                    {
+                        "name": "id",
+                        "type": "text",
+                        "label": "ID"
+                    },
+                    {
+                        "name": "createdTime",
+                        "type": "date",
+                        "label": "Created Time"
+                    },
+                    {
+                        "name": "UID",
+                        "type": "text",
+                        "label": "UID"
+                    },
+                    {
+                        "name": "Input Type",
+                        "type": "text",
+                        "label": "Input Type"
+                    },
+                    {
+                        "name": "Entry Content",
+                        "type": "text",
+                        "label": "Entry Content",
+                        "multiline": true
+                    },
+                    {
+                        "name": "Tags",
+                        "type": "array",
+                        "label": "Tags",
+                        "dynamic": true,
+                        "editable": true
+                    },
+                    {
+                        "name": "Linked Domain(s)",
+                        "type": "text",
+                        "label": "Linked Domain(s)",
+                        "multiline": true
+                    },
+                    {
+                        "name": "Source",
+                        "type": "text",
+                        "label": "Source"
+                    },
+                    {
+                        "name": "Parsed?",
+                        "type": "boolean",
+                        "label": "Parsed?"
+                    },
+                    {
+                        "name": "GPT Summary UID",
+                        "type": "text",
+                        "label": "GPT Summary UID",
+                        "multiline": true
+                    },
+                    {
+                        "name": "Daily Summary",
+                        "spec": {
+                            "label": "Record ID"
+                        },
+                        "type": "array",
+                        "label": "Daily Summary"
+                    },
+                    {
+                        "name": "Weekly Digest",
+                        "type": "text",
+                        "label": "Weekly Digest"
+                    },
+                    {
+                        "name": "Created Time",
+                        "type": "date",
+                        "label": "Created Time"
+                    },
+                    {
+                        "name": "Date",
+                        "time": false,
+                        "type": "date",
+                        "label": "Date"
+                    },
+                    {
+                        "name": "Test?",
+                        "type": "boolean",
+                        "label": "Test?"
+                    }
+                ]
+            }
+        },
+        {
+            "id": 15,
+            "module": "util:TextAggregator",
+            "version": 1,
+            "parameters": {
+                "feeder": 14,
+                "rowSeparator": "other",
+                "otherRowSeparator": "\\n\\n"
+            },
+            "mapper": {
+                "value": "{{14.`Entry Content`}}"
+            },
+            "metadata": {
+                "designer": {
+                    "x": 600,
+                    "y": 0
+                },
+                "restore": {
+                    "extra": {
+                        "feeder": {
+                            "label": "Airtable - Search Records [14]"
+                        }
+                    },
+                    "parameters": {
+                        "rowSeparator": {
+                            "label": "Other"
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "rowSeparator",
+                        "type": "select",
+                        "label": "Row separator",
+                        "validate": {
+                            "enum": [
+                                "\n",
+                                "\t",
+                                "other"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "otherRowSeparator",
+                        "type": "text",
+                        "label": "Separator"
+                    }
+                ],
+                "expect": [
+                    {
+                        "name": "value",
+                        "type": "text",
+                        "label": "Text"
+                    }
+                ],
+                "advanced": true
+            },
+            "flags": {
+                "groupBy": "formatDate({{14.`Created Time`}}; \"YYYY-MM-DD\")"
+            }
+        },
+        {
+            "id": 2,
+            "module": "openai-gpt-3:CreateCompletion",
+            "version": 1,
+            "parameters": {
+                "__IMTCONN__": 3234112
+            },
+            "mapper": {
+                "model": "gpt-4",
+                "top_p": "1",
+                "select": "chat",
+                "messages": [
+                    {
+                        "role": "system",
+                        "content": "You are a structured reflection parser. Your job is to read multiple structured thought entries and extract a synthesized daily summary using the following schema:\n\n- Theme: 1-line summary of the day’s core focus.\n- Friction: Most common emotional or behavioral tension across entries.\n- Insight: Core truth or realization that emerged.\n- NextMove: A simple, high-leverage action step for forward motion.\n- Prompt: A reflection question that provokes depth or reorientation.\n- Summary: A brief, emotionally intelligent synthesis that captures the essence of the day (2–3 sentences).\n\nUse emotionally intelligent, precise language. Avoid fluff. Be honest, clear, and human. If any value is missing, return \"[UNKNOWN]\".\n\nOutput your response in **this exact JSON format**:\n\n```json\n{\n  \"Theme\": \"string\",\n  \"Friction\": \"string\",\n  \"Insight\": \"string\",\n  \"NextMove\": \"string\",\n  \"Prompt\": \"string\",\n  \"Summary\": \"string\"\n}"
+                    },
+                    {
+                        "role": "user",
+                        "content": "{{1.`Entry Content`}}{{1.Tags}}{{1.Source}}"
+                    }
+                ],
+                "max_tokens": "800",
+                "temperature": "0.6",
+                "n_completions": "1",
+                "response_format": "text"
+            },
+            "metadata": {
+                "designer": {
+                    "x": 900,
+                    "y": 0
+                },
+                "restore": {
+                    "expect": {
+                        "stop": {
+                            "mode": "chose"
+                        },
+                        "model": {
+                            "mode": "chose",
+                            "label": "gpt-4"
+                        },
+                        "select": {
+                            "label": "Create a Chat Completion (GPT and o1 models)"
+                        },
+                        "messages": {
+                            "mode": "chose",
+                            "items": [
+                                {
+                                    "role": {
+                                        "mode": "chose",
+                                        "label": "Developer / System"
+                                    }
+                                },
+                                {
+                                    "role": {
+                                        "mode": "chose",
+                                        "label": "User"
+                                    }
+                                }
+                            ]
+                        },
+                        "logit_bias": {
+                            "mode": "chose"
+                        },
+                        "response_format": {
+                            "mode": "chose",
+                            "label": "Text"
+                        },
+                        "additionalParameters": {
+                            "mode": "chose"
+                        }
+                    },
+                    "parameters": {
+                        "__IMTCONN__": {
+                            "data": {
+                                "scoped": "true",
+                                "connection": "openai-gpt-3"
+                            },
+                            "label": "SMOS"
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "__IMTCONN__",
+                        "type": "account:openai-gpt-3",
+                        "label": "Connection",
+                        "required": true
+                    }
+                ],
+                "expect": [
+                    {
+                        "name": "select",
+                        "type": "select",
+                        "label": "Select Method",
+                        "required": true,
+                        "validate": {
+                            "enum": [
+                                "chat",
+                                "prompt"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "temperature",
+                        "type": "number",
+                        "label": "Temperature",
+                        "validate": {
+                            "max": 2,
+                            "min": 0
+                        }
+                    },
+                    {
+                        "name": "top_p",
+                        "type": "number",
+                        "label": "Top P",
+                        "validate": {
+                            "max": 1,
+                            "min": 0
+                        }
+                    },
+                    {
+                        "name": "n_completions",
+                        "type": "number",
+                        "label": "Number"
+                    },
+                    {
+                        "name": "frequency_penalty",
+                        "type": "number",
+                        "label": "Frequency Penalty",
+                        "validate": {
+                            "max": 2,
+                            "min": -2
+                        }
+                    },
+                    {
+                        "name": "presence_penalty",
+                        "type": "number",
+                        "label": "Presence Penalty",
+                        "validate": {
+                            "max": 2,
+                            "min": -2
+                        }
+                    },
+                    {
+                        "name": "logit_bias",
+                        "spec": {
+                            "name": "value",
+                            "spec": [
+                                {
+                                    "name": "token",
+                                    "type": "text",
+                                    "label": "Token ID",
+                                    "required": true
+                                },
+                                {
+                                    "name": "probability",
+                                    "type": "number",
+                                    "label": "Probability",
+                                    "required": true,
+                                    "validate": {
+                                        "max": 100,
+                                        "min": -100
+                                    }
+                                }
+                            ],
+                            "type": "collection",
+                            "label": "Token Probability"
+                        },
+                        "type": "array",
+                        "label": "Token Probability"
+                    },
+                    {
+                        "name": "seed",
+                        "type": "integer",
+                        "label": "Seed"
+                    },
+                    {
+                        "name": "stop",
+                        "spec": {
+                            "name": "value",
+                            "type": "text",
+                            "label": "Stop Sequence"
+                        },
+                        "type": "array",
+                        "label": "Stop Sequences",
+                        "validate": {
+                            "maxItems": 4
+                        }
+                    },
+                    {
+                        "name": "additionalParameters",
+                        "spec": {
+                            "name": "value",
+                            "spec": [
+                                {
+                                    "name": "key",
+                                    "type": "text",
+                                    "label": "Parameter Name",
+                                    "required": true
+                                },
+                                {
+                                    "name": "type",
+                                    "type": "select",
+                                    "label": "Input Type",
+                                    "options": [
+                                        {
+                                            "label": "Text",
+                                            "value": "text",
+                                            "nested": [
+                                                {
+                                                    "name": "value",
+                                                    "type": "text",
+                                                    "label": "Parameter Value"
+                                                }
+                                            ],
+                                            "default": true
+                                        },
+                                        {
+                                            "label": "Number",
+                                            "value": "number",
+                                            "nested": [
+                                                {
+                                                    "name": "value",
+                                                    "type": "number",
+                                                    "label": "Parameter Value"
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "label": "Boolean",
+                                            "value": "boolean",
+                                            "nested": [
+                                                {
+                                                    "name": "value",
+                                                    "type": "boolean",
+                                                    "label": "Parameter Value"
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "label": "Date",
+                                            "value": "date",
+                                            "nested": [
+                                                {
+                                                    "name": "value",
+                                                    "type": "date",
+                                                    "label": "Parameter Value"
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "label": "Any",
+                                            "value": "any",
+                                            "nested": [
+                                                {
+                                                    "name": "value",
+                                                    "type": "any",
+                                                    "label": "Parameter Value"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ],
+                            "type": "collection",
+                            "label": "Input Parameter"
+                        },
+                        "type": "array",
+                        "label": "Other Input Parameters"
+                    },
+                    {
+                        "name": "model",
+                        "type": "select",
+                        "label": "Model",
+                        "required": true
+                    },
+                    {
+                        "name": "max_tokens",
+                        "type": "uinteger",
+                        "label": "Max Completion Tokens"
+                    },
+                    {
+                        "name": "messages",
+                        "spec": {
+                            "name": "value",
+                            "spec": [
+                                {
+                                    "name": "role",
+                                    "type": "select",
+                                    "label": "Role",
+                                    "options": {
+                                        "store": [
+                                            {
+                                                "label": "User",
+                                                "value": "user",
+                                                "nested": [
+                                                    {
+                                                        "help": "Text content of the message on behalf of the selected __Role__.",
+                                                        "name": "content",
+                                                        "type": "text",
+                                                        "label": "Text Content"
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "label": "Assistant",
+                                                "value": "assistant",
+                                                "nested": [
+                                                    {
+                                                        "help": "Text content of the message on behalf of the selected __Role__.",
+                                                        "name": "content",
+                                                        "type": "text",
+                                                        "label": "Text Content"
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "label": "Developer / System",
+                                                "value": "system",
+                                                "nested": [
+                                                    {
+                                                        "help": "Text content of the message on behalf of the selected __Role__.",
+                                                        "name": "content",
+                                                        "type": "text",
+                                                        "label": "Text Content"
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "required": true
+                                }
+                            ],
+                            "type": "collection",
+                            "label": "Message"
+                        },
+                        "type": "array",
+                        "label": "Messages",
+                        "required": true
+                    },
+                    {
+                        "name": "response_format",
+                        "type": "select",
+                        "label": "Response Format",
+                        "validate": {
+                            "enum": [
+                                "text",
+                                "json_object"
+                            ]
+                        }
+                    }
+                ],
+                "interface": [
+                    {
+                        "name": "result",
+                        "type": "any",
+                        "label": "Result"
+                    },
+                    {
+                        "name": "id",
+                        "type": "text",
+                        "label": "ID"
+                    },
+                    {
+                        "name": "object",
+                        "type": "text",
+                        "label": "Object"
+                    },
+                    {
+                        "name": "created",
+                        "type": "date",
+                        "label": "Created"
+                    },
+                    {
+                        "name": "model",
+                        "type": "text",
+                        "label": "Model"
+                    },
+                    {
+                        "name": "choices",
+                        "spec": [
+                            {
+                                "name": "text",
+                                "type": "text",
+                                "label": "Text"
+                            },
+                            {
+                                "name": "index",
+                                "type": "number",
+                                "label": "Index"
+                            },
+                            {
+                                "name": "logprobs",
+                                "type": "text",
+                                "label": "Log Probs"
+                            },
+                            {
+                                "name": "finish_reason",
+                                "type": "text",
+                                "label": "Finish Reason"
+                            },
+                            {
+                                "name": "message",
+                                "spec": [
+                                    {
+                                        "name": "role",
+                                        "type": "text",
+                                        "label": "Role"
+                                    },
+                                    {
+                                        "name": "content",
+                                        "type": "text",
+                                        "label": "Content"
+                                    },
+                                    {
+                                        "name": "refusal",
+                                        "type": "text",
+                                        "label": "Refusal"
+                                    },
+                                    {
+                                        "name": "annotations",
+                                        "spec": [
+                                            {
+                                                "name": "type",
+                                                "type": "text",
+                                                "label": "Type"
+                                            },
+                                            {
+                                                "name": "url_citation",
+                                                "spec": [
+                                                    {
+                                                        "name": "end_index",
+                                                        "type": "number",
+                                                        "label": "End Index"
+                                                    },
+                                                    {
+                                                        "name": "start_index",
+                                                        "type": "number",
+                                                        "label": "Start Index"
+                                                    },
+                                                    {
+                                                        "name": "title",
+                                                        "type": "text",
+                                                        "label": "Title"
+                                                    },
+                                                    {
+                                                        "name": "url",
+                                                        "type": "text",
+                                                        "label": "URL"
+                                                    }
+                                                ],
+                                                "type": "collection",
+                                                "label": "URL Citation"
+                                            }
+                                        ],
+                                        "type": "array",
+                                        "label": "Annotations"
+                                    }
+                                ],
+                                "type": "collection",
+                                "label": "Message"
+                            }
+                        ],
+                        "type": "array",
+                        "label": "Choices"
+                    },
+                    {
+                        "name": "usage",
+                        "spec": [
+                            {
+                                "name": "prompt_tokens",
+                                "type": "number",
+                                "label": "Prompt Tokens"
+                            },
+                            {
+                                "name": "completion_tokens",
+                                "type": "text",
+                                "label": "Completion Tokens"
+                            },
+                            {
+                                "name": "total_tokens",
+                                "type": "number",
+                                "label": "Total Tokens"
+                            },
+                            {
+                                "name": "prompt_tokens_details",
+                                "spec": [
+                                    {
+                                        "name": "cached_tokens",
+                                        "type": "uinteger",
+                                        "label": "Cached Tokens"
+                                    },
+                                    {
+                                        "name": "text_tokens",
+                                        "type": "uinteger",
+                                        "label": "Text Tokens"
+                                    },
+                                    {
+                                        "name": "image_tokens",
+                                        "type": "uinteger",
+                                        "label": "Image Tokens"
+                                    },
+                                    {
+                                        "name": "audio_tokens",
+                                        "type": "uinteger",
+                                        "label": "Audio Tokens"
+                                    }
+                                ],
+                                "type": "collection",
+                                "label": "Prompt Tokens Details"
+                            },
+                            {
+                                "name": "completion_tokens_details",
+                                "spec": [
+                                    {
+                                        "name": "reasoning_tokens",
+                                        "type": "uinteger",
+                                        "label": "Reasoning Tokens"
+                                    },
+                                    {
+                                        "name": "text_tokens",
+                                        "type": "uinteger",
+                                        "label": "Text Tokens"
+                                    },
+                                    {
+                                        "name": "audio_tokens",
+                                        "type": "uinteger",
+                                        "label": "Audio Tokens"
+                                    },
+                                    {
+                                        "name": "accepted_prediction_tokens",
+                                        "type": "uinteger",
+                                        "label": "Accepted Prediction Tokens"
+                                    },
+                                    {
+                                        "name": "rejected_prediction_tokens",
+                                        "type": "uinteger",
+                                        "label": "Rejected Prediction Tokens"
+                                    }
+                                ],
+                                "type": "collection",
+                                "label": "Completion Tokens Details"
+                            }
+                        ],
+                        "type": "collection",
+                        "label": "Usage"
+                    },
+                    {
+                        "name": "service_tier",
+                        "type": "text",
+                        "label": "Service Tier"
+                    },
+                    {
+                        "name": "system_fingerprint",
+                        "type": "text",
+                        "label": "System Fingerprint"
+                    }
+                ],
+                "advanced": true
+            }
+        },
+        {
+            "id": 3,
+            "module": "json:ParseJSON",
+            "version": 1,
+            "parameters": {
+                "type": ""
+            },
+            "mapper": {
+                "json": "{{2.result}}"
+            },
+            "metadata": {
+                "designer": {
+                    "x": 1200,
+                    "y": 0
+                },
+                "restore": {
+                    "parameters": {
+                        "type": {
+                            "label": "Choose a data structure"
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "type",
+                        "type": "udt",
+                        "label": "Data structure"
+                    }
+                ],
+                "expect": [
+                    {
+                        "name": "json",
+                        "type": "text",
+                        "label": "JSON string",
+                        "required": true
+                    }
+                ]
+            }
+        },
+        {
+            "id": 4,
+            "module": "airtable:ActionCreateRecord",
+            "version": 3,
+            "parameters": {
+                "__IMTCONN__": 3233958
+            },
+            "mapper": {
+                "base": "appNjKVuiw5ygyHHX",
+                "table": "tblaMzmASS6NLMtGj",
+                "record": {
+                    "fld299QoUG9dQnkST": "{{3.Theme}}",
+                    "fld4KUX00MgCrOpBf": "{{3.Friction}}",
+                    "fldTEDM42ODVx9Wd3": "{{3.NextMove}}",
+                    "fldW6ExI5EQuWSgtH": "{{3.Insight}}",
+                    "fldyeeitwz7ZLdbHj": "{{3.Prompt}}"
+                },
+                "typecast": false,
+                "useColumnId": false
+            },
+            "metadata": {
+                "designer": {
+                    "x": 1500,
+                    "y": 0
+                },
+                "restore": {
+                    "expect": {
+                        "base": {
+                            "label": "Signal Mirror OS"
+                        },
+                        "table": {
+                            "label": "Daily Summary",
+                            "nested": [
+                                {
+                                    "name": "record",
+                                    "spec": [
+                                        {
+                                            "name": "fld74F9uyz0pp1l4C",
+                                            "spec": {
+                                                "label": "Record ID"
+                                            },
+                                            "type": "array",
+                                            "label": "Linked Thought"
+                                        },
+                                        {
+                                            "name": "fldNHsWANLkU0LFQL",
+                                            "time": false,
+                                            "type": "date",
+                                            "label": "Date"
+                                        },
+                                        {
+                                            "name": "fld299QoUG9dQnkST",
+                                            "type": "text",
+                                            "label": "Theme"
+                                        },
+                                        {
+                                            "name": "fld4KUX00MgCrOpBf",
+                                            "type": "text",
+                                            "label": "Friction",
+                                            "multiline": true
+                                        },
+                                        {
+                                            "name": "fldW6ExI5EQuWSgtH",
+                                            "type": "text",
+                                            "label": "Insight",
+                                            "multiline": true
+                                        },
+                                        {
+                                            "name": "fldTEDM42ODVx9Wd3",
+                                            "type": "text",
+                                            "label": "Next Move",
+                                            "multiline": true
+                                        },
+                                        {
+                                            "name": "fldyeeitwz7ZLdbHj",
+                                            "type": "text",
+                                            "label": "Prompt",
+                                            "multiline": true
+                                        },
+                                        {
+                                            "name": "fldvQVxd0pLPZ8s4E",
+                                            "type": "text",
+                                            "label": "Delivery Sent?",
+                                            "multiline": true
+                                        },
+                                        {
+                                            "name": "flda68ICJn5j7r0PL",
+                                            "type": "text",
+                                            "label": "Project UID"
+                                        },
+                                        {
+                                            "name": "fld7UGUlomGvf2oXT",
+                                            "spec": {
+                                                "label": "Record ID"
+                                            },
+                                            "type": "array",
+                                            "label": "Project Manager"
+                                        }
+                                    ],
+                                    "type": "collection",
+                                    "label": "Record"
+                                }
+                            ]
+                        },
+                        "record": {
+                            "nested": {
+                                "fld74F9uyz0pp1l4C": {
+                                    "mode": "chose"
+                                },
+                                "fld7UGUlomGvf2oXT": {
+                                    "mode": "chose"
+                                },
+                                "fldNHsWANLkU0LFQL": {
+                                    "collapsed": true
+                                }
+                            }
+                        },
+                        "typecast": {
+                            "mode": "chose"
+                        },
+                        "useColumnId": {
+                            "mode": "chose"
+                        }
+                    },
+                    "parameters": {
+                        "__IMTCONN__": {
+                            "data": {
+                                "scoped": "true",
+                                "connection": "airtable3"
+                            },
+                            "label": "SMOS (User ID: usrW5bY0tNiB0HKxO)"
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "__IMTCONN__",
+                        "type": "account:airtable3,airtable2",
+                        "label": "Connection",
+                        "required": true
+                    }
+                ],
+                "expect": [
+                    {
+                        "name": "base",
+                        "type": "select",
+                        "label": "Base",
+                        "required": true
+                    },
+                    {
+                        "name": "typecast",
+                        "type": "boolean",
+                        "label": "Smart links",
+                        "required": true
+                    },
+                    {
+                        "name": "useColumnId",
+                        "type": "boolean",
+                        "label": "Use Column ID",
+                        "required": true
+                    },
+                    {
+                        "name": "table",
+                        "type": "select",
+                        "label": "Table",
+                        "required": true
+                    },
+                    {
+                        "name": "record",
+                        "spec": [
+                            {
+                                "name": "fld74F9uyz0pp1l4C",
+                                "spec": {
+                                    "name": "value",
+                                    "label": "Record ID"
+                                },
+                                "type": "array",
+                                "label": "Linked Thought"
+                            },
+                            {
+                                "name": "fldNHsWANLkU0LFQL",
+                                "time": false,
+                                "type": "date",
+                                "label": "Date"
+                            },
+                            {
+                                "name": "fld299QoUG9dQnkST",
+                                "type": "text",
+                                "label": "Theme"
+                            },
+                            {
+                                "name": "fld4KUX00MgCrOpBf",
+                                "type": "text",
+                                "label": "Friction"
+                            },
+                            {
+                                "name": "fldW6ExI5EQuWSgtH",
+                                "type": "text",
+                                "label": "Insight"
+                            },
+                            {
+                                "name": "fldTEDM42ODVx9Wd3",
+                                "type": "text",
+                                "label": "Next Move"
+                            },
+                            {
+                                "name": "fldyeeitwz7ZLdbHj",
+                                "type": "text",
+                                "label": "Prompt"
+                            },
+                            {
+                                "name": "fldvQVxd0pLPZ8s4E",
+                                "type": "text",
+                                "label": "Delivery Sent?"
+                            },
+                            {
+                                "name": "flda68ICJn5j7r0PL",
+                                "type": "text",
+                                "label": "Project UID"
+                            },
+                            {
+                                "name": "fld7UGUlomGvf2oXT",
+                                "spec": {
+                                    "name": "value",
+                                    "label": "Record ID"
+                                },
+                                "type": "array",
+                                "label": "Project Manager"
+                            }
+                        ],
+                        "type": "collection",
+                        "label": "Record"
+                    }
+                ],
+                "interface": [
+                    {
+                        "name": "id",
+                        "type": "text",
+                        "label": "ID"
+                    },
+                    {
+                        "name": "createdTime",
+                        "type": "date",
+                        "label": "Created Time"
+                    },
+                    {
+                        "name": "UID",
+                        "type": "text",
+                        "label": "UID"
+                    },
+                    {
+                        "name": "Linked Thought",
+                        "spec": {
+                            "label": "Record ID"
+                        },
+                        "type": "array",
+                        "label": "Linked Thought"
+                    },
+                    {
+                        "name": "Theme",
+                        "type": "text",
+                        "label": "Theme"
+                    },
+                    {
+                        "name": "Friction",
+                        "type": "text",
+                        "label": "Friction",
+                        "multiline": true
+                    },
+                    {
+                        "name": "Insight",
+                        "type": "text",
+                        "label": "Insight",
+                        "multiline": true
+                    },
+                    {
+                        "name": "Next Move",
+                        "type": "text",
+                        "label": "Next Move",
+                        "multiline": true
+                    },
+                    {
+                        "name": "Prompt",
+                        "type": "text",
+                        "label": "Prompt",
+                        "multiline": true
+                    },
+                    {
+                        "name": "Delivery Sent?",
+                        "type": "text",
+                        "label": "Delivery Sent?",
+                        "multiline": true
+                    },
+                    {
+                        "name": "Project UID",
+                        "type": "text",
+                        "label": "Project UID"
+                    },
+                    {
+                        "name": "Project Manager",
+                        "spec": {
+                            "label": "Record ID"
+                        },
+                        "type": "array",
+                        "label": "Project Manager"
+                    },
+                    {
+                        "name": "Created Time",
+                        "type": "date",
+                        "label": "Created Time"
+                    },
+                    {
+                        "name": "Weekly Digest",
+                        "spec": {
+                            "label": "Record ID"
+                        },
+                        "type": "array",
+                        "label": "Weekly Digest"
+                    }
+                ]
+            }
+        },
+        {
+            "id": 5,
+            "module": "airtable:ActionUpdateRecords",
+            "version": 3,
+            "parameters": {
+                "__IMTCONN__": 3233958
+            },
+            "mapper": {
+                "id": "{{1.id}}",
+                "base": "appNjKVuiw5ygyHHX",
+                "table": "tblhSOJbWxIWAV3iq",
+                "record": {
+                    "fld3HPcf91Hie5jXM": true,
+                    "fldZyLdT9nIu1Rwg4": "{{4.id}}"
+                },
+                "typecast": false,
+                "useColumnId": false
+            },
+            "metadata": {
+                "designer": {
+                    "x": 1800,
+                    "y": 0
+                },
+                "restore": {
+                    "expect": {
+                        "base": {
+                            "label": "Signal Mirror OS"
+                        },
+                        "table": {
+                            "label": "Thought Log"
+                        },
+                        "record": {
+                            "nested": {
+                                "fld0iFbccLyruokHb": {
+                                    "mode": "chose"
+                                },
+                                "fld3HPcf91Hie5jXM": {
+                                    "mode": "chose"
+                                },
+                                "fld49gy5Xj8E9QOlq": {
+                                    "mode": "edit"
+                                },
+                                "fld4jMz5idGAu6dDL": {
+                                    "mode": "chose",
+                                    "label": "Empty"
+                                },
+                                "fldE4r1Y1cw2kb85O": {
+                                    "mode": "chose"
+                                }
+                            }
+                        },
+                        "typecast": {
+                            "mode": "chose"
+                        },
+                        "useColumnId": {
+                            "mode": "chose"
+                        }
+                    },
+                    "parameters": {
+                        "__IMTCONN__": {
+                            "data": {
+                                "scoped": "true",
+                                "connection": "airtable3"
+                            },
+                            "label": "SMOS (User ID: usrW5bY0tNiB0HKxO)"
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "__IMTCONN__",
+                        "type": "account:airtable3,airtable2",
+                        "label": "Connection",
+                        "required": true
+                    }
+                ],
+                "expect": [
+                    {
+                        "name": "base",
+                        "type": "select",
+                        "label": "Base",
+                        "required": true
+                    },
+                    {
+                        "name": "typecast",
+                        "type": "boolean",
+                        "label": "Smart links",
+                        "required": true
+                    },
+                    {
+                        "name": "useColumnId",
+                        "type": "boolean",
+                        "label": "Use Column ID",
+                        "required": true
+                    },
+                    {
+                        "name": "table",
+                        "type": "select",
+                        "label": "Table",
+                        "required": true
+                    },
+                    {
+                        "name": "id",
+                        "type": "text",
+                        "label": "Record ID",
+                        "required": true
+                    },
+                    {
+                        "name": "record",
+                        "spec": [
+                            {
+                                "mode": "edit",
+                                "name": "fld49gy5Xj8E9QOlq",
+                                "type": "select",
+                                "label": "Input Type"
+                            },
+                            {
+                                "name": "fldovBTmtvuRsiZbU",
+                                "type": "text",
+                                "label": "Entry Content"
+                            },
+                            {
+                                "name": "fld0iFbccLyruokHb",
+                                "spec": {
+                                    "mode": "edit",
+                                    "name": "value",
+                                    "type": "select",
+                                    "label": "Value",
+                                    "dynamic": true,
+                                    "options": [
+                                        {
+                                            "label": "burnout",
+                                            "value": "burnout"
+                                        },
+                                        {
+                                            "label": "clarity",
+                                            "value": "clarity"
+                                        },
+                                        {
+                                            "label": "connection",
+                                            "value": "connection"
+                                        },
+                                        {
+                                            "label": "control",
+                                            "value": "control"
+                                        },
+                                        {
+                                            "label": "fatherhood",
+                                            "value": "fatherhood"
+                                        },
+                                        {
+                                            "label": "freedom",
+                                            "value": "freedom"
+                                        },
+                                        {
+                                            "label": "grief",
+                                            "value": "grief"
+                                        },
+                                        {
+                                            "label": "legacy",
+                                            "value": "legacy"
+                                        },
+                                        {
+                                            "label": "loop",
+                                            "value": "loop"
+                                        },
+                                        {
+                                            "label": "resistance",
+                                            "value": "resistance"
+                                        },
+                                        {
+                                            "label": "shift",
+                                            "value": "shift"
+                                        },
+                                        {
+                                            "label": "shipping",
+                                            "value": "shipping"
+                                        },
+                                        {
+                                            "label": "perfectionism",
+                                            "value": "perfectionism"
+                                        },
+                                        {
+                                            "label": "system readiness",
+                                            "value": "system readiness"
+                                        },
+                                        {
+                                            "label": "balance",
+                                            "value": "balance"
+                                        },
+                                        {
+                                            "label": "execution loop",
+                                            "value": "execution loop"
+                                        },
+                                        {
+                                            "label": "perfection",
+                                            "value": "perfection"
+                                        },
+                                        {
+                                            "label": "action",
+                                            "value": "action"
+                                        },
+                                        {
+                                            "label": "confidence",
+                                            "value": "confidence"
+                                        },
+                                        {
+                                            "label": "handoff",
+                                            "value": "handoff"
+                                        },
+                                        {
+                                            "label": "doubt",
+                                            "value": "doubt"
+                                        },
+                                        {
+                                            "label": "identity",
+                                            "value": "identity"
+                                        },
+                                        {
+                                            "label": "fear",
+                                            "value": "fear"
+                                        },
+                                        {
+                                            "label": "builder",
+                                            "value": "builder"
+                                        },
+                                        {
+                                            "label": "presence",
+                                            "value": "presence"
+                                        },
+                                        {
+                                            "label": "adjusting",
+                                            "value": "adjusting"
+                                        },
+                                        {
+                                            "label": "awareness",
+                                            "value": "awareness"
+                                        }
+                                    ],
+                                    "validate": false
+                                },
+                                "type": "array",
+                                "label": "Tags"
+                            },
+                            {
+                                "name": "fldr7WOc99rI97nyx",
+                                "type": "text",
+                                "label": "Linked Domain(s)"
+                            },
+                            {
+                                "mode": "edit",
+                                "name": "fld4jMz5idGAu6dDL",
+                                "type": "select",
+                                "label": "Source"
+                            },
+                            {
+                                "name": "fld3HPcf91Hie5jXM",
+                                "type": "boolean",
+                                "label": "Parsed?"
+                            },
+                            {
+                                "name": "fldZyLdT9nIu1Rwg4",
+                                "type": "text",
+                                "label": "GPT Summary UID"
+                            },
+                            {
+                                "name": "fldE4r1Y1cw2kb85O",
+                                "spec": {
+                                    "name": "value",
+                                    "label": "Record ID"
+                                },
+                                "type": "array",
+                                "label": "Daily Summary"
+                            },
+                            {
+                                "name": "fldnWWz5Ii8CJFcyi",
+                                "type": "text",
+                                "label": "Weekly Digest"
+                            }
+                        ],
+                        "type": "collection",
+                        "label": "Record"
+                    }
+                ],
+                "interface": [
+                    {
+                        "name": "id",
+                        "type": "text",
+                        "label": "ID"
+                    },
+                    {
+                        "name": "createdTime",
+                        "type": "date",
+                        "label": "Created Time"
+                    },
+                    {
+                        "name": "UID",
+                        "type": "text",
+                        "label": "UID"
+                    },
+                    {
+                        "name": "Input Type",
+                        "type": "text",
+                        "label": "Input Type"
+                    },
+                    {
+                        "name": "Entry Content",
+                        "type": "text",
+                        "label": "Entry Content",
+                        "multiline": true
+                    },
+                    {
+                        "name": "Tags",
+                        "type": "array",
+                        "label": "Tags",
+                        "dynamic": true,
+                        "editable": true
+                    },
+                    {
+                        "name": "Linked Domain(s)",
+                        "type": "text",
+                        "label": "Linked Domain(s)",
+                        "multiline": true
+                    },
+                    {
+                        "name": "Source",
+                        "type": "text",
+                        "label": "Source"
+                    },
+                    {
+                        "name": "Created Time",
+                        "type": "date",
+                        "label": "Created Time"
+                    },
+                    {
+                        "name": "Parsed?",
+                        "type": "boolean",
+                        "label": "Parsed?"
+                    },
+                    {
+                        "name": "GPT Summary UID",
+                        "type": "text",
+                        "label": "GPT Summary UID",
+                        "multiline": true
+                    },
+                    {
+                        "name": "Daily Summary",
+                        "spec": {
+                            "label": "Record ID"
+                        },
+                        "type": "array",
+                        "label": "Daily Summary"
+                    },
+                    {
+                        "name": "Weekly Digest",
+                        "type": "text",
+                        "label": "Weekly Digest"
+                    }
+                ]
+            }
+        },
+        {
+            "id": 6,
+            "module": "airtable:ActionUpdateRecords",
+            "version": 3,
+            "parameters": {
+                "__IMTCONN__": 3233958
+            },
+            "mapper": {
+                "id": "{{1.id}}",
+                "base": "appNjKVuiw5ygyHHX",
+                "table": "tblhSOJbWxIWAV3iq",
+                "record": {
+                    "fld3HPcf91Hie5jXM": true,
+                    "fldE4r1Y1cw2kb85O": [
+                        "{{4.id}}"
+                    ],
+                    "fldZyLdT9nIu1Rwg4": "{{4.id}}"
+                },
+                "typecast": false,
+                "useColumnId": false
+            },
+            "metadata": {
+                "designer": {
+                    "x": 2100,
+                    "y": 0
+                },
+                "restore": {
+                    "expect": {
+                        "base": {
+                            "label": "Signal Mirror OS"
+                        },
+                        "table": {
+                            "label": "Thought Log"
+                        },
+                        "record": {
+                            "nested": {
+                                "fld0iFbccLyruokHb": {
+                                    "mode": "chose"
+                                },
+                                "fld3HPcf91Hie5jXM": {
+                                    "mode": "chose"
+                                },
+                                "fld49gy5Xj8E9QOlq": {
+                                    "mode": "edit"
+                                },
+                                "fld4jMz5idGAu6dDL": {
+                                    "mode": "edit"
+                                },
+                                "fldE4r1Y1cw2kb85O": {
+                                    "mode": "chose",
+                                    "items": [
+                                        null
+                                    ]
+                                }
+                            }
+                        },
+                        "typecast": {
+                            "mode": "chose"
+                        },
+                        "useColumnId": {
+                            "mode": "chose"
+                        }
+                    },
+                    "parameters": {
+                        "__IMTCONN__": {
+                            "data": {
+                                "scoped": "true",
+                                "connection": "airtable3"
+                            },
+                            "label": "SMOS (User ID: usrW5bY0tNiB0HKxO)"
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "__IMTCONN__",
+                        "type": "account:airtable3,airtable2",
+                        "label": "Connection",
+                        "required": true
+                    }
+                ],
+                "expect": [
+                    {
+                        "name": "base",
+                        "type": "select",
+                        "label": "Base",
+                        "required": true
+                    },
+                    {
+                        "name": "typecast",
+                        "type": "boolean",
+                        "label": "Smart links",
+                        "required": true
+                    },
+                    {
+                        "name": "useColumnId",
+                        "type": "boolean",
+                        "label": "Use Column ID",
+                        "required": true
+                    },
+                    {
+                        "name": "table",
+                        "type": "select",
+                        "label": "Table",
+                        "required": true
+                    },
+                    {
+                        "name": "id",
+                        "type": "text",
+                        "label": "Record ID",
+                        "required": true
+                    },
+                    {
+                        "name": "record",
+                        "spec": [
+                            {
+                                "mode": "edit",
+                                "name": "fld49gy5Xj8E9QOlq",
+                                "type": "select",
+                                "label": "Input Type"
+                            },
+                            {
+                                "name": "fldovBTmtvuRsiZbU",
+                                "type": "text",
+                                "label": "Entry Content"
+                            },
+                            {
+                                "name": "fld0iFbccLyruokHb",
+                                "spec": {
+                                    "mode": "edit",
+                                    "name": "value",
+                                    "type": "select",
+                                    "label": "Value",
+                                    "dynamic": true,
+                                    "options": [
+                                        {
+                                            "label": "burnout",
+                                            "value": "burnout"
+                                        },
+                                        {
+                                            "label": "clarity",
+                                            "value": "clarity"
+                                        },
+                                        {
+                                            "label": "connection",
+                                            "value": "connection"
+                                        },
+                                        {
+                                            "label": "control",
+                                            "value": "control"
+                                        },
+                                        {
+                                            "label": "fatherhood",
+                                            "value": "fatherhood"
+                                        },
+                                        {
+                                            "label": "freedom",
+                                            "value": "freedom"
+                                        },
+                                        {
+                                            "label": "grief",
+                                            "value": "grief"
+                                        },
+                                        {
+                                            "label": "legacy",
+                                            "value": "legacy"
+                                        },
+                                        {
+                                            "label": "loop",
+                                            "value": "loop"
+                                        },
+                                        {
+                                            "label": "resistance",
+                                            "value": "resistance"
+                                        },
+                                        {
+                                            "label": "shift",
+                                            "value": "shift"
+                                        },
+                                        {
+                                            "label": "shipping",
+                                            "value": "shipping"
+                                        },
+                                        {
+                                            "label": "perfectionism",
+                                            "value": "perfectionism"
+                                        },
+                                        {
+                                            "label": "system readiness",
+                                            "value": "system readiness"
+                                        },
+                                        {
+                                            "label": "balance",
+                                            "value": "balance"
+                                        },
+                                        {
+                                            "label": "execution loop",
+                                            "value": "execution loop"
+                                        },
+                                        {
+                                            "label": "perfection",
+                                            "value": "perfection"
+                                        },
+                                        {
+                                            "label": "action",
+                                            "value": "action"
+                                        },
+                                        {
+                                            "label": "confidence",
+                                            "value": "confidence"
+                                        },
+                                        {
+                                            "label": "handoff",
+                                            "value": "handoff"
+                                        },
+                                        {
+                                            "label": "doubt",
+                                            "value": "doubt"
+                                        },
+                                        {
+                                            "label": "identity",
+                                            "value": "identity"
+                                        },
+                                        {
+                                            "label": "fear",
+                                            "value": "fear"
+                                        },
+                                        {
+                                            "label": "builder",
+                                            "value": "builder"
+                                        },
+                                        {
+                                            "label": "presence",
+                                            "value": "presence"
+                                        },
+                                        {
+                                            "label": "adjusting",
+                                            "value": "adjusting"
+                                        },
+                                        {
+                                            "label": "awareness",
+                                            "value": "awareness"
+                                        }
+                                    ],
+                                    "validate": false
+                                },
+                                "type": "array",
+                                "label": "Tags"
+                            },
+                            {
+                                "name": "fldr7WOc99rI97nyx",
+                                "type": "text",
+                                "label": "Linked Domain(s)"
+                            },
+                            {
+                                "mode": "edit",
+                                "name": "fld4jMz5idGAu6dDL",
+                                "type": "select",
+                                "label": "Source"
+                            },
+                            {
+                                "name": "fld3HPcf91Hie5jXM",
+                                "type": "boolean",
+                                "label": "Parsed?"
+                            },
+                            {
+                                "name": "fldZyLdT9nIu1Rwg4",
+                                "type": "text",
+                                "label": "GPT Summary UID"
+                            },
+                            {
+                                "name": "fldE4r1Y1cw2kb85O",
+                                "spec": {
+                                    "name": "value",
+                                    "label": "Record ID"
+                                },
+                                "type": "array",
+                                "label": "Daily Summary"
+                            },
+                            {
+                                "name": "fldnWWz5Ii8CJFcyi",
+                                "type": "text",
+                                "label": "Weekly Digest"
+                            }
+                        ],
+                        "type": "collection",
+                        "label": "Record"
+                    }
+                ],
+                "interface": [
+                    {
+                        "name": "id",
+                        "type": "text",
+                        "label": "ID"
+                    },
+                    {
+                        "name": "createdTime",
+                        "type": "date",
+                        "label": "Created Time"
+                    },
+                    {
+                        "name": "UID",
+                        "type": "text",
+                        "label": "UID"
+                    },
+                    {
+                        "name": "Input Type",
+                        "type": "text",
+                        "label": "Input Type"
+                    },
+                    {
+                        "name": "Entry Content",
+                        "type": "text",
+                        "label": "Entry Content",
+                        "multiline": true
+                    },
+                    {
+                        "name": "Tags",
+                        "type": "array",
+                        "label": "Tags",
+                        "dynamic": true,
+                        "editable": true
+                    },
+                    {
+                        "name": "Linked Domain(s)",
+                        "type": "text",
+                        "label": "Linked Domain(s)",
+                        "multiline": true
+                    },
+                    {
+                        "name": "Source",
+                        "type": "text",
+                        "label": "Source"
+                    },
+                    {
+                        "name": "Created Time",
+                        "type": "date",
+                        "label": "Created Time"
+                    },
+                    {
+                        "name": "Parsed?",
+                        "type": "boolean",
+                        "label": "Parsed?"
+                    },
+                    {
+                        "name": "GPT Summary UID",
+                        "type": "text",
+                        "label": "GPT Summary UID",
+                        "multiline": true
+                    },
+                    {
+                        "name": "Daily Summary",
+                        "spec": {
+                            "label": "Record ID"
+                        },
+                        "type": "array",
+                        "label": "Daily Summary"
+                    },
+                    {
+                        "name": "Weekly Digest",
+                        "type": "text",
+                        "label": "Weekly Digest"
+                    }
+                ]
+            }
+        }
+    ],
+    "metadata": {
+        "instant": false,
+        "version": 1,
+        "scenario": {
+            "roundtrips": 1,
+            "maxErrors": 3,
+            "autoCommit": true,
+            "autoCommitTriggerLast": true,
+            "sequential": false,
+            "slots": null,
+            "confidential": false,
+            "dataloss": false,
+            "dlq": false,
+            "freshVariables": false
+        },
+        "designer": {
+            "orphans": []
+        },
+        "zone": "us2.make.com",
+        "notes": []
+    }
+}
