@@ -15,7 +15,7 @@ Supabase + n8n workflows for MPOS-Basketball MVP.
    ```bash
    supabase db remote set "$SUPABASE_DB_URL"
    ```
-3. Push the migrations contained in `supabase/001_init.sql`:
+3. Push the migrations contained in `supabase/migrations`:
 
    ```bash
    supabase db push

@@ -11,23 +11,18 @@ CREATE TABLE IF NOT EXISTS flagged_entities (
   created_at     TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   org_uid        TEXT DEFAULT 'ORG-DEFAULT'
 );
-
 --------------------------------------------------------------------------------
--- player table (subtype of actor)
+-- person_role table (replaces player/coach subtypes)
 --------------------------------------------------------------------------------
-CREATE TABLE IF NOT EXISTS player (
-  uid         TEXT PRIMARY KEY REFERENCES actor(uid) ON DELETE CASCADE,
-  jersey_num  TEXT,
-  position    TEXT
+CREATE TABLE IF NOT EXISTS person_role (
+  uid         TEXT PRIMARY KEY,
+  person_uid  TEXT NOT NULL REFERENCES person(uid) ON DELETE CASCADE,
+  role        TEXT NOT NULL,
+  attributes  JSONB DEFAULT '{}'
 );
 
+
 --------------------------------------------------------------------------------
--- coach table (subtype of actor)
---------------------------------------------------------------------------------
-CREATE TABLE IF NOT EXISTS coach (
-  uid         TEXT PRIMARY KEY REFERENCES actor(uid) ON DELETE CASCADE,
-  role        TEXT
-);
 
 --------------------------------------------------------------------------------
 -- observation_logs table
@@ -43,6 +38,6 @@ CREATE TABLE IF NOT EXISTS observation_logs (
 -- observation table updates
 --------------------------------------------------------------------------------
 ALTER TABLE observation
-  ADD COLUMN IF NOT EXISTS player_id   TEXT REFERENCES actor(uid),
+  ADD COLUMN IF NOT EXISTS player_id   TEXT REFERENCES person(uid),
   ADD COLUMN IF NOT EXISTS session_uid TEXT REFERENCES intervention(uid),
   ADD COLUMN IF NOT EXISTS tagged_skills JSONB DEFAULT '[]'::jsonb;
