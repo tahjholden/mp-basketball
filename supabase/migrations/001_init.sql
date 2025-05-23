@@ -34,7 +34,7 @@ CREATE TABLE IF NOT EXISTS profile (
 --------------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS observation (
   uid         TEXT PRIMARY KEY,
-  actor_uid   TEXT NOT NULL REFERENCES actor(uid) ON DELETE CASCADE,
+  person_id   TEXT NOT NULL REFERENCES actor(uid) ON DELETE CASCADE,
   obs_type    TEXT NOT NULL CHECK (obs_type IN ('DevNote','CoachReflection','PlayerReflection')),
   payload     JSONB NOT NULL,
   timestamp   TIMESTAMPTZ NOT NULL,
@@ -151,12 +151,12 @@ CREATE TABLE IF NOT EXISTS tag_relation (
 --------------------------------------------------------------------------------
 CREATE OR REPLACE FUNCTION update_pdp(obs_uid TEXT) RETURNS VOID LANGUAGE plpgsql AS $$
 DECLARE
-  v_actor_uid TEXT;
+  v_person_id TEXT;
 BEGIN
-  SELECT actor_uid INTO v_actor_uid FROM observation WHERE uid = obs_uid;
+  SELECT person_id INTO v_person_id FROM observation WHERE uid = obs_uid;
   UPDATE profile
      SET attributes_json = jsonb_set(attributes_json, '{last_observation}', to_jsonb(obs_uid), true)
-   WHERE actor_uid = v_actor_uid;
+   WHERE actor_uid = v_person_id;
 END;
 $$;
 

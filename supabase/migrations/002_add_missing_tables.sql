@@ -41,6 +41,5 @@ CREATE TABLE IF NOT EXISTS observation_logs (
 -- observation table updates
 --------------------------------------------------------------------------------
 ALTER TABLE observation
-  ADD COLUMN IF NOT EXISTS person_id   TEXT REFERENCES actor(uid),
   ADD COLUMN IF NOT EXISTS session_uid TEXT REFERENCES intervention(uid),
   ADD COLUMN IF NOT EXISTS tagged_skills JSONB DEFAULT '[]'::jsonb;
