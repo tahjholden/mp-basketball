@@ -147,6 +147,24 @@ CREATE TABLE IF NOT EXISTS tag_relation (
 );
 
 --------------------------------------------------------------------------------
+-- Indexes for common foreign key joins
+--------------------------------------------------------------------------------
+CREATE INDEX IF NOT EXISTS idx_profile_actor ON profile(actor_uid);
+CREATE INDEX IF NOT EXISTS idx_observation_actor ON observation(actor_uid);
+CREATE INDEX IF NOT EXISTS idx_metric_actor ON metric(actor_uid);
+CREATE INDEX IF NOT EXISTS idx_link_parent ON link(parent_uid);
+CREATE INDEX IF NOT EXISTS idx_link_child ON link(child_uid);
+CREATE INDEX IF NOT EXISTS idx_routine_tag_routine ON routine_tag(routine_uid);
+CREATE INDEX IF NOT EXISTS idx_routine_tag_tag ON routine_tag(tag_uid);
+CREATE INDEX IF NOT EXISTS idx_routine_instance_intervention ON routine_instance(intervention_uid);
+CREATE INDEX IF NOT EXISTS idx_routine_instance_routine ON routine_instance(routine_uid);
+CREATE INDEX IF NOT EXISTS idx_habit_exposure_instance ON habit_exposure(routine_instance_uid);
+CREATE INDEX IF NOT EXISTS idx_habit_exposure_player ON habit_exposure(player_uid);
+CREATE INDEX IF NOT EXISTS idx_habit_exposure_tag ON habit_exposure(tag_uid);
+CREATE INDEX IF NOT EXISTS idx_tag_relation_parent ON tag_relation(tag_id_parent);
+CREATE INDEX IF NOT EXISTS idx_tag_relation_child ON tag_relation(tag_id_child);
+
+--------------------------------------------------------------------------------
 -- UDF : update_pdp(obs_uid) – writes last_observation into profile
 --------------------------------------------------------------------------------
 CREATE OR REPLACE FUNCTION update_pdp(obs_uid TEXT) RETURNS VOID LANGUAGE plpgsql AS $$

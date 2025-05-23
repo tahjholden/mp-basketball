@@ -44,3 +44,11 @@ ALTER TABLE observation
   ADD COLUMN IF NOT EXISTS person_id   TEXT REFERENCES actor(uid),
   ADD COLUMN IF NOT EXISTS session_uid TEXT REFERENCES intervention(uid),
   ADD COLUMN IF NOT EXISTS tagged_skills JSONB DEFAULT '[]'::jsonb;
+
+--------------------------------------------------------------------------------
+-- Indexes for new foreign keys
+--------------------------------------------------------------------------------
+CREATE INDEX IF NOT EXISTS idx_flagged_entities_entity ON flagged_entities(entity_uid);
+CREATE INDEX IF NOT EXISTS idx_observation_logs_observation ON observation_logs(observation_uid);
+CREATE INDEX IF NOT EXISTS idx_observation_person ON observation(person_id);
+CREATE INDEX IF NOT EXISTS idx_observation_session ON observation(session_uid);
