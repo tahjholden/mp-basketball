@@ -74,3 +74,9 @@ python tools/vertical_mapper/vertical_mapper.py \
 ```
 
 
+
+## Testing
+
+A helper in `tests/db.ts` spins up a temporary Postgres container using Docker and applies the migration files from `supabase/migrations` via the `pg` package. These functions are intended for Jest global setup and teardown.
+
+Ensure both Docker and the Supabase CLI are installed before running the tests.
