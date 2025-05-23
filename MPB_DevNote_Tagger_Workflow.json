@@ -1,0 +1,107 @@
+{
+  "name": "MPB DevNote Tagger",
+  "nodes": [
+    {
+      "parameters": {
+        "event": "INSERT",
+        "schema": "public",
+        "table": "observation",
+        "options": {}
+      },
+      "name": "Supabase Trigger",
+      "type": "n8n-nodes-base.supabaseTrigger",
+      "typeVersion": 1,
+      "position": [
+        250,
+        250
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "table": "tag",
+        "schema": "public",
+        "options": {}
+      },
+      "name": "Fetch Tag Bank",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        450,
+        150
+      ]
+    },
+    {
+      "parameters": {
+        "model": "gpt-4o-mini",
+        "prompt": "You are a basketball development assistant. A coach just logged this observation:\n\n{{ $node[\"Supabase Trigger\"].json[\"raw_note\"] }}\n\nPlayer level: {{ $node[\"Supabase Trigger\"].json[\"current_level\"] }}\n\nMaster Tags:\n{{ $node[\"Fetch Tag Bank\"].json.map(tag => `- ${tag.name} (category: ${tag.category})`).join(\"\\n\") }}\n\nIdentify up to 5 tags:\n\nOutput JSON:\n{\n  \"tagged_skills\": [],\n  \"tagged_constraints\": []\n}",
+        "temperature": 0.7,
+        "maxTokens": 500
+      },
+      "name": "OpenAI Tag Extractor",
+      "type": "n8n-nodes-base.openAIApi",
+      "typeVersion": 1,
+      "position": [
+        650,
+        250
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "upsert",
+        "schema": "public",
+        "table": "observation",
+        "key": "id",
+        "columns": {
+          "tagged_skills": "={{$json[\"tagged_skills\"]}}",
+          "tagged_constraints": "={{$json[\"tagged_constraints\"]}}"
+        }
+      },
+      "name": "Update Observation",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        850,
+        250
+      ]
+    }
+  ],
+  "connections": {
+    "Supabase Trigger": {
+      "main": [
+        [
+          {
+            "node": "OpenAI Tag Extractor",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch Tag Bank": {
+      "main": [
+        [
+          {
+            "node": "OpenAI Tag Extractor",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "OpenAI Tag Extractor": {
+      "main": [
+        [
+          {
+            "node": "Update Observation",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {},
+  "id": "1"
+}

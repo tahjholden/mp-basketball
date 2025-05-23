@@ -12,6 +12,7 @@ CREATE TABLE IF NOT EXISTS flagged_entities (
   org_uid        TEXT DEFAULT 'ORG-DEFAULT'
 );
 --------------------------------------------------------------------------------
+codex/rename-actor-table-and-update-references
 -- person_role table (replaces player/coach subtypes)
 --------------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS person_role (
@@ -23,21 +24,29 @@ CREATE TABLE IF NOT EXISTS person_role (
 
 
 --------------------------------------------------------------------------------
-
+-- journal_entry_logs table
 --------------------------------------------------------------------------------
--- observation_logs table
---------------------------------------------------------------------------------
-CREATE TABLE IF NOT EXISTS observation_logs (
+CREATE TABLE IF NOT EXISTS journal_entry_logs (
   uid             TEXT PRIMARY KEY,
-  observation_uid TEXT NOT NULL REFERENCES observation(uid) ON DELETE CASCADE,
+  observation_uid TEXT NOT NULL REFERENCES journal_entry(uid) ON DELETE CASCADE,
   log_entry       JSONB NOT NULL,
   created_at      TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
 --------------------------------------------------------------------------------
--- observation table updates
+-- journal_entry table updates
 --------------------------------------------------------------------------------
+codex/rename-actor-table-and-update-references
 ALTER TABLE observation
   ADD COLUMN IF NOT EXISTS player_id   TEXT REFERENCES person(uid),
+
   ADD COLUMN IF NOT EXISTS session_uid TEXT REFERENCES intervention(uid),
   ADD COLUMN IF NOT EXISTS tagged_skills JSONB DEFAULT '[]'::jsonb;
+
+--------------------------------------------------------------------------------
+-- Indexes for new foreign keys
+--------------------------------------------------------------------------------
+CREATE INDEX IF NOT EXISTS idx_flagged_entities_entity ON flagged_entities(entity_uid);
+CREATE INDEX IF NOT EXISTS idx_observation_logs_observation ON observation_logs(observation_uid);
+CREATE INDEX IF NOT EXISTS idx_observation_person ON observation(person_id);
+CREATE INDEX IF NOT EXISTS idx_observation_session ON observation(session_uid);
