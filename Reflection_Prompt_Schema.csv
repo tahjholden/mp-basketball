@@ -1,0 +1,15 @@
+Field Name,Field Type,Example Value
+UID,Single line text,REF-001
+Player Name,Linked record (Player Profile),Cole Holden
+Session UID,Linked record (Session Log),SES-015
+Reflection Date,Date,2025-05-08
+Primary Dev Focus,Lookup (from PDP Tracker),Pressure Read
+Constraint Friction Tags,Lookup (from PDP Tracker),Avoids paint under pressure
+Generated Prompts,Long text,"- What did you see when you caught the ball in the paint today?
+- What made that moment feel easy or hard?"
+Player Responses,Long text,"- I hesitated because I saw a help defender.
+- It felt hard because I wasn’t sure if I should shoot or pass."
+Insight Tags,Multi-select,"Hesitation, Read Delay"
+Coach Review,Long text,Coach noted he passed up a scoring opportunity.
+Reflection Score,Number,4
+Reflection Complexity Level,Single select,Level 2

@@ -11,7 +11,10 @@ Supabase + n8n workflows for MPOS-Basketball MVP.
 
 ### Apply database migrations
 
-The migration scripts live under `./supabase/migrations`. Set `SUPABASE_DB_URL` to your Postgres connection string and link the CLI:
+codex/rename-actor-table-and-update-references
+   ```bash
+   supabase db remote set "$SUPABASE_DB_URL"
+   ```
 
 ```bash
 supabase db remote set "$SUPABASE_DB_URL"
@@ -59,18 +62,39 @@ The same schema and workflows can be reused with other OS flavours such as Perso
 - n8n stores service credentials in its own database or `.n8n` directory. Configure them via the n8n UI after importing the workflow.
 
 
-## Vertical mapper
+codex/add-script-to-parametrize-workflow
+## Parametrizing a workflow
 
-The `tools/vertical_mapper` utility can rewrite the canonical SQL migrations
-and workflow JSON files for a different domain. Provide a YAML mapping with
-table, field and value replacements and specify an output directory:
+Use `scripts/parametrize_workflow.js` to swap Supabase details in an exported n8n workflow.
 
 ```bash
-python tools/vertical_mapper/vertical_mapper.py \
-  --mapping tools/vertical_mapper/mapping_consulting.yml \
-  --sql-dir supabase/migrations \
-  --workflow-dir workflows \
-  --dist-dir dist/consulting
+node scripts/parametrize_workflow.js --workflow workflows/mpos-basketball.json --config my-config.json --output import.json
 ```
 
+`my-config.json` example:
 
+```json
+{
+  "supabaseUrl": "https://your-project.supabase.co",
+  "supabaseCredentialId": "xyz123"
+}
+```
+
+You can also set the values through environment variables `SUPABASE_URL` and `SUPABASE_CREDENTIAL_ID`.
+
+
+
+## Checking for schema drift
+
+Use `tools/schema_diff.py` to compare the SQL migrations with a live database.
+Provide the Postgres connection string via `--db-url` and optionally generate an
+HTML report:
+
+```bash
+python tools/schema_diff.py \
+  --db-url postgres://user:pass@host:5432/dbname \
+  --html diff.html
+```
+
+The script prints a unified diff to stdout and writes a side-by-side HTML diff if
+`--html` is specified. It also suggests the filename for the next migration.

@@ -1,0 +1,1 @@
+INSERT INTO "public"."team" ("id", "name", "created_at") VALUES ('376b841b-485a-459d-bd7c-fb1bfafbbb6d', 'MPBC 2032', '2025-05-19 17:14:11.895028'), ('7b87e088-9d60-42aa-86bf-e1b6f5684424', 'MPCB 2033', '2025-05-19 17:14:11.895028');
