@@ -127,12 +127,12 @@ CREATE TABLE IF NOT EXISTS session_drill (
 );
 
 --------------------------------------------------------------------------------
--- PLAYER_EXPOSURE : tag exposures accumulated per player per session_drill
+-- PERSON_EXPOSURE : tag exposures accumulated per actor per session_drill
 --------------------------------------------------------------------------------
-CREATE TABLE IF NOT EXISTS player_exposure (
+CREATE TABLE IF NOT EXISTS person_exposure (
   uid               TEXT PRIMARY KEY,
   session_drill_uid TEXT NOT NULL REFERENCES session_drill(uid) ON DELETE CASCADE,
-  player_uid        TEXT NOT NULL REFERENCES actor(uid)         ON DELETE CASCADE,
+  person_uid        TEXT NOT NULL REFERENCES actor(uid)         ON DELETE CASCADE,
   tag_uid           TEXT NOT NULL REFERENCES tag(uid)           ON DELETE CASCADE,
   count             INT  NOT NULL DEFAULT 1
 );
@@ -171,7 +171,7 @@ WHEN (NEW.obs_type IN ('DevNote','CoachReflection'))
 EXECUTE PROCEDURE update_pdp(NEW.uid);
 
 --------------------------------------------------------------------------------
--- UDF : expand_exposure() – creates player_exposure rows for each tag
+-- UDF : expand_exposure() – creates person_exposure rows for each tag
 --------------------------------------------------------------------------------
 CREATE OR REPLACE FUNCTION expand_exposure() RETURNS TRIGGER LANGUAGE plpgsql AS $$
 DECLARE
@@ -179,22 +179,22 @@ DECLARE
 BEGIN
   -- loop over tags attached to the drill
   FOR rec IN
-      SELECT dt.tag_uid, a.uid AS player_uid
+      SELECT dt.tag_uid, a.uid AS person_uid
         FROM drill_tag dt
         CROSS JOIN actor a
         WHERE dt.drill_uid = NEW.drill_uid
           AND a.actor_type = 'Player'
   LOOP
-    INSERT INTO player_exposure(uid, session_drill_uid, player_uid, tag_uid, count)
+    INSERT INTO person_exposure(uid, session_drill_uid, person_uid, tag_uid, count)
     VALUES (
       uuid_generate_v4()::text,
       NEW.uid,
-      rec.player_uid,
+      rec.person_uid,
       rec.tag_uid,
       1
     )
-    ON CONFLICT (session_drill_uid, player_uid, tag_uid) DO UPDATE
-    SET count = player_exposure.count + 1;
+    ON CONFLICT (session_drill_uid, person_uid, tag_uid) DO UPDATE
+    SET count = person_exposure.count + 1;
   END LOOP;
   RETURN NEW;
 END;
