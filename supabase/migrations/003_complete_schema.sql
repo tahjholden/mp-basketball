@@ -86,7 +86,7 @@ CREATE TABLE IF NOT EXISTS agent_events (
   id         TEXT PRIMARY KEY,
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   event_type TEXT,
-  player_id  TEXT,
+  subject_id  TEXT,
   team_id    TEXT,
   agent_id   TEXT,
   details    JSONB,
@@ -98,7 +98,7 @@ CREATE TABLE IF NOT EXISTS agent_events (
 --------------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS pdp (
   id                     TEXT PRIMARY KEY,
-  player_id              TEXT,
+  subject_id              TEXT,
   is_current             BOOLEAN,
   skill_tags             JSONB,
   constraint_tags        JSONB,
@@ -123,15 +123,15 @@ CREATE TABLE IF NOT EXISTS pdp (
 -- JOIN TABLES
 --------------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS player_team (
-  player_id TEXT,
+  subject_id TEXT,
   team_id   TEXT,
-  PRIMARY KEY (player_id, team_id)
+  PRIMARY KEY (subject_id, team_id)
 );
 
 CREATE TABLE IF NOT EXISTS player_pod (
-  player_id TEXT,
+  subject_id TEXT,
   pod_id    TEXT,
-  PRIMARY KEY (player_id, pod_id)
+  PRIMARY KEY (subject_id, pod_id)
 );
 
 CREATE TABLE IF NOT EXISTS coach_team (
