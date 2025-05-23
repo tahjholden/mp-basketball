@@ -40,8 +40,8 @@ CREATE TABLE IF NOT EXISTS profile (
 --------------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS journal_entry (
   uid         TEXT PRIMARY KEY,
-codex/rename-actor-table-and-update-references
-  person_uid  TEXT NOT NULL REFERENCES person(uid) ON DELETE CASCADE,
+codex/decide-and-update-observation-table-reference
+  person_id   TEXT NOT NULL REFERENCES actor(uid) ON DELETE CASCADE,
   obs_type    TEXT NOT NULL CHECK (obs_type IN ('DevNote','CoachReflection','PlayerReflection')),
   payload     JSONB NOT NULL,
   timestamp   TIMESTAMPTZ NOT NULL,
@@ -180,14 +180,13 @@ CREATE INDEX IF NOT EXISTS idx_tag_relation_child ON tag_relation(tag_id_child);
 --------------------------------------------------------------------------------
 CREATE OR REPLACE FUNCTION update_pdp(obs_uid TEXT) RETURNS VOID LANGUAGE plpgsql AS $$
 DECLARE
-  v_person_uid TEXT;
+codex/decide-and-update-observation-table-reference
+  v_person_id TEXT;
 BEGIN
-codex/rename-actor-table-and-update-references
-  SELECT person_uid INTO v_person_uid FROM observation WHERE uid = obs_uid;
-
+  SELECT person_id INTO v_person_id FROM observation WHERE uid = obs_uid;
   UPDATE profile
      SET attributes_json = jsonb_set(attributes_json, '{last_observation}', to_jsonb(obs_uid), true)
-   WHERE person_uid = v_person_uid;
+   WHERE actor_uid = v_person_id;
 END;
 $$;
 

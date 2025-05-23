@@ -38,8 +38,7 @@ CREATE TABLE IF NOT EXISTS journal_entry_logs (
 --------------------------------------------------------------------------------
 codex/rename-actor-table-and-update-references
 ALTER TABLE observation
-  ADD COLUMN IF NOT EXISTS player_id   TEXT REFERENCES person(uid),
-
+codex/decide-and-update-observation-table-reference
   ADD COLUMN IF NOT EXISTS session_uid TEXT REFERENCES intervention(uid),
   ADD COLUMN IF NOT EXISTS tagged_skills JSONB DEFAULT '[]'::jsonb;
 
