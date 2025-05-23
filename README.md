@@ -37,3 +37,17 @@ Supabase + n8n workflows for MPOS-Basketball MVP.
 - `SUPABASE_ACCESS_TOKEN` – required when pushing to a hosted Supabase project.
 - n8n stores service credentials in its own database or `.n8n` directory. Configure them via the n8n UI after importing the workflow.
 
+## Vertical mapper
+
+The `tools/vertical_mapper` utility can rewrite the canonical SQL migrations
+and workflow JSON files for a different domain. Provide a YAML mapping with
+table, field and value replacements and specify an output directory:
+
+```bash
+python tools/vertical_mapper/vertical_mapper.py \
+  --mapping tools/vertical_mapper/mapping_consulting.yml \
+  --sql-dir supabase/migrations \
+  --workflow-dir workflows \
+  --dist-dir dist/consulting
+```
+
