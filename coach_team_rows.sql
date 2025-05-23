@@ -1,1 +1,4 @@
-INSERT INTO "public"."coach_team" ("coach_id", "team_id") VALUES ('5979b34c-969c-4df0-a773-91bff3b8032c', '7b87e088-9d60-42aa-86bf-e1b6f5684424'), ('692ad0cd-8e13-4c49-9b3c-7335991b81cf', '376b841b-485a-459d-bd7c-fb1bfafbbb6d'), ('692ad0cd-8e13-4c49-9b3c-7335991b81cf', '7b87e088-9d60-42aa-86bf-e1b6f5684424');
+INSERT INTO "public"."coach_team" ("coach_id", "team_id") VALUES
+('aa26bfbe-8108-44ce-b0ee-75101e7f965b', 'a27ba929-c865-41c0-a21c-04c2d481dd36'),
+('3e8dce43-b7ae-4d82-ad79-06ad29f2c083', 'a27ba929-c865-41c0-a21c-04c2d481dd36'),
+('3e8dce43-b7ae-4d82-ad79-06ad29f2c083', '0c6d7031-f908-4eb6-875f-436babeaa5cf');

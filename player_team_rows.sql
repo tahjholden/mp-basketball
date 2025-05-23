@@ -1,1 +1,5 @@
-INSERT INTO "public"."player_team" ("player_id", "team_id") VALUES ('42071c5c-b9d2-4a2a-9aeb-e7afc20f6dba', '376b841b-485a-459d-bd7c-fb1bfafbbb6d'), ('42071c5c-b9d2-4a2a-9aeb-e7afc20f6dba', '7b87e088-9d60-42aa-86bf-e1b6f5684424'), ('8ce6193d-3041-4f11-8c1d-a63d10d12569', '376b841b-485a-459d-bd7c-fb1bfafbbb6d'), ('8ce6193d-3041-4f11-8c1d-a63d10d12569', '7b87e088-9d60-42aa-86bf-e1b6f5684424'), ('962f6055-53b8-40d1-a0ad-fa9c02eb0253', '376b841b-485a-459d-bd7c-fb1bfafbbb6d');
+INSERT INTO "public"."player_team" ("player_id", "team_id") VALUES
+('6c6e8650-e9a2-44f3-a5c9-352f6d0e8d7c', 'a27ba929-c865-41c0-a21c-04c2d481dd36'),
+('6c6e8650-e9a2-44f3-a5c9-352f6d0e8d7c', '0c6d7031-f908-4eb6-875f-436babeaa5cf'),
+('e1af4e26-ae0f-4cf5-a324-67ef239781f8', 'a27ba929-c865-41c0-a21c-04c2d481dd36'),
+('21d2eec1-ab91-40d9-8811-e82b640d2192', '0c6d7031-f908-4eb6-875f-436babeaa5cf');

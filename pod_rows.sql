@@ -1,1 +1,3 @@
-INSERT INTO "public"."pod" ("id", "name", "team_id", "created_at") VALUES ('50723ae2-08ce-4d92-8f12-198e20ae22ea', 'Pod B', '376b841b-485a-459d-bd7c-fb1bfafbbb6d', '2025-05-19 17:14:27.636819'), ('ea14278f-ce84-420e-acad-2230f8ce3179', 'Pod A', '7b87e088-9d60-42aa-86bf-e1b6f5684424', '2025-05-19 17:14:27.636819');
+INSERT INTO "public"."pod" ("id", "name", "team_id", "created_at") VALUES
+('8635b72f-4e26-4037-8b90-d1b08937c01e', 'Daily Journal', 'a27ba929-c865-41c0-a21c-04c2d481dd36', '2025-01-01 00:00:00'),
+('979668e4-c8af-4ad2-b276-4922cdfcaef1', 'Weekly Review', '0c6d7031-f908-4eb6-875f-436babeaa5cf', '2025-01-01 00:00:00');
