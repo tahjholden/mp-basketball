@@ -136,7 +136,7 @@
     },
     {
       "parameters": {
-        "jsCode": "// 1) Grab the raw observations\nconst observations = $items(\"FetchObservations\");\n\n// 2) Grab the AI‐extracted tags\nconst aiResults = $items(\"OpenAI_TagExtractor\").map(i => {\n  try {\n    return JSON.parse(i.json.message.content);\n  } catch (e) {\n    return { tagged_skills: [], tagged_constraints: [] };\n  }\n});\n\n// 3) Merge them and ensure each item has a unique id\nconst { randomUUID } = require('crypto');\nconst enriched = observations.map((obsItem, idx) => {\n  const base = obsItem.json;\n  const ai = aiResults[idx] || {};\n  const id = base.id || randomUUID();\n  return {\n    json: {\n      ...base,\n      id,\n      raw_entry: base.raw_entry ?? base.raw_note ?? \"[missing]\",\n      tagged_skills: Array.isArray(ai.tagged_skills) ? ai.tagged_skills : [],\n      tagged_constraints: Array.isArray(ai.tagged_constraints) ? ai.tagged_constraints : [],\n      tagged: true\n    }\n  };\n});\n\nreturn enriched;"
+        "jsCode": "// 1) Grab the raw observations\nconst observations = $items(\"FetchObservations\");\n\n// 2) Grab the AI‐extracted tags (you told OpenAI to output JSON with tagged_skills & tagged_constraints)\nconst aiResults = $items(\"OpenAI_TagExtractor\").map(i => {\n  try {\n    return JSON.parse(i.json.message.content);\n  } catch (e) {\n    return { tagged_skills: [], tagged_constraints: [] };\n  }\n});\n\n// 3) Merge them\nconst enriched = observations.map((obsItem, idx) => {\n  const base = obsItem.json;\n  const ai = aiResults[idx] || {};\n\n  return {\n    json: {\n      ...base,\n      raw_entry: base.raw_entry ?? base.raw_note ?? \"[missing]\",\n      tagged_skills: Array.isArray(ai.tagged_skills) ? ai.tagged_skills : [],\n      tagged_constraints: Array.isArray(ai.tagged_constraints) ? ai.tagged_constraints : [],\n      tagged: true\n    }\n  };\n});\n\nreturn enriched;"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -198,7 +198,7 @@
               "leftValue": "={{$json[\"storage_type\"]}}",
               "rightValue": "parsed",
               "operator": {
-                "type": "boolean",
+                "type": "string",
                 "operation": "equals",
                 "name": "filter.operator.equals"
               }
@@ -232,7 +232,7 @@
     },
     {
       "parameters": {
-        "jsCode": "const obs = $json;\nconst players = Array.isArray(obs.players) ? obs.players : [];\nconst playerNames = Array.isArray(obs.player_names) ? obs.player_names : [];\n\nconst aliasMap = {};\nplayers.forEach(player => {\n  if (player.display_name) aliasMap[player.display_name.trim().toLowerCase()] = player.id;\n  if (player.aliases) {\n    const aliases = Array.isArray(player.aliases) ? player.aliases : String(player.aliases).split(\",\");\n    aliases.forEach(a => {\n      if (a && a.trim()) aliasMap[a.trim().toLowerCase()] = player.id;\n    });\n  }\n});\n\nconst outputs = [];\nconst unmatched = [];\nconst attendanceFlags = Array.isArray(obs.attendance_flags) ? obs.attendance_flags : [];\n\n// Flag unspecified attendance for admin review\nif (attendanceFlags.some(f => typeof f === \"string\" && f.toLowerCase().includes(\"unspecified\"))) {\n  outputs.push({\n    json: {\n      ...obs,\n      flagged_for_admin: true,\n      flag_reason: \"Unspecified player absence; check for transcription/name errors\"\n    }\n  });\n}\n\n// Emit one item per matched player\nplayerNames.forEach(name => {\n  const key = name.trim().toLowerCase();\n  if (aliasMap[key]) {\n    outputs.push({\n      json: {\n        ...obs,\n        player_id: aliasMap[key],\n        player_names: [name] // Only this player in this output\n      }\n    });\n  } else {\n    unmatched.push(name);\n  }\n});\n\n// Flag any unmatched names, once per observation\nif (unmatched.length > 0) {\n  outputs.push({\n    json: {\n      ...obs,\n      player_id: null,\n      unmatched_names: unmatched,\n      flagged_for_admin: true,\n      flag_reason: \"Player not found in player/alias table\",\n      category: \"player\"\n    }\n  });\n}\n\nreturn outputs;\n"
+        "jsCode": "const obs = $json;\nconst players = Array.isArray(obs.players) ? obs.players : [];\nconst playerNames = Array.isArray(obs.player_names) ? obs.player_names : [];\n\nconst aliasMap = {};\nplayers.forEach(player => {\n  if (player.display_name) aliasMap[player.display_name.trim().toLowerCase()] = player.id;\n  if (player.aliases) {\n    const aliases = Array.isArray(player.aliases) ? player.aliases : String(player.aliases).split(\",\");\n    aliases.forEach(a => {\n      if (a && a.trim()) aliasMap[a.trim().toLowerCase()] = player.id;\n    });\n  }\n});\n\nconst outputs = [];\nconst unmatched = [];\nconst attendanceFlags = Array.isArray(obs.attendance_flags) ? obs.attendance_flags : [];\n\n// Flag unspecified attendance for admin review\nif (attendanceFlags.some(f => typeof f === \"string\" && f.toLowerCase().includes(\"unspecified\"))) {\n  outputs.push({\n    json: {\n      ...obs,\n      flagged_for_admin: true,\n      flag_reason: \"Unspecified player absence; check for transcription/name errors\"\n    }\n  });\n}\n\n// Emit one item per matched player\nplayerNames.forEach(name => {\n  const key = name.trim().toLowerCase();\n  if (aliasMap[key]) {\n    outputs.push({\n      json: {\n        ...obs,\n        player_id: aliasMap[key],\n        player_names: [name] // Only this player in this output\n      }\n    });\n  } else {\n    unmatched.push(name);\n  }\n});\n\n// Flag any unmatched names, once per observation\nif (unmatched.length > 0) {\n  outputs.push({\n    json: {\n      ...obs,\n      player_id: null,\n      player_names: unmatched,\n      flagged_for_admin: true,\n      flag_reason: \"Player not found in player/alias table\",\n      category: \"player\"\n    }\n  });\n}\n\nreturn outputs;"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -356,7 +356,7 @@
                 "conditions": [
                   {
                     "leftValue": "=flagged_for_admin",
-                    "rightValue": "true",
+                    "rightValue": "={{ $json.flagged_for_admin === true }}",
                     "operator": {
                       "type": "boolean",
                       "operation": "equals"
@@ -381,7 +381,7 @@
                     "leftValue": "flagged_for_admin",
                     "rightValue": "true",
                     "operator": {
-                      "type": "boolean",
+                      "type": "string",
                       "operation": "notEquals"
                     }
                   }
