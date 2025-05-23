@@ -1,0 +1,3 @@
+UID,Week Start,Week End,Summary,Core Theme,Missed Insight,Suggested Action,Anchoring Prompt,Linked Entries,Projects Created?
+Formula,Date,Date,Long text,Single line text,Long text,Long text,Long text,Linked,Checkbox
+WD-{RECORD_ID()},,,,,,,,Thought_Log,

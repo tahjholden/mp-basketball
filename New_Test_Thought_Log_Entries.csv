@@ -1,0 +1,5 @@
+UID,Date,Input Type,Entry Content,Tags,Linked Domain(s),Source,Parsed?,GPT Summary UID
+Formula,Date,Single select,Long text,Multi-select,Linked,Single select,Checkbox,Linked
+,,Voice,"I felt confident today about the system finally syncing cleanly, but a part of me kept wondering if something would break when I hand it off. That lingering doubt showed up again.","confidence,handoff,doubt,loop",,Voice,false,
+,,Text,"Even though the core of this is solid, I’m struggling to let go of the builder identity. I don’t know if it’s fear of boredom or fear of being seen. Either way, it’s there.","identity,fear,builder,loop",,Text,false,
+,,Manual,"Cole asked me if I was paying attention. I wasn’t. I was in the system again, adjusting something tiny. He didn’t say it with anger—just disappointment. I logged out immediately.","fatherhood,presence,adjusting,awareness",,Manual,false,

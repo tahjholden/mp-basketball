@@ -13,19 +13,17 @@ CREATE TABLE IF NOT EXISTS flagged_entities (
 );
 
 --------------------------------------------------------------------------------
--- player table (subtype of actor)
---------------------------------------------------------------------------------
-CREATE TABLE IF NOT EXISTS player (
-  uid         TEXT PRIMARY KEY REFERENCES actor(uid) ON DELETE CASCADE,
-  jersey_num  TEXT,
-  position    TEXT
-);
+-- Remove legacy player and coach tables if they exist
+DROP TABLE IF EXISTS player CASCADE;
+DROP TABLE IF EXISTS coach  CASCADE;
 
 --------------------------------------------------------------------------------
--- coach table (subtype of actor)
+-- person table (replaces player and coach)
 --------------------------------------------------------------------------------
-CREATE TABLE IF NOT EXISTS coach (
+CREATE TABLE IF NOT EXISTS person (
   uid         TEXT PRIMARY KEY REFERENCES actor(uid) ON DELETE CASCADE,
+  jersey_num  TEXT,
+  position    TEXT,
   role        TEXT
 );
 
@@ -42,7 +40,17 @@ CREATE TABLE IF NOT EXISTS journal_entry_logs (
 --------------------------------------------------------------------------------
 -- journal_entry table updates
 --------------------------------------------------------------------------------
+codex/refactor-observation-schema-and-workflows
 ALTER TABLE journal_entry
   ADD COLUMN IF NOT EXISTS subject_id   TEXT REFERENCES person(uid),
+
   ADD COLUMN IF NOT EXISTS session_uid TEXT REFERENCES intervention(uid),
   ADD COLUMN IF NOT EXISTS tagged_skills JSONB DEFAULT '[]'::jsonb;
+
+--------------------------------------------------------------------------------
+-- Indexes for new foreign keys
+--------------------------------------------------------------------------------
+CREATE INDEX IF NOT EXISTS idx_flagged_entities_entity ON flagged_entities(entity_uid);
+CREATE INDEX IF NOT EXISTS idx_observation_logs_observation ON observation_logs(observation_uid);
+CREATE INDEX IF NOT EXISTS idx_observation_person ON observation(person_id);
+CREATE INDEX IF NOT EXISTS idx_observation_session ON observation(session_uid);

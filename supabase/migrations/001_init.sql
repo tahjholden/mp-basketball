@@ -1,4 +1,3 @@
-
 -- 001_init.sql  (MPOS‑Basketball)
 
 --------------------------------------------------------------------------------
@@ -97,48 +96,48 @@ CREATE TABLE IF NOT EXISTS tag (
 );
 
 --------------------------------------------------------------------------------
--- DRILL : canonical drill definitions
+-- ROUTINE : canonical routine definitions
 --------------------------------------------------------------------------------
-CREATE TABLE IF NOT EXISTS drill (
+CREATE TABLE IF NOT EXISTS routine (
   uid              TEXT PRIMARY KEY,
   source_uid       TEXT,
   name             TEXT NOT NULL,
   description      TEXT,
-  players_off      INT,
-  players_def      INT,
-  players_neutral  INT,
+  participants_off      INT,
+  participants_def      INT,
+  participants_neutral  INT,
   created_at       TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   org_uid          TEXT DEFAULT 'ORG-DEFAULT'
 );
 
 --------------------------------------------------------------------------------
--- DRILL_TAG : many‑to‑many drill ↔ tag
+-- ROUTINE_TAG : many‑to‑many routine ↔ tag
 --------------------------------------------------------------------------------
-CREATE TABLE IF NOT EXISTS drill_tag (
-  drill_uid    TEXT NOT NULL REFERENCES drill(uid) ON DELETE CASCADE,
+CREATE TABLE IF NOT EXISTS routine_tag (
+  routine_uid    TEXT NOT NULL REFERENCES routine(uid) ON DELETE CASCADE,
   tag_uid      TEXT NOT NULL REFERENCES tag(uid)   ON DELETE CASCADE,
   weight       NUMERIC NOT NULL DEFAULT 1,
   context_json JSONB DEFAULT '{}',
-  PRIMARY KEY (drill_uid, tag_uid)
+  PRIMARY KEY (routine_uid, tag_uid)
 );
 
 --------------------------------------------------------------------------------
--- SESSION_DRILL : drills scheduled inside an intervention
+-- ROUTINE_INSTANCE : routines scheduled inside an intervention
 --------------------------------------------------------------------------------
-CREATE TABLE IF NOT EXISTS session_drill (
+CREATE TABLE IF NOT EXISTS routine_instance (
   uid            TEXT PRIMARY KEY,
-  practice_uid   TEXT NOT NULL REFERENCES intervention(uid) ON DELETE CASCADE,
-  drill_uid      TEXT NOT NULL REFERENCES drill(uid)        ON DELETE CASCADE,
+  intervention_uid TEXT NOT NULL REFERENCES intervention(uid) ON DELETE CASCADE,
+  routine_uid      TEXT NOT NULL REFERENCES routine(uid)        ON DELETE CASCADE,
   seq_order      INT  NOT NULL,
   org_uid        TEXT DEFAULT 'ORG-DEFAULT'
 );
 
 --------------------------------------------------------------------------------
--- PLAYER_EXPOSURE : tag exposures accumulated per player per session_drill
+-- HABIT_EXPOSURE : tag exposures accumulated per player per routine_instance
 --------------------------------------------------------------------------------
-CREATE TABLE IF NOT EXISTS player_exposure (
+CREATE TABLE IF NOT EXISTS habit_exposure (
   uid               TEXT PRIMARY KEY,
-  session_drill_uid TEXT NOT NULL REFERENCES session_drill(uid) ON DELETE CASCADE,
+  routine_instance_uid TEXT NOT NULL REFERENCES routine_instance(uid) ON DELETE CASCADE,
   player_uid        TEXT NOT NULL REFERENCES actor(uid)         ON DELETE CASCADE,
   tag_uid           TEXT NOT NULL REFERENCES tag(uid)           ON DELETE CASCADE,
   count             INT  NOT NULL DEFAULT 1
@@ -153,6 +152,24 @@ CREATE TABLE IF NOT EXISTS tag_relation (
   relation_type   TEXT NOT NULL,
   tag_id_child    TEXT NOT NULL REFERENCES tag(uid) ON DELETE CASCADE
 );
+
+--------------------------------------------------------------------------------
+-- Indexes for common foreign key joins
+--------------------------------------------------------------------------------
+CREATE INDEX IF NOT EXISTS idx_profile_actor ON profile(actor_uid);
+CREATE INDEX IF NOT EXISTS idx_observation_actor ON observation(actor_uid);
+CREATE INDEX IF NOT EXISTS idx_metric_actor ON metric(actor_uid);
+CREATE INDEX IF NOT EXISTS idx_link_parent ON link(parent_uid);
+CREATE INDEX IF NOT EXISTS idx_link_child ON link(child_uid);
+CREATE INDEX IF NOT EXISTS idx_routine_tag_routine ON routine_tag(routine_uid);
+CREATE INDEX IF NOT EXISTS idx_routine_tag_tag ON routine_tag(tag_uid);
+CREATE INDEX IF NOT EXISTS idx_routine_instance_intervention ON routine_instance(intervention_uid);
+CREATE INDEX IF NOT EXISTS idx_routine_instance_routine ON routine_instance(routine_uid);
+CREATE INDEX IF NOT EXISTS idx_habit_exposure_instance ON habit_exposure(routine_instance_uid);
+CREATE INDEX IF NOT EXISTS idx_habit_exposure_player ON habit_exposure(player_uid);
+CREATE INDEX IF NOT EXISTS idx_habit_exposure_tag ON habit_exposure(tag_uid);
+CREATE INDEX IF NOT EXISTS idx_tag_relation_parent ON tag_relation(tag_id_parent);
+CREATE INDEX IF NOT EXISTS idx_tag_relation_child ON tag_relation(tag_id_child);
 
 --------------------------------------------------------------------------------
 -- UDF : update_pdp(obs_uid) – writes last_observation into profile
@@ -178,21 +195,21 @@ WHEN (NEW.obs_type IN ('Reflection','GoalProgress','Idea'))
 EXECUTE PROCEDURE update_pdp(NEW.uid);
 
 --------------------------------------------------------------------------------
--- UDF : expand_exposure() – creates player_exposure rows for each tag
+-- UDF : expand_exposure() – creates habit_exposure rows for each tag
 --------------------------------------------------------------------------------
 CREATE OR REPLACE FUNCTION expand_exposure() RETURNS TRIGGER LANGUAGE plpgsql AS $$
 DECLARE
   rec  RECORD;
 BEGIN
-  -- loop over tags attached to the drill
+  -- loop over tags attached to the routine
   FOR rec IN
       SELECT dt.tag_uid, a.uid AS player_uid
-        FROM drill_tag dt
+        FROM routine_tag dt
         CROSS JOIN actor a
-        WHERE dt.drill_uid = NEW.drill_uid
+        WHERE dt.routine_uid = NEW.routine_uid
           AND a.actor_type = 'Player'
   LOOP
-    INSERT INTO player_exposure(uid, session_drill_uid, player_uid, tag_uid, count)
+    INSERT INTO habit_exposure(uid, routine_instance_uid, player_uid, tag_uid, count)
     VALUES (
       uuid_generate_v4()::text,
       NEW.uid,
@@ -200,18 +217,18 @@ BEGIN
       rec.tag_uid,
       1
     )
-    ON CONFLICT (session_drill_uid, player_uid, tag_uid) DO UPDATE
-    SET count = player_exposure.count + 1;
+    ON CONFLICT (routine_instance_uid, player_uid, tag_uid) DO UPDATE
+    SET count = habit_exposure.count + 1;
   END LOOP;
   RETURN NEW;
 END;
 $$;
 
 --------------------------------------------------------------------------------
--- Trigger: fire expand_exposure after inserting a session_drill
+-- Trigger: fire expand_exposure after inserting a routine_instance
 --------------------------------------------------------------------------------
 CREATE TRIGGER trg_expand_exposure
-AFTER INSERT ON session_drill
+AFTER INSERT ON routine_instance
 FOR EACH ROW
 EXECUTE PROCEDURE expand_exposure();
 
