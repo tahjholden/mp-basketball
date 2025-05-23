@@ -198,7 +198,7 @@
               "leftValue": "={{$json[\"storage_type\"]}}",
               "rightValue": "parsed",
               "operator": {
-                "type": "string",
+                "type": "boolean",
                 "operation": "equals",
                 "name": "filter.operator.equals"
               }
@@ -356,7 +356,7 @@
                 "conditions": [
                   {
                     "leftValue": "=flagged_for_admin",
-                    "rightValue": "={{ $json.flagged_for_admin === true }}",
+                    "rightValue": "true",
                     "operator": {
                       "type": "boolean",
                       "operation": "equals"
@@ -381,7 +381,7 @@
                     "leftValue": "flagged_for_admin",
                     "rightValue": "true",
                     "operator": {
-                      "type": "string",
+                      "type": "boolean",
                       "operation": "notEquals"
                     }
                   }
