@@ -140,3 +140,7 @@ codex/set-up-jest-with-package.json
 Run `npm install` to install the dev dependencies for running tests.
 
 Run tests with `npm test`.
+
+## License
+
+This project is licensed under the [MIT License](LICENSE).
