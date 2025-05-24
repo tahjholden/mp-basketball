@@ -131,20 +131,25 @@ python tools/schema_diff.py \
 ## Install dependencies
 
 Run `npm install` to install the dev dependencies for running tests.
+Packages that include custom n8n nodes (under `packages/`) also require `npm install` from inside each package directory before executing tests.
 
-Run tests with `npm test`.
+Run tests with `npm test` and generate coverage reports using `npm run coverage`.
 
 ## Testing
+
+The main Jest tests live in the top-level `tests` directory. Some packages under
+`packages/` contain their own `__tests__` folders for vertical-specific logic.
 
 Run the test suite locally with:
 
 ```bash
 npm install
 npm test
-# npm run coverage   # if implemented
+npm run coverage
 ```
 
-GitHub Actions runs the same commands on every pull request.
+GitHub Actions runs these commands on every pull request and reports the CI
+status directly on the PR page.
 
 ## License
 
