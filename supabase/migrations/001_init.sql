@@ -159,6 +159,23 @@ CREATE TABLE IF NOT EXISTS tag_relation (
 );
 
 --------------------------------------------------------------------------------
+-- FLAGGED_NAME : store unmatched player names
+--------------------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS flagged_name (
+  uid UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  raw_observation_id TEXT REFERENCES observation(id) ON DELETE CASCADE,
+  flagged_name       TEXT NOT NULL,
+  category           TEXT,
+  observation_text   TEXT,
+  flagged_at         TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  attempted_match_at TIMESTAMPTZ,
+  matched_person_uid TEXT REFERENCES person(uid),
+  resolved_at        TIMESTAMPTZ,
+  created_at         TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  org_uid            TEXT DEFAULT 'ORG-DEFAULT'
+);
+
+--------------------------------------------------------------------------------
 -- Indexes for common foreign key joins
 --------------------------------------------------------------------------------
 CREATE INDEX IF NOT EXISTS idx_profile_actor ON profile(actor_uid);
@@ -175,6 +192,7 @@ CREATE INDEX IF NOT EXISTS idx_habit_exposure_player ON habit_exposure(player_ui
 CREATE INDEX IF NOT EXISTS idx_habit_exposure_tag ON habit_exposure(tag_uid);
 CREATE INDEX IF NOT EXISTS idx_tag_relation_parent ON tag_relation(tag_id_parent);
 CREATE INDEX IF NOT EXISTS idx_tag_relation_child ON tag_relation(tag_id_child);
+CREATE INDEX IF NOT EXISTS idx_flagged_name_observation ON flagged_name(raw_observation_id);
 
 --------------------------------------------------------------------------------
 -- UDF : update_pdp(obs_uid) – writes last_observation into profile
@@ -250,6 +268,11 @@ ALTER TABLE person ENABLE ROW LEVEL SECURITY;
 ALTER TABLE person FORCE ROW LEVEL SECURITY;
 -- Example policy: allow org members read
 CREATE POLICY person_select_org ON person
+  FOR SELECT USING (org_uid = current_setting('request.jwt.claims', true)::jsonb->>'org_uid');
+
+ALTER TABLE flagged_name ENABLE ROW LEVEL SECURITY;
+ALTER TABLE flagged_name FORCE ROW LEVEL SECURITY;
+CREATE POLICY flagged_name_select_org ON flagged_name
   FOR SELECT USING (org_uid = current_setting('request.jwt.claims', true)::jsonb->>'org_uid');
 
 -- Repeat similar RLS policies for other tables as needed.
