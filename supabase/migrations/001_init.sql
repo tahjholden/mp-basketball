@@ -461,7 +461,8 @@ CREATE INDEX IF NOT EXISTS idx_tag_relation_child ON tag_relation(tag_id_child);
 CREATE INDEX IF NOT EXISTS idx_flagged_name_observation ON flagged_name(raw_observation_id);
 -- extend supabase 001_init.sql with schema
 CREATE INDEX IF NOT EXISTS idx_flagged_entities_entity ON flagged_entities(entity_uid);
-CREATE INDEX IF NOT EXISTS idx_journal_entry_logs_observation ON journal_entry_logs(observation_uid);
+-- index for fast lookup of log entries by associated observation
+CREATE INDEX IF NOT EXISTS idx_journal_entry_logs_observation_uid ON journal_entry_logs(observation_uid);
 CREATE INDEX IF NOT EXISTS idx_pod_team ON pod(team_id);
 CREATE INDEX IF NOT EXISTS idx_session_team ON session(team_id);
 CREATE INDEX IF NOT EXISTS idx_session_pod ON session(pod_id);
