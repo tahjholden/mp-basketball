@@ -29,7 +29,7 @@ psql "$SUPABASE_DB_URL" -f seed/<file>.sql
 ```
 
 
-codex/create-table-metadata-configuration
+<!-- create table metadata configuration -->
 ## Admin table metadata
 
 The file `admin_tables.yml` lists every table created by the migrations and whether it should be restricted to administrators. The keys are table names and the values are booleans. Whenever you add a migration that creates a new table, update `admin_tables.yml` with an entry for that table.

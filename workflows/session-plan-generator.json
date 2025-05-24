@@ -315,6 +315,7 @@
       ],
       "id": "353a6503-afbd-44d1-bb0a-94864d50c5e7",
       "name": "CompareAttendance"
+
     },
     {
       "parameters": {
@@ -379,6 +380,7 @@
       ],
       "id": "2e2e47a4-2b32-4f16-9e65-b07b334e7439",
       "name": "NotifyCoaches"
+
     }
   ],
   "pinData": {},
@@ -515,6 +517,28 @@
         [
           {
             "node": "FetchActual",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "FetchActual": {
+      "main": [
+        [
+          {
+            "node": "CompareAttendance",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CompareAttendance": {
+      "main": [
+        [
+          {
+            "node": "Code_SessionPlanContext",
             "type": "main",
             "index": 0
           }

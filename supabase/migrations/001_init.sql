@@ -37,7 +37,7 @@ CREATE TABLE IF NOT EXISTS profile (
 --------------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS journal_entry (
   uid         UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-codex/decide-and-update-observation-table-reference
+-- decide and update observation table reference
   person_id   UUID NOT NULL REFERENCES person(uid) ON DELETE CASCADE,
   obs_type    TEXT NOT NULL CHECK (obs_type IN ('DevNote','CoachReflection','PlayerReflection')),
   payload     JSONB NOT NULL,
@@ -132,14 +132,14 @@ CREATE TABLE IF NOT EXISTS routine_instance (
 );
 
 --------------------------------------------------------------------------------
-codex/rename-player_exposure-and-adjust-foreign-keys
+-- rename player_exposure table and adjust foreign keys
 -- PERSON_EXPOSURE : tag exposures accumulated per actor per session_drill
 --------------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS person_exposure (
   uid               UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-codex/rename-actor-table-and-update-references
+-- rename actor table and update references
   session_drill_uid UUID NOT NULL REFERENCES session_drill(uid) ON DELETE CASCADE,
-codex/rename-player_exposure-and-adjust-foreign-keys
+-- rename player_exposure table and adjust foreign keys
   person_uid        UUID NOT NULL REFERENCES person(uid)         ON DELETE CASCADE,
   tag_uid           UUID NOT NULL REFERENCES tag(uid)           ON DELETE CASCADE,
   count             INT  NOT NULL DEFAULT 1
@@ -459,9 +459,9 @@ CREATE INDEX IF NOT EXISTS idx_habit_exposure_tag ON habit_exposure(tag_uid);
 CREATE INDEX IF NOT EXISTS idx_tag_relation_parent ON tag_relation(tag_id_parent);
 CREATE INDEX IF NOT EXISTS idx_tag_relation_child ON tag_relation(tag_id_child);
 CREATE INDEX IF NOT EXISTS idx_flagged_name_observation ON flagged_name(raw_observation_id);
-codex/extend-supabase/001_init.sql-with-schema
+-- extend supabase 001_init.sql with schema
 CREATE INDEX IF NOT EXISTS idx_flagged_entities_entity ON flagged_entities(entity_uid);
-CREATE INDEX IF NOT EXISTS idx_observation_logs_observation ON journal_entry_logs(observation_uid);
+CREATE INDEX IF NOT EXISTS idx_journal_entry_logs_observation ON journal_entry_logs(observation_uid);
 CREATE INDEX IF NOT EXISTS idx_pod_team ON pod(team_id);
 CREATE INDEX IF NOT EXISTS idx_session_team ON session(team_id);
 CREATE INDEX IF NOT EXISTS idx_session_pod ON session(pod_id);
@@ -497,7 +497,7 @@ CREATE UNIQUE INDEX IF NOT EXISTS idx_player_exposure_triplet ON player_exposure
 --------------------------------------------------------------------------------
 CREATE OR REPLACE FUNCTION update_pdp(obs_uid UUID) RETURNS VOID LANGUAGE plpgsql AS $$
 DECLARE
-codex/decide-and-update-observation-table-reference
+-- decide and update observation table reference
   v_person_id UUID;
 BEGIN
   SELECT person_id INTO v_person_id FROM observation WHERE uid = obs_uid;
@@ -517,7 +517,7 @@ WHEN (NEW.obs_type IN ('Reflection','GoalProgress','Idea'))
 EXECUTE PROCEDURE update_pdp(NEW.uid);
 
 --------------------------------------------------------------------------------
-codex/rename-player_exposure-and-adjust-foreign-keys
+-- rename player_exposure table and adjust foreign keys
 -- UDF : expand_exposure() – creates person_exposure rows for each tag
 --------------------------------------------------------------------------------
 CREATE OR REPLACE FUNCTION expand_exposure() RETURNS TRIGGER LANGUAGE plpgsql AS $$
@@ -526,14 +526,14 @@ DECLARE
 BEGIN
   -- loop over tags attached to the routine
   FOR rec IN
-codex/rename-player_exposure-and-adjust-foreign-keys
+-- rename player_exposure table and adjust foreign keys
       SELECT dt.tag_uid, a.uid AS person_uid
         FROM drill_tag dt
         CROSS JOIN person_role pr
         WHERE dt.drill_uid = NEW.drill_uid
           AND pr.role = 'Player'
   LOOP
-codex/rename-player_exposure-and-adjust-foreign-keys
+-- rename player_exposure table and adjust foreign keys
     INSERT INTO person_exposure(uid, session_drill_uid, person_uid, tag_uid, count)
     VALUES (
       uuid_generate_v4(),
@@ -542,7 +542,7 @@ codex/rename-player_exposure-and-adjust-foreign-keys
       rec.tag_uid,
       1
     )
-codex/rename-player_exposure-and-adjust-foreign-keys
+-- rename player_exposure table and adjust foreign keys
     ON CONFLICT (session_drill_uid, person_uid, tag_uid) DO UPDATE
     SET count = person_exposure.count + 1;
 

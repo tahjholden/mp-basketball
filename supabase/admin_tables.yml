@@ -1,4 +1,4 @@
-codex/create-table-metadata-configuration
+# table metadata configuration
 # List of tables with whether they are admin-only
 # Set the value to true if the table should only be accessed by administrators.
 # Add new entries here whenever a migration introduces a new table.

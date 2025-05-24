@@ -2,11 +2,10 @@
 
 Supabase + n8n workflows for MPOS-Basketball MVP.
 
-### Actor and person tables
+### Person table
 
-All participants live in a single `actor` table with an `actor_type` of `Player`,
-`Coach`, `Team` or `Group`. The `person` table stores extra fields for human
-actors (players or coaches) such as jersey numbers and roles.
+All participants live in a single `person` table. Player and coach details, such
+as jersey numbers or positions, are stored in the related `person_role` table.
 
 ## Prerequisites
 
@@ -18,19 +17,13 @@ actors (players or coaches) such as jersey numbers and roles.
 
 ### Apply database migrations
 
-codex/rename-actor-table-and-update-references
-   ```bash
-   supabase db remote set "$SUPABASE_DB_URL"
-   ```
+
+Link the Supabase CLI to your database then apply the migrations. This pulls in
+`007_create_attendance.sql`, which creates the `attendance` table used by the
+practice planner:
 
 ```bash
 supabase db remote set "$SUPABASE_DB_URL"
-```
-
-Apply the migrations with the Supabase CLI. This pulls in the newest migration that creates the
-`attendance` table used by the practice planner:
-
-```bash
 supabase db push
 ```
 
@@ -53,7 +46,7 @@ psql "$SUPABASE_DB_URL" -c "\copy agent_events FROM 'supabase/seed/agent_events_
 psql "$SUPABASE_DB_URL" -c "\copy person FROM 'supabase/seed/coach_rows.csv' CSV HEADER"
 ```
 
-This loads the sample rows for the new `actor`/`person` structure and related tables.
+This loads the sample rows for the new `person`/`person_role` structure and related tables.
 
 ### Import n8n workflows
 
@@ -65,7 +58,7 @@ n8n import:workflow --input workflows/mpos-basketball.json
 
 The practice-planner workflows now read from the `attendance` table. Only players
 marked `present` are included when generating a session plan. Any names that do
-not match existing players are stored in the `flagged_entities` table for later
+not match existing players are logged in the `flagged_entities` table for later
 review.
 
 Example code nodes used in the workflow:
@@ -100,7 +93,7 @@ The same schema and workflows can be reused with other OS flavours such as Perso
 - n8n stores service credentials in its own database or `.n8n` directory. Configure them via the n8n UI after importing the workflow.
 
 
-codex/add-script-to-parametrize-workflow
+<!-- add script to parametrize workflow -->
 ## Parametrizing a workflow
 
 Use `scripts/parametrize_workflow.js` to swap Supabase details in an exported n8n workflow.
@@ -134,9 +127,13 @@ python tools/schema_diff.py \
   --html diff.html
 ```
 
-codex/set-up-jest-with-package.json
+<!-- set up jest with package.json -->
 ## Install dependencies
 
 Run `npm install` to install the dev dependencies for running tests.
 
 Run tests with `npm test`.
+
+## License
+
+This project is licensed under the [MIT License](LICENSE).
