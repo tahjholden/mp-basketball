@@ -22,9 +22,6 @@ CREATE TABLE IF NOT EXISTS person (
 --------------------------------------------------------------------------------
 
 
-CREATE TABLE IF NOT EXISTS person (
-  uid UUID PRIMARY KEY REFERENCES actor(uid) ON DELETE CASCADE
-);
 
 -- PROFILE : holds PDP / attributes per actor
 --------------------------------------------------------------------------------
@@ -41,7 +38,7 @@ CREATE TABLE IF NOT EXISTS profile (
 CREATE TABLE IF NOT EXISTS journal_entry (
   uid         UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
 codex/decide-and-update-observation-table-reference
-  person_id   UUID NOT NULL REFERENCES actor(uid) ON DELETE CASCADE,
+  person_id   UUID NOT NULL REFERENCES person(uid) ON DELETE CASCADE,
   obs_type    TEXT NOT NULL CHECK (obs_type IN ('DevNote','CoachReflection','PlayerReflection')),
   payload     JSONB NOT NULL,
   timestamp   TIMESTAMPTZ NOT NULL,
@@ -143,7 +140,7 @@ CREATE TABLE IF NOT EXISTS person_exposure (
 codex/rename-actor-table-and-update-references
   session_drill_uid UUID NOT NULL REFERENCES session_drill(uid) ON DELETE CASCADE,
 codex/rename-player_exposure-and-adjust-foreign-keys
-  person_uid        UUID NOT NULL REFERENCES actor(uid)         ON DELETE CASCADE,
+  person_uid        UUID NOT NULL REFERENCES person(uid)         ON DELETE CASCADE,
   tag_uid           UUID NOT NULL REFERENCES tag(uid)           ON DELETE CASCADE,
   count             INT  NOT NULL DEFAULT 1
 );
@@ -194,6 +191,257 @@ CREATE TABLE IF NOT EXISTS unmatched_player_name (
 );
 
 --------------------------------------------------------------------------------
+-- FLAGGED_ENTITIES : generic table for problematic records
+--------------------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS flagged_entities (
+  uid         TEXT PRIMARY KEY,
+  entity_uid  TEXT NOT NULL,
+  entity_type TEXT NOT NULL,
+  reason      TEXT,
+  created_at  TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  org_uid     TEXT DEFAULT 'ORG-DEFAULT'
+);
+
+--------------------------------------------------------------------------------
+-- PERSON_ROLE : normalized roles per person
+--------------------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS person_role (
+  uid         TEXT PRIMARY KEY,
+  person_uid  TEXT NOT NULL REFERENCES person(uid) ON DELETE CASCADE,
+  role        TEXT NOT NULL,
+  attributes  JSONB DEFAULT '{}'
+);
+
+--------------------------------------------------------------------------------
+-- JOURNAL_ENTRY_LOGS : change history for observations
+--------------------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS journal_entry_logs (
+  uid             TEXT PRIMARY KEY,
+  observation_uid TEXT NOT NULL REFERENCES journal_entry(uid) ON DELETE CASCADE,
+  log_entry       JSONB NOT NULL,
+  created_at      TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+--------------------------------------------------------------------------------
+-- TEAM table
+--------------------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS team (
+  id         TEXT PRIMARY KEY,
+  name       TEXT NOT NULL,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+--------------------------------------------------------------------------------
+-- POD table
+--------------------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS pod (
+  id         TEXT PRIMARY KEY,
+  name       TEXT NOT NULL,
+  team_id    TEXT REFERENCES team(id),
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+--------------------------------------------------------------------------------
+-- SESSION table
+--------------------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS session (
+  id                    TEXT PRIMARY KEY,
+  title                 TEXT,
+  objective             TEXT,
+  team_id               TEXT REFERENCES team(id),
+  pod_id                TEXT REFERENCES pod(id),
+  coach_id              TEXT,
+  status                TEXT,
+  planned_player_count  INT,
+  session_notes         TEXT,
+  created_at            TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  advancement_levels    JSONB,
+  responsibility_tiers  JSONB,
+  collective_growth_phase TEXT,
+  created_by            TEXT,
+  last_updated          TIMESTAMPTZ,
+  session_plan          JSONB,
+  session_id            TEXT,
+  session_date          DATE,
+  start_time            TIME,
+  end_time              TIME,
+  duration_minutes      INT,
+  location              TEXT,
+  overall_theme_tags    JSONB,
+  planned_attendance    JSONB,
+  reflection_fields     JSONB
+);
+
+--------------------------------------------------------------------------------
+-- MPB_DOCS table
+--------------------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS mpb_docs (
+  id            TEXT PRIMARY KEY,
+  file_path     TEXT,
+  chunk_index   INT,
+  content       TEXT,
+  embedding     VECTOR(1536),
+  player_uuid   TEXT,
+  session_uuid  TEXT,
+  tags          JSONB,
+  created_at    TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  metadata      JSONB
+);
+
+--------------------------------------------------------------------------------
+-- AGENT_EVENTS table
+--------------------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS agent_events (
+  id         TEXT PRIMARY KEY,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  event_type TEXT,
+  player_id  TEXT,
+  team_id    TEXT,
+  agent_id   TEXT,
+  details    JSONB,
+  status     TEXT
+);
+
+--------------------------------------------------------------------------------
+-- PDP table
+--------------------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS pdp (
+  id                     TEXT PRIMARY KEY,
+  player_id              TEXT,
+  is_current             BOOLEAN,
+  skill_tags             JSONB,
+  constraint_tags        JSONB,
+  theme_tags             JSONB,
+  pdp_text_full          TEXT,
+  pdp_text_coach         TEXT,
+  pdp_text_player        TEXT,
+  source_observation_ids JSONB,
+  previous_version_id    TEXT,
+  created_at             TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  skills_summary         TEXT,
+  constraints_summary    TEXT,
+  last_updated           TIMESTAMPTZ,
+  advancement_level      TEXT,
+  responsibility_tier    TEXT,
+  collective_growth_phase TEXT,
+  pdp_id                 TEXT,
+  updated_at             TIMESTAMPTZ
+);
+
+--------------------------------------------------------------------------------
+-- JOIN TABLES
+--------------------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS player_team (
+  player_id TEXT,
+  team_id   TEXT,
+  PRIMARY KEY (player_id, team_id)
+);
+
+CREATE TABLE IF NOT EXISTS player_pod (
+  player_id TEXT,
+  pod_id    TEXT,
+  PRIMARY KEY (player_id, pod_id)
+);
+
+CREATE TABLE IF NOT EXISTS coach_team (
+  coach_id TEXT,
+  team_id  TEXT,
+  PRIMARY KEY (coach_id, team_id)
+);
+
+CREATE TABLE IF NOT EXISTS coach_pod (
+  coach_id TEXT,
+  pod_id   TEXT,
+  PRIMARY KEY (coach_id, pod_id)
+);
+
+--------------------------------------------------------------------------------
+-- MOOD_LOG table
+--------------------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS mood_log (
+  uid         TEXT PRIMARY KEY,
+  person_id   TEXT NOT NULL REFERENCES person(uid) ON DELETE CASCADE,
+  mood        TEXT NOT NULL,
+  note        TEXT,
+  timestamp   TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  org_uid     TEXT DEFAULT 'ORG-DEFAULT'
+);
+
+--------------------------------------------------------------------------------
+-- HABIT table
+--------------------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS habit (
+  uid         TEXT PRIMARY KEY,
+  person_id   TEXT NOT NULL REFERENCES person(uid) ON DELETE CASCADE,
+  name        TEXT NOT NULL,
+  description TEXT,
+  created_at  TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  org_uid     TEXT DEFAULT 'ORG-DEFAULT'
+);
+
+--------------------------------------------------------------------------------
+-- HABIT_EVENT table
+--------------------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS habit_event (
+  uid         TEXT PRIMARY KEY,
+  habit_id    TEXT NOT NULL REFERENCES habit(uid) ON DELETE CASCADE,
+  timestamp   TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  status      TEXT,
+  org_uid     TEXT DEFAULT 'ORG-DEFAULT'
+);
+
+--------------------------------------------------------------------------------
+-- GOAL table
+--------------------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS goal (
+  uid          TEXT PRIMARY KEY,
+  person_id    TEXT NOT NULL REFERENCES person(uid) ON DELETE CASCADE,
+  title        TEXT NOT NULL,
+  details      TEXT,
+  status       TEXT,
+  due_date     DATE,
+  completed_at TIMESTAMPTZ,
+  created_at   TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at   TIMESTAMPTZ,
+  org_uid      TEXT DEFAULT 'ORG-DEFAULT'
+);
+
+--------------------------------------------------------------------------------
+-- PROJECT table
+--------------------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS project (
+  uid          TEXT PRIMARY KEY,
+  owner_id     TEXT REFERENCES person(uid) ON DELETE SET NULL,
+  title        TEXT NOT NULL,
+  description  TEXT,
+  status       TEXT,
+  start_date   DATE,
+  due_date     DATE,
+  completed_at TIMESTAMPTZ,
+  created_at   TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at   TIMESTAMPTZ,
+  org_uid      TEXT DEFAULT 'ORG-DEFAULT'
+);
+
+--------------------------------------------------------------------------------
+-- TASK table
+--------------------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS task (
+  uid          TEXT PRIMARY KEY,
+  project_id   TEXT REFERENCES project(uid) ON DELETE CASCADE,
+  assignee_id  TEXT REFERENCES person(uid) ON DELETE SET NULL,
+  title        TEXT NOT NULL,
+  details      TEXT,
+  status       TEXT,
+  due_date     DATE,
+  completed_at TIMESTAMPTZ,
+  created_at   TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at   TIMESTAMPTZ,
+  org_uid      TEXT DEFAULT 'ORG-DEFAULT'
+);
+
+
+--------------------------------------------------------------------------------
 -- Indexes for common foreign key joins
 --------------------------------------------------------------------------------
 CREATE INDEX IF NOT EXISTS idx_profile_actor ON profile(person_uid);
@@ -211,7 +459,38 @@ CREATE INDEX IF NOT EXISTS idx_habit_exposure_tag ON habit_exposure(tag_uid);
 CREATE INDEX IF NOT EXISTS idx_tag_relation_parent ON tag_relation(tag_id_parent);
 CREATE INDEX IF NOT EXISTS idx_tag_relation_child ON tag_relation(tag_id_child);
 CREATE INDEX IF NOT EXISTS idx_flagged_name_observation ON flagged_name(raw_observation_id);
-CREATE INDEX IF NOT EXISTS idx_unmatched_player_name_observation ON unmatched_player_name(raw_observation_id);
+codex/extend-supabase/001_init.sql-with-schema
+CREATE INDEX IF NOT EXISTS idx_flagged_entities_entity ON flagged_entities(entity_uid);
+CREATE INDEX IF NOT EXISTS idx_observation_logs_observation ON journal_entry_logs(observation_uid);
+CREATE INDEX IF NOT EXISTS idx_pod_team ON pod(team_id);
+CREATE INDEX IF NOT EXISTS idx_session_team ON session(team_id);
+CREATE INDEX IF NOT EXISTS idx_session_pod ON session(pod_id);
+CREATE INDEX IF NOT EXISTS idx_mpb_docs_player ON mpb_docs(player_uuid);
+CREATE INDEX IF NOT EXISTS idx_mpb_docs_session ON mpb_docs(session_uuid);
+CREATE INDEX IF NOT EXISTS idx_agent_events_player ON agent_events(player_id);
+CREATE INDEX IF NOT EXISTS idx_agent_events_team ON agent_events(team_id);
+CREATE INDEX IF NOT EXISTS idx_agent_events_agent ON agent_events(agent_id);
+CREATE INDEX IF NOT EXISTS idx_pdp_player ON pdp(player_id);
+CREATE INDEX IF NOT EXISTS idx_pdp_previous_version ON pdp(previous_version_id);
+CREATE INDEX IF NOT EXISTS idx_player_team_player ON player_team(player_id);
+CREATE INDEX IF NOT EXISTS idx_player_team_team ON player_team(team_id);
+CREATE INDEX IF NOT EXISTS idx_player_pod_player ON player_pod(player_id);
+CREATE INDEX IF NOT EXISTS idx_player_pod_pod ON player_pod(pod_id);
+CREATE INDEX IF NOT EXISTS idx_coach_team_coach ON coach_team(coach_id);
+CREATE INDEX IF NOT EXISTS idx_coach_team_team ON coach_team(team_id);
+CREATE INDEX IF NOT EXISTS idx_coach_pod_coach ON coach_pod(coach_id);
+CREATE INDEX IF NOT EXISTS idx_coach_pod_pod ON coach_pod(pod_id);
+CREATE INDEX IF NOT EXISTS idx_mood_log_person ON mood_log(person_id);
+CREATE INDEX IF NOT EXISTS idx_mood_log_timestamp ON mood_log(timestamp);
+CREATE INDEX IF NOT EXISTS idx_habit_person ON habit(person_id);
+CREATE INDEX IF NOT EXISTS idx_habit_event_habit ON habit_event(habit_id);
+CREATE INDEX IF NOT EXISTS idx_habit_event_timestamp ON habit_event(timestamp);
+CREATE INDEX IF NOT EXISTS idx_goal_person ON goal(person_id);
+CREATE INDEX IF NOT EXISTS idx_project_owner ON project(owner_id);
+CREATE INDEX IF NOT EXISTS idx_task_project ON task(project_id);
+CREATE INDEX IF NOT EXISTS idx_task_assignee ON task(assignee_id);
+CREATE UNIQUE INDEX IF NOT EXISTS idx_player_exposure_triplet ON player_exposure(session_drill_uid, person_uid, tag_uid);
+
 
 --------------------------------------------------------------------------------
 -- UDF : update_pdp(obs_uid) – writes last_observation into profile
