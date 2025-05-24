@@ -41,11 +41,16 @@ export async function runWorkflow(
     // Inject credentials for nodes if provided
     const credentialsHelper = new CredentialsHelper(credentials, '', nodeTypes);
 
+    // Provide the same minimal context n8n nodes expect when running inside the
+    // application. Including `executeFunctions` from `NodeExecuteFunctions`
+    // ensures that node implementations have access to helper utilities such as
+    // httpRequest and expression evaluation.
     const additionalData = {
         credentialsHelper,
         timezone: 'UTC',
         executionMode: 'manual',
         hooks: {},
+        executeFunctions: NodeExecuteFunctions,
     } as any;
 
     const workflowExecute = new WorkflowExecute(additionalData, workflow);
