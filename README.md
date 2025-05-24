@@ -2,6 +2,12 @@
 
 Supabase + n8n workflows for MPOS-Basketball MVP.
 
+### Actor and person tables
+
+All participants live in a single `actor` table with an `actor_type` of `Player`,
+`Coach`, `Team` or `Group`. The `person` table stores extra fields for human
+actors (players or coaches) such as jersey numbers and roles.
+
 ## Prerequisites
 
 - [Supabase CLI](https://supabase.com/docs/guides/cli) installed globally
@@ -29,13 +35,22 @@ supabase db push
 
 ### Load seed data
 
-Example rows are stored in `./supabase/seed`. After the migrations run you can load the data using psql or the Supabase CLI. For example:
+Example rows are stored in `./supabase/seed`. After the migrations run you can load all SQL files in that folder:
 
 ```bash
-psql "$SUPABASE_DB_URL" -f supabase/seed/seed.sql
+for f in supabase/seed/*.sql; do
+  psql "$SUPABASE_DB_URL" -f "$f"
+done
 ```
 
-Each `*_rows.sql` file in that directory can also be executed individually.
+To import the CSV files as well:
+
+```bash
+psql "$SUPABASE_DB_URL" -c "\copy agent_events FROM 'supabase/seed/agent_events_rows.csv' CSV HEADER"
+psql "$SUPABASE_DB_URL" -c "\copy person FROM 'supabase/seed/coach_rows.csv' CSV HEADER"
+```
+
+This loads the sample rows for the new `actor`/`person` structure and related tables.
 
 ### Import n8n workflows
 
@@ -97,5 +112,9 @@ python tools/schema_diff.py \
   --html diff.html
 ```
 
-The script prints a unified diff to stdout and writes a side-by-side HTML diff if
-`--html` is specified. It also suggests the filename for the next migration.
+codex/set-up-jest-with-package.json
+## Install dependencies
+
+Run `npm install` to install the dev dependencies for running tests.
+
+Run tests with `npm test`.

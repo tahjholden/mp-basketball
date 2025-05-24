@@ -12,6 +12,11 @@
               "keyName": "is_current",
               "condition": "eq",
               "keyValue": "true"
+            },
+            {
+              "keyName": "player_id",
+              "condition": "in",
+              "keyValue": "={{$items(\"Code_AttendanceList\")[0].json.map(p => p.player_id).join(\",\")}}"
             }
           ]
         }
@@ -46,7 +51,7 @@
     },
     {
       "parameters": {
-        "jsCode": "return $input.all().map(item => {\n  const pdp = item.json;\n  return {\n    player_id: pdp.player_id,\n    is_current: pdp.is_current,\n    skill_tags: pdp.skill_tags || [],\n    constraint_tags: pdp.constraint_tags || [],\n    theme_tags: pdp.theme_tags || [],\n    advancement_level: pdp.advancement_level || null,\n    responsibility_tier: pdp.responsibility_tier || null,\n    collective_growth_phase: pdp.collective_growth_phase || pdp.team_course_phase || null,\n    pdp_text_full: pdp.pdp_text_full || \"\",\n    pdp_text_coach: pdp.pdp_text_coach || \"\",\n    pdp_text_player: pdp.pdp_text_player || \"\",\n    source_observation_ids: pdp.source_observation_ids || [],\n    created_at: pdp.created_at || null,\n    updated_at: pdp.updated_at || null,\n    last_updated: pdp.last_updated || null,\n    pdp_id: pdp.id || null // In case you want to track the PDP record itself\n  };\n});"
+        "jsCode": "const present = $items('CompareAttendance')[0].json.present;\nreturn $input.all().map(i => i.json).filter(p => present.includes(p.player_id)).map(pdp => ({\n  player_id: pdp.player_id,\n  is_current: pdp.is_current,\n  skill_tags: pdp.skill_tags || [],\n  constraint_tags: pdp.constraint_tags || [],\n  theme_tags: pdp.theme_tags || [],\n  advancement_level: pdp.advancement_level || null,\n  responsibility_tier: pdp.responsibility_tier || null,\n  collective_growth_phase: pdp.collective_growth_phase || pdp.team_course_phase || null,\n  pdp_text_full: pdp.pdp_text_full || '',\n  pdp_text_coach: pdp.pdp_text_coach || '',\n  pdp_text_player: pdp.pdp_text_player || '',\n  source_observation_ids: pdp.source_observation_ids || [],\n  created_at: pdp.created_at || null,\n  updated_at: pdp.updated_at || null,\n  last_updated: pdp.last_updated || null,\n  pdp_id: pdp.id || null\n}));"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -72,7 +77,7 @@
               "role": "system"
             },
             {
-              "content": "=You are provided with the latest Player Development Profiles (PDPs) for today’s session roster. Each PDP includes:\n- player_id\n- skill_tags\n- constraint_tags\n- theme_tags\n- advancement_level (1–10)\n- responsibility_tier (1–6)\n- collective_growth_phase (1–6)\n- pdp_text_full, pdp_text_coach, pdp_text_player\n\n  The current team or pod collective growth phase is: 3\n\nDesign a session plan for this group that:\n- Addresses both individual and shared constraints/skills.\n- Recommends 3–5 practice blocks (warm-up, SSGs, team concept, individual work, etc.).\n- For each block, specify:\n    • Block Name\n    • Format (e.g., 1v1, 2v2, 3v3, 5v5, coach-in, pod split, etc.)\n    • Targeted skills/constraints (by tag name, not summary)\n    • Which players benefit most (by player_id or tag match)\n    • Collective Growth phase alignment (C-phase)\n    • Key coaching cues (constraint language)\n\nThe output MUST be valid JSON, like:\n{\n  \"session_plan\": [\n    {\n      \"block_name\": \"Spacing to Advantage\",\n      \"format\": \"3v3\",\n      \"skills\": [\"Spacing\", \"Early Advantage\"],\n      \"constraints\": [\"Fight For Your Feet\"],\n      \"players\": [\"8ce6193d-3041-4f11-8c1d-a63d10d12569\"],\n      \"collective_growth_phase\": 2,\n      \"coaching_cues\": [\"Land and pause\", \"Find spacing before action\"]\n    },\n    ...\n  ]\n}\n\nBase your decisions ONLY on the supplied PDPs and team growth phase. Recommend only blocks that align with your ARC philosophy. Do not invent tags. Make sure each constraint or skill targeted comes directly from the PDPs or team phase.\n\nIf there are duplicate needs, prioritize blocks that address multiple players’ needs at once."
+              "content": "=You are provided with the latest Player Development Profiles (PDPs) for today\u2019s session roster. Each PDP includes:\n- player_id\n- skill_tags\n- constraint_tags\n- theme_tags\n- advancement_level (1\u201310)\n- responsibility_tier (1\u20136)\n- collective_growth_phase (1\u20136)\n- pdp_text_full, pdp_text_coach, pdp_text_player\n\n  The current team or pod collective growth phase is: 3\n\nDesign a session plan for this group that:\n- Addresses both individual and shared constraints/skills.\n- Recommends 3\u20135 practice blocks (warm-up, SSGs, team concept, individual work, etc.).\n- For each block, specify:\n    \u2022 Block Name\n    \u2022 Format (e.g., 1v1, 2v2, 3v3, 5v5, coach-in, pod split, etc.)\n    \u2022 Targeted skills/constraints (by tag name, not summary)\n    \u2022 Which players benefit most (by player_id or tag match)\n    \u2022 Collective Growth phase alignment (C-phase)\n    \u2022 Key coaching cues (constraint language)\n\nThe output MUST be valid JSON, like:\n{\n  \"session_plan\": [\n    {\n      \"block_name\": \"Spacing to Advantage\",\n      \"format\": \"3v3\",\n      \"skills\": [\"Spacing\", \"Early Advantage\"],\n      \"constraints\": [\"Fight For Your Feet\"],\n      \"players\": [\"8ce6193d-3041-4f11-8c1d-a63d10d12569\"],\n      \"collective_growth_phase\": 2,\n      \"coaching_cues\": [\"Land and pause\", \"Find spacing before action\"]\n    },\n    ...\n  ]\n}\n\nBase your decisions ONLY on the supplied PDPs and team growth phase. Recommend only blocks that align with your ARC philosophy. Do not invent tags. Make sure each constraint or skill targeted comes directly from the PDPs or team phase.\n\nIf there are duplicate needs, prioritize blocks that address multiple players\u2019 needs at once."
             }
           ]
         },
@@ -237,6 +242,86 @@
       ],
       "id": "63719578-f262-420a-9d72-a0592ba545f2",
       "name": "ScheduleTrigger"
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+blnmop-codex/update-workflows-with-attendance-comparison
+        "tableId": "session",
+        "returnAll": true,
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "={{$json[\"session_id\"]}}"
+
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        220,
+blnmop-codex/update-workflows-with-attendance-comparison
+        60
+      ],
+      "id": "1e56a4c9-1284-41ab-ad00-4c4e3fe9ae52",
+      "name": "FetchExpected",
+      "credentials": {
+        "supabaseApi": {
+          "id": "snX7zXf3hb1iETnD",
+          "name": "Supabase <-> N8N MPBos"
+        }
+      }
+    },
+    {
+      "parameters": {
+blnmop-codex/update-workflows-with-attendance-comparison
+        "operation": "getAll",
+        "tableId": "attendance",
+        "returnAll": true,
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "session_id",
+              "condition": "eq",
+              "keyValue": "={{$json[\"session_id\"]}}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        440,
+        60
+      ],
+      "id": "b7a49a3d-a87a-45d0-bd6d-ad3aad304bae",
+      "name": "FetchActual",
+      "credentials": {
+        "supabaseApi": {
+          "id": "snX7zXf3hb1iETnD",
+          "name": "Supabase <-> N8N MPBos"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const expected = $items(\"FetchExpected\")[0].json.player_ids;\nconst actual = $items(\"FetchActual\").map(i => i.json.player_id);\nconst present = expected.filter(id => actual.includes(id));\nconst missing = expected.filter(id => !actual.includes(id));\nconst unexpected = actual.filter(id => !expected.includes(id));\nreturn [{json: {present, missing, unexpected}}];"
+
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+blnmop-codex/update-workflows-with-attendance-comparison
+        660,
+        60
+      ],
+      "id": "353a6503-afbd-44d1-bb0a-94864d50c5e7",
+      "name": "CompareAttendance"
+
     }
   ],
   "pinData": {},
@@ -323,11 +408,94 @@
       "main": [
         [
           {
-            "node": "FetchPDPs",
+            "node": "FetchAttendance",
             "type": "main",
             "index": 0
           }
         ]
+      ]
+    },
+    "FetchAttendance": {
+      "main": [
+        [
+          {
+            "node": "Code_AttendanceList",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code_AttendanceList": {
+      "main": [
+        [
+          {
+            "node": "IfAttendance",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IfAttendance": {
+      "main": [
+        [
+          {
+            "node": "FetchPDPs",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "FetchExpected",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "FetchExpected": {
+      "main": [
+        [
+          {
+            "node": "FetchActual",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "FetchActual": {
+      "main": [
+        [
+          {
+            "node": "CompareAttendance",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CompareAttendance": {
+      "main": [
+        [
+          {
+            "node": "Code_SessionPlanContext",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Code_NoAttendanceWarning",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code_NoAttendanceWarning": {
+      "main": [
+        []
       ]
     }
   },
