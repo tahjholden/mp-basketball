@@ -1,5 +1,5 @@
 import { NormalizeText } from '../src/NormalizeText.node';
-import { IExecuteFunctions, INodeExecutionData } from 'n8n-core';
+import type { IExecuteFunctions, INodeExecutionData } from '@n8n/workflow';
 
 describe('NormalizeText node', () => {
   test('normalizes whitespace in configured field', async () => {

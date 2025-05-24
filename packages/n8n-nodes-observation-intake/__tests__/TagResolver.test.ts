@@ -1,5 +1,5 @@
 import { TagResolver } from '../src/TagResolver.node';
-import { IExecuteFunctions, INodeExecutionData } from 'n8n-core';
+import type { IExecuteFunctions, INodeExecutionData } from '@n8n/workflow';
 
 describe('TagResolver node', () => {
   test('resolves tags from text', async () => {
