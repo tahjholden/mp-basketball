@@ -163,11 +163,29 @@ CREATE TABLE IF NOT EXISTS tag_relation (
 --------------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS flagged_name (
   uid UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  raw_observation_id UUID REFERENCES observation(uid) ON DELETE CASCADE,
+  flagged_name       TEXT NOT NULL,
+  category           TEXT,
+  observation_text   TEXT,
+  flagged_at         TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  attempted_match_at TIMESTAMPTZ,
+  matched_person_uid UUID REFERENCES person(uid),
+  resolved_at        TIMESTAMPTZ,
+  created_at         TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  org_uid            TEXT DEFAULT 'ORG-DEFAULT'
+);
+
+--------------------------------------------------------------------------------
+-- UNMATCHED_PLAYER_NAME : alternate log for unresolved names
+--------------------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS unmatched_player_name (
+  uid UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   raw_observation_id TEXT REFERENCES observation(id) ON DELETE CASCADE,
   flagged_name       TEXT NOT NULL,
   category           TEXT,
   observation_text   TEXT,
   flagged_at         TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  attempted_match    BOOLEAN DEFAULT FALSE,
   attempted_match_at TIMESTAMPTZ,
   matched_person_uid TEXT REFERENCES person(uid),
   resolved_at        TIMESTAMPTZ,
@@ -193,6 +211,7 @@ CREATE INDEX IF NOT EXISTS idx_habit_exposure_tag ON habit_exposure(tag_uid);
 CREATE INDEX IF NOT EXISTS idx_tag_relation_parent ON tag_relation(tag_id_parent);
 CREATE INDEX IF NOT EXISTS idx_tag_relation_child ON tag_relation(tag_id_child);
 CREATE INDEX IF NOT EXISTS idx_flagged_name_observation ON flagged_name(raw_observation_id);
+CREATE INDEX IF NOT EXISTS idx_unmatched_player_name_observation ON unmatched_player_name(raw_observation_id);
 
 --------------------------------------------------------------------------------
 -- UDF : update_pdp(obs_uid) – writes last_observation into profile
@@ -275,4 +294,10 @@ ALTER TABLE flagged_name FORCE ROW LEVEL SECURITY;
 CREATE POLICY flagged_name_select_org ON flagged_name
   FOR SELECT USING (org_uid = current_setting('request.jwt.claims', true)::jsonb->>'org_uid');
 
+ALTER TABLE unmatched_player_name ENABLE ROW LEVEL SECURITY;
+ALTER TABLE unmatched_player_name FORCE ROW LEVEL SECURITY;
+CREATE POLICY unmatched_player_name_select_org ON unmatched_player_name
+  FOR SELECT USING (org_uid = current_setting('request.jwt.claims', true)::jsonb->>'org_uid');
+
 -- Repeat similar RLS policies for other tables as needed.
+

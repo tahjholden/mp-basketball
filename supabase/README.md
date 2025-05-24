@@ -39,6 +39,7 @@ SET request.jwt.claims = '{"org_uid": "ORG-DEFAULT"}';
 
 Replace `ORG-DEFAULT` with the organization uid associated with the session.
 
+codex/add-row-level-security-and-policy-statements
 In the Supabase dashboard you can populate this claim automatically by adding a
 JWT template under **Authentication → Settings → JWT**:
 
