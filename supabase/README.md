@@ -29,12 +29,14 @@ psql "$SUPABASE_DB_URL" -f seed/<file>.sql
 ```
 
 
-## RLS policies and JWT claims
+<!-- create table metadata configuration -->
+## Admin table metadata
 
-Row level security policies rely on the `org_uid` value from `request.jwt.claims`. When you query the database through Supabase APIs this is handled automatically. If you run SQL manually you can emulate the claims with:
+The file `admin_tables.yml` lists every table created by the migrations and whether it should be restricted to administrators. The keys are table names and the values are booleans. Whenever you add a migration that creates a new table, update `admin_tables.yml` with an entry for that table.
 
-```sql
-SET request.jwt.claims = '{"org_uid": "ORG-DEFAULT"}';
+```yaml
+actor: false
+# ...
 ```
 
-Replace `ORG-DEFAULT` with the organization uid associated with the session.
+Keeping this file in sync with the migrations allows external tools or policies to automatically determine which tables require admin-level access.

@@ -12,7 +12,7 @@ CREATE TABLE IF NOT EXISTS flagged_entities (
   org_uid        TEXT DEFAULT 'ORG-DEFAULT'
 );
 --------------------------------------------------------------------------------
-codex/rename-actor-table-and-update-references
+-- rename actor table and update references
 -- person_role table (replaces player/coach subtypes)
 --------------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS person_role (
@@ -36,9 +36,9 @@ CREATE TABLE IF NOT EXISTS journal_entry_logs (
 --------------------------------------------------------------------------------
 -- journal_entry table updates
 --------------------------------------------------------------------------------
-codex/rename-actor-table-and-update-references
+-- rename actor table and update references
 ALTER TABLE observation
-codex/decide-and-update-observation-table-reference
+-- decide and update observation table reference
   ADD COLUMN IF NOT EXISTS session_uid TEXT REFERENCES intervention(uid),
   ADD COLUMN IF NOT EXISTS tagged_skills JSONB DEFAULT '[]'::jsonb;
 
@@ -46,6 +46,6 @@ codex/decide-and-update-observation-table-reference
 -- Indexes for new foreign keys
 --------------------------------------------------------------------------------
 CREATE INDEX IF NOT EXISTS idx_flagged_entities_entity ON flagged_entities(entity_uid);
-CREATE INDEX IF NOT EXISTS idx_observation_logs_observation ON observation_logs(observation_uid);
+CREATE INDEX IF NOT EXISTS idx_journal_entry_logs_observation ON journal_entry_logs(observation_uid);
 CREATE INDEX IF NOT EXISTS idx_observation_person ON observation(person_id);
 CREATE INDEX IF NOT EXISTS idx_observation_session ON observation(session_uid);

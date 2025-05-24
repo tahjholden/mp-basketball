@@ -12,6 +12,11 @@
               "keyName": "is_current",
               "condition": "eq",
               "keyValue": "true"
+            },
+            {
+              "keyName": "player_id",
+              "condition": "in",
+              "keyValue": "={{$items(\"Code_AttendanceList\")[0].json.map(p => p.player_id).join(\",\")}}"
             }
           ]
         }
@@ -301,6 +306,7 @@
     {
       "parameters": {
         "jsCode": "const expected = $items(\"FetchExpected\")[0].json.player_ids;\nconst actual = $items(\"FetchActual\").map(i => i.json.player_id);\nconst present = expected.filter(id => actual.includes(id));\nconst missing = expected.filter(id => !actual.includes(id));\nconst unexpected = actual.filter(id => !expected.includes(id));\nreturn [{json: {present, missing, unexpected}}];"
+        
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -396,6 +402,39 @@
       "main": [
         [
           {
+            "node": "FetchAttendance",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "FetchAttendance": {
+      "main": [
+        [
+          {
+            "node": "Code_AttendanceList",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code_AttendanceList": {
+      "main": [
+        [
+          {
+            "node": "IfAttendance",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IfAttendance": {
+      "main": [
+        [
+          {
             "node": "FetchPDPs",
             "type": "main",
             "index": 0
@@ -437,8 +476,43 @@
             "node": "Code_SessionPlanContext",
             "type": "main",
             "index": 0
+
           }
         ]
+      ]
+    },
+    "FetchActual": {
+      "main": [
+        [
+          {
+            "node": "CompareAttendance",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CompareAttendance": {
+      "main": [
+        [
+          {
+            "node": "Code_SessionPlanContext",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Code_NoAttendanceWarning",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code_NoAttendanceWarning": {
+      "main": [
+        []
       ]
     }
   },
