@@ -16,7 +16,11 @@
   },
   "devDependencies": {
     "typescript": "^4.9.0",
-    "@types/node": "^18.0.0"
+    "@types/node": "^18.0.0",
+    "@types/express": "*",
+    "@types/luxon": "*",
+    "@types/ssh2": "*",
+    "@types/request-promise-native": "*"
   },
   "n8n": {
     "nodes": [
