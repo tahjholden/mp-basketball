@@ -1,0 +1,19 @@
+id,tag_name,tag_type,tag_parent_id,description,synonyms,use_case,verified,source_uid,suggested_by,pdp_group
+SK-FINISH-001,Finishing,Skill,,At-rim and short-range scoring,"layups, floaters, paint scoring","PDP,Drill,Reflection",True,,,Offensive Tools
+SK-SHOOT-002,Shooting,Skill,,"Catch-and-shoot, off-dribble, range","jump shot, spot-up, three-pointer","PDP,Drill",True,,,Offensive Tools
+SK-PASSNG-003,Passing,Skill,,"Ball movement, assists, vision","assist, drop-off, kickout","PDP,Drill",True,,,Offensive Tools
+SK-BALLHD-004,Ball Handling,Skill,,Control under pressure,"dribbling, protect the ball","PDP,Drill",True,,,Core Execution
+SK-OFFMOV-005,Off-Ball Movement,Skill,,"Cutting, screening, relocating","cutting, relocate, flare","PDP,Drill",True,,,Offensive Tools
+SK-CLOSEO-006,Closeout Technique,Skill,,Contesting while maintaining control,"contest, closeout, hand-up","PDP,Drill",True,,,Defensive Concepts
+SK-HELPDF-007,Help Defense,Skill,,"Rotations, rim protection","rotation, help-side","PDP,Drill",True,,,Defensive Concepts
+SK-BALLPR-008,Ball Pressure,Skill,,On-ball disruption,"pressure, force turnovers","PDP,Drill",True,,,Defensive Concepts
+SK-FOCUSX-009,Focus,Skill,,Sustained attention under stress,"locked-in, attention","PDP,Reflection",True,,,Mental Tools
+SK-MTTOUGH-010,Mental Toughness,Skill,,Resilience under pressure,"grit, mental strength","PDP,Reflection",True,,,Mental Tools
+SK-COMPOS-011,Composure,Skill,,Staying calm under stress,"control, poise","PDP,Reflection",True,,,Mental Tools
+SK-PHYSIC-012,Physicality,Skill,,"Strength, contact tolerance","body control, toughness","PDP,Drill",True,,,Core Execution
+SK-ENERGY-013,Work Rate / Effort,Skill,,Hustle and consistent intensity,"motor, grind",PDP,True,,,Mental Tools
+CT-LHONLY-014,Left-Hand Only,Constraint,,Player must use left hand only,"left hand, no right","Drill,Session",True,,,Constraint
+CT-NOPAINT-015,No Paint Touch,Constraint,,Cannot enter paint area,perimeter only,Drill,True,,,Constraint
+CT-SHOTCLK-016,Shot Clock Constraint,Constraint,,Must shoot within 5 seconds,"fast decision, quick shot",Drill,True,,,Constraint
+TH-CHAOS-017,Chaos Level: High,Theme,,"Unstructured, reactive drills","scramble, high chaos","Drill,Reflection",True,,,Environment
+TH-THEME-018,Communication,Theme,,Talking on defense/offense,"call out, vocal","PDP,Drill",True,,,Mental Tools

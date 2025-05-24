@@ -1,0 +1,424 @@
+{
+  "name": "MPB – Observation Intake/Tagging",
+  "nodes": [
+    {
+      "parameters": {
+        "url": "https://htvyruodlvdbpfsnmuhz.supabase.co/rest/v1/observation?select=*&tagged=eq.false&order=created_at.asc",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "supabaseApi",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh0dnlydW9kbHZkYnBmc25tdWh6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDcxNzg1MTQsImV4cCI6MjA2Mjc1NDUxNH0.0E_lA1rY5DsTHGwJGcyafpO0Wd61R9RvcAx01ky6gHg"
+            },
+            {
+              "name": "Authorization",
+              "value": "=Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh0dnlydW9kbHZkYnBmc25tdWh6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDcxNzg1MTQsImV4cCI6MjA2Mjc1NDUxNH0.0E_lA1rY5DsTHGwJGcyafpO0Wd61R9RvcAx01ky6gHg"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        220,
+        -280
+      ],
+      "id": "2b516fe8-a8fa-4c08-abce-66d3551ee416",
+      "name": "FetchObservations",
+      "credentials": {
+        "supabaseApi": {
+          "id": "snX7zXf3hb1iETnD",
+          "name": "Supabase <-> N8N MPBos"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "tableId": "tag",
+        "returnAll": true
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        440,
+        -280
+      ],
+      "id": "e8a9aa68-001b-413a-bb55-6da5b8481225",
+      "name": "FetchTagBank",
+      "credentials": {
+        "supabaseApi": {
+          "id": "snX7zXf3hb1iETnD",
+          "name": "Supabase <-> N8N MPBos"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://htvyruodlvdbpfsnmuhz.supabase.co/rest/v1/observation?on_conflict=id",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh0dnlydW9kbHZkYnBmc25tdWh6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDcxNzg1MTQsImV4cCI6MjA2Mjc1NDUxNH0.0E_lA1rY5DsTHGwJGcyafpO0Wd61R9RvcAx01ky6gHg"
+            },
+            {
+              "name": "Authorization",
+              "value": "=Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh0dnlydW9kbHZkYnBmc25tdWh6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDcxNzg1MTQsImV4cCI6MjA2Mjc1NDUxNH0.0E_lA1rY5DsTHGwJGcyafpO0Wd61R9RvcAx01ky6gHg"
+            },
+            {
+              "name": "Prefer",
+              "value": "resolution=merge-duplicates"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ $items(\"Code_EnrichObservations\").map(item => item.json) }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1256,
+        -280
+      ],
+      "id": "9dc605b5-1e23-4081-8a74-8946edefce6c",
+      "name": "UpsertObservation"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-3.5-turbo",
+          "mode": "list",
+          "cachedResultName": "GPT-3.5-TURBO"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=Here is a list of possible tags (skills vs constraints):\n{{$json.tagBank}}\nAnd here is a coach’s note:\n“{{$json.raw_note}}”\nReturn a JSON object exactly like:\n{\n  \"tagged_skills\": [\"<skill1>\", \"<skill2>\"],\n  \"tagged_constraints\": [\"<constraint1>\"]\n}\n\n• Only use tags that appear in the bank.\n• If the note matches nothing, return tagged_skills and tagged_constraints as empty **arrays** (not strings).\n• Never wrap the arrays in quotation marks.",
+              "role": "system"
+            },
+            {
+              "content": "=Tag bank:\n{{ $json.tagBank }}\n\nCoach’s note:\n“{{ $json.raw_note }}”"
+            }
+          ]
+        },
+        "jsonOutput": true,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        660,
+        -280
+      ],
+      "id": "c62d67a2-cd10-4bce-b47f-224f4d83cdf0",
+      "name": "OpenAI_TagExtractor",
+      "alwaysOutputData": true,
+      "credentials": {
+        "openAiApi": {
+          "id": "KhaGQw1SlGfhaasb",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// 1) Grab the raw observations\nconst observations = $items(\"FetchObservations\");\n\n// 2) Grab the AI‐extracted tags (you told OpenAI to output JSON with tagged_skills & tagged_constraints)\nconst aiResults = $items(\"OpenAI_TagExtractor\").map(i => {\n  try {\n    return JSON.parse(i.json.message.content);\n  } catch (e) {\n    return { tagged_skills: [], tagged_constraints: [] };\n  }\n});\n\n// 3) Merge them\nconst enriched = observations.map((obsItem, idx) => {\n  const base = obsItem.json;\n  const ai = aiResults[idx] || {};\n\n  return {\n    json: {\n      ...base,\n      raw_entry: base.raw_entry ?? base.raw_note ?? \"[missing]\",\n      tagged_skills: Array.isArray(ai.tagged_skills) ? ai.tagged_skills : [],\n      tagged_constraints: Array.isArray(ai.tagged_constraints) ? ai.tagged_constraints : [],\n      tagged: true\n    }\n  };\n});\n\nreturn enriched;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1036,
+        -280
+      ],
+      "id": "f3168324-23e4-44d6-be7b-351faaca974c",
+      "name": "Code_EnrichObservations"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 1
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        -280
+      ],
+      "id": "37e3eb9a-b234-41f6-9388-687f25490cfe",
+      "name": "ScheduleTrigger"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "d09e31a1-d49d-430d-894c-830b354c7492",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        0,
+        -540
+      ],
+      "id": "853865c2-c64e-4077-91b4-52929ba4439b",
+      "name": "VoiceNoteIntake",
+      "webhookId": "d09e31a1-d49d-430d-894c-830b354c7492"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4",
+          "mode": "list",
+          "cachedResultName": "GPT-4"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=You are an assistant for Max Potential Basketball. A coach just submitted the following observation note:\n\n\"{{ $json[\"body\"][\"Entry\"] }}\"\n\nYour tasks:\n1. Return the original note as \"raw_note\".\n2. Identify and return the following in a JSON object:\n  - observation_type (practice, game, film, etc., infer from context if possible)\n  - player_names (if mentioned, otherwise empty array)\n  - attendance_flags (list any absences, injuries, or notes on who was/wasn't present)\n  - tagged_skills (skills mentioned, from a basketball context)\n  - tagged_constraints (constraints or situational factors)\n  - session_notes (summary or recommended actions)\n\nFormat your output as a JSON object with keys: raw_note, observation_type, player_names, attendance_flags, tagged_skills, tagged_constraints, session_notes.",
+              "role": "system"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        220,
+        -540
+      ],
+      "id": "9037445a-dc41-415f-9916-6490001cc984",
+      "name": "OpenAI_Parse_Voice_Notes",
+      "credentials": {
+        "openAiApi": {
+          "id": "KhaGQw1SlGfhaasb",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const webhookData = $node[\"VoiceNoteIntake\"].json || {};\nconst rawEntry = webhookData.Entry ?? webhookData.body?.Entry ?? '[MISSING ENTRY]';\n\n// Parse GPT response (message.content)\nconst openAI = $node[\"OpenAI_Parse_Voice_Notes\"].json;\nlet parsedData;\ntry {\n  parsedData = JSON.parse(openAI.message.content);\n} catch (err) {\n  throw new Error(\"Failed to parse GPT message.content as JSON\");\n}\n\n// Raw log output (can send elsewhere later)\nconst rawOutput = {\n  storage_type: \"raw\",\n  raw_entry: rawEntry,\n  created_at: new Date().toISOString()\n};\n\n// Clean parsed output (fully flattened)\nconst parsedOutput = {\n  storage_type: \"parsed\",\n  ...parsedData,\n  created_at: new Date().toISOString()\n};\n\nreturn [ { json: rawOutput }, { json: parsedOutput } ];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        596,
+        -540
+      ],
+      "id": "b73ef340-f408-4207-a47c-d10bad46f9ae",
+      "name": "Code_SplitRawParsed"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "5e915e02-3df4-4e5d-9a27-69d7beca68bb",
+              "leftValue": "={{$json[\"storage_type\"]}}",
+              "rightValue": "parsed",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        816,
+        -540
+      ],
+      "id": "d2800105-ce4c-40e7-aa2c-db21a7b979c9",
+      "name": "IsParsedObservation"
+    },
+    {
+      "parameters": {
+        "jsCode": "return [{\n  json: {\n    raw_entry: $json.raw_entry,\n    raw_note: $json.raw_note,\n    observation_type: $json.observation_type,\n    player_names: Array.isArray($json.player_names) ? $json.player_names : [],\n    attendance_flags: Array.isArray($json.attendance_flags) ? $json.attendance_flags : [],\n    tagged_skills: Array.isArray($json.tagged_skills) ? $json.tagged_skills : [],\n    tagged_constraints: Array.isArray($json.tagged_constraints) ? $json.tagged_constraints : [],\n    session_notes: $json.session_notes ?? \"\",\n    created_at: $json.created_at ?? new Date().toISOString(),\n    tagged: false\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1036,
+        -540
+      ],
+      "id": "d6f93efb-64db-4a1f-8096-e6ed315118b9",
+      "name": "PrepareObservationforDB"
+    },
+    {
+      "parameters": {
+        "tableId": "observation",
+        "dataToSend": "autoMapInputData"
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1256,
+        -540
+      ],
+      "id": "9bdb5b93-a9d0-4684-a71f-c6049704b1e8",
+      "name": "InsertNewObservation",
+      "credentials": {
+        "supabaseApi": {
+          "id": "snX7zXf3hb1iETnD",
+          "name": "Supabase <-> N8N MPBos"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "FetchObservations": {
+      "main": [
+        [
+          {
+            "node": "FetchTagBank",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "FetchTagBank": {
+      "main": [
+        [
+          {
+            "node": "OpenAI_TagExtractor",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI_TagExtractor": {
+      "main": [
+        [
+          {
+            "node": "Code_EnrichObservations",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code_EnrichObservations": {
+      "main": [
+        [
+          {
+            "node": "UpsertObservation",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ScheduleTrigger": {
+      "main": [
+        [
+          {
+            "node": "FetchObservations",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "VoiceNoteIntake": {
+      "main": [
+        [
+          {
+            "node": "OpenAI_Parse_Voice_Notes",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI_Parse_Voice_Notes": {
+      "main": [
+        [
+          {
+            "node": "Code_SplitRawParsed",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code_SplitRawParsed": {
+      "main": [
+        [
+          {
+            "node": "IsParsedObservation",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IsParsedObservation": {
+      "main": [
+        [
+          {
+            "node": "PrepareObservationforDB",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "PrepareObservationforDB": {
+      "main": [
+        [
+          {
+            "node": "InsertNewObservation",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "c828fdd8-2ae8-45aa-86e7-da5a170c5a0e",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "0abe8dd3af7b84dd650128b454cc932a6aae1d69499f17eccb6a7dec666a07a5"
+  },
+  "id": "RKQsN6nd2MmBFhYQ",
+  "tags": []
+}

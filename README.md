@@ -2,36 +2,51 @@
 
 Supabase + n8n workflows for MPOS-Basketball MVP.
 
+### Person table
+
+All participants live in a single `person` table. Player and coach details, such
+as jersey numbers or positions, are stored in the related `person_role` table.
+
 ## Prerequisites
 
 - [Supabase CLI](https://supabase.com/docs/guides/cli) installed globally
 - [n8n](https://n8n.io/) running locally or via Docker
+- [PyYAML](https://pyyaml.org/) for running the mapping utility
 
 ## How to Use
 
 ### Apply database migrations
 
-The migration scripts live under `./supabase/migrations`. Set `SUPABASE_DB_URL` to your Postgres connection string and link the CLI:
+
+Link the Supabase CLI to your database then apply the migrations. This pulls in
+`009_create_attendance.sql`, which creates the `attendance` table used by the
+practice planner:
 
 ```bash
 supabase db remote set "$SUPABASE_DB_URL"
-```
-
-Apply the migrations with:
-
-```bash
 supabase db push
 ```
 
 ### Load seed data
 
-Example rows are stored in `./supabase/seed`. After the migrations run you can load the data using psql or the Supabase CLI. For example:
+Example rows are stored in `./supabase/seed`. After the migrations run you can load all SQL files in that folder:
 
 ```bash
-psql "$SUPABASE_DB_URL" -f supabase/seed/seed.sql
+for f in supabase/seed/*.sql; do
+  psql "$SUPABASE_DB_URL" -f "$f"
+done
+# make sure to load the new attendance rows
+psql "$SUPABASE_DB_URL" -f supabase/seed/attendance_rows.sql
 ```
 
-Each `*_rows.sql` file in that directory can also be executed individually.
+To import the CSV files as well:
+
+```bash
+psql "$SUPABASE_DB_URL" -c "\copy agent_events FROM 'supabase/seed/agent_events_rows.csv' CSV HEADER"
+psql "$SUPABASE_DB_URL" -c "\copy person FROM 'supabase/seed/coach_rows.csv' CSV HEADER"
+```
+
+This loads the sample rows for the new `person`/`person_role` structure and related tables.
 
 ### Import n8n workflows
 
@@ -39,6 +54,25 @@ All workflow exports are located in `./workflows`. Import them from the n8n UI o
 
 ```bash
 n8n import:workflow --input workflows/mpos-basketball.json
+```
+
+The practice-planner workflows now read from the `attendance` table. Only players
+marked `present` are included when generating a session plan. Any names that do
+not match existing players are logged in the `flagged_entities` table for later
+review.
+
+Example code nodes used in the workflow:
+
+```javascript
+// FetchAttendance (Supabase node)
+const { data } = await supabase
+  .from('attendance')
+  .select('*')
+  .eq('session_uid', $json.session_id)
+
+// FilterPresentPlayers (Code node)
+const present = data.filter(row => row.status === 'present')
+return present.map(r => ({ json: { person_uid: r.person_uid } }))
 ```
 
 ## How to Extend/Clone for New Verticals
@@ -59,18 +93,80 @@ The same schema and workflows can be reused with other OS flavours such as Perso
 - n8n stores service credentials in its own database or `.n8n` directory. Configure them via the n8n UI after importing the workflow.
 
 
-## Vertical mapper
+<!-- add script to parametrize workflow -->
+## Parametrizing a workflow
 
-The `tools/vertical_mapper` utility can rewrite the canonical SQL migrations
-and workflow JSON files for a different domain. Provide a YAML mapping with
-table, field and value replacements and specify an output directory:
+Use `scripts/parametrize_workflow.js` to swap Supabase details in an exported n8n workflow.
 
 ```bash
-python tools/vertical_mapper/vertical_mapper.py \
-  --mapping tools/vertical_mapper/mapping_consulting.yml \
-  --sql-dir supabase/migrations \
-  --workflow-dir workflows \
-  --dist-dir dist/consulting
+node scripts/parametrize_workflow.js --workflow workflows/mpos-basketball.json --config my-config.json --output import.json
 ```
 
+`my-config.json` example:
 
+```json
+{
+  "supabaseUrl": "https://your-project.supabase.co",
+  "supabaseCredentialId": "xyz123"
+}
+```
+
+You can also set the values through environment variables `SUPABASE_URL` and `SUPABASE_CREDENTIAL_ID`.
+
+
+
+## Checking for schema drift
+
+Use `tools/schema_diff.py` to compare the SQL migrations with a live database.
+Provide the Postgres connection string via `--db-url` and optionally generate an
+HTML report:
+
+```bash
+python tools/schema_diff.py \
+  --db-url postgres://user:pass@host:5432/dbname \
+  --html diff.html
+```
+
+<!-- set up jest with package.json -->
+## Install dependencies
+
+Run `npm install` to install the dev dependencies for running tests.
+Packages that include custom n8n nodes (under `packages/`) also require `npm install` from inside each package directory before executing tests.
+
+Run tests with `npm test` and generate coverage reports using `npm run coverage`.
+The workflow integration test at `tests/workflowLoad.test.ts` can be executed on
+its own with:
+
+```bash
+npm test tests/workflowLoad.test.ts
+```
+
+## Testing
+
+The main Jest tests live in the top-level `tests` directory. Some packages under
+`packages/` contain their own `__tests__` folders for vertical-specific logic.
+
+Run the test suite locally with:
+
+```bash
+npm install
+npm test
+npm run coverage
+```
+
+GitHub Actions runs these commands on every pull request and reports the CI
+status directly on the PR page.
+
+## License
+
+
+## Testing
+
+This repository includes Jest tests that run the Supabase migrations and execute n8n workflows.
+Set `SUPABASE_DB_URL` to a test database connection string before running:
+
+```bash
+npm test
+```
+
+The tests expect the `n8n` CLI to be available on your PATH and will truncate tables between runs.

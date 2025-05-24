@@ -1,0 +1,36 @@
+# table metadata configuration
+# List of tables with whether they are admin-only
+# Set the value to true if the table should only be accessed by administrators.
+# Add new entries here whenever a migration introduces a new table.
+
+actor: false
+profile: false
+observation: false
+intervention: false
+metric: false
+link: false
+tag: false
+routine: false
+routine_tag: false
+routine_instance: false
+habit_exposure: false
+tag_relation: false
+flagged_entities: true
+person: false
+observation_logs: true
+team: false
+pod: false
+session: false
+mpb_docs: false
+agent_events: true
+pdp: false
+player_team: false
+player_pod: false
+coach_team: false
+coach_pod: false
+mood_log: false
+habit: false
+habit_event: false
+goal: false
+project: false
+task: false

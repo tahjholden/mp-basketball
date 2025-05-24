@@ -11,6 +11,8 @@ CREATE TABLE IF NOT EXISTS flagged_entities (
   created_at     TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   org_uid        TEXT DEFAULT 'ORG-DEFAULT'
 );
+-- Index for quick lookup by entity
+CREATE INDEX IF NOT EXISTS idx_flagged_entities_entity ON flagged_entities(entity_uid);
 
 --------------------------------------------------------------------------------
 -- Remove legacy player and coach tables if they exist
@@ -18,27 +20,30 @@ DROP TABLE IF EXISTS player CASCADE;
 DROP TABLE IF EXISTS coach  CASCADE;
 
 --------------------------------------------------------------------------------
--- person table (replaces player and coach)
+-- rename actor table and update references
+-- person_role table (replaces player/coach subtypes)
 --------------------------------------------------------------------------------
-CREATE TABLE IF NOT EXISTS person (
-  uid         TEXT PRIMARY KEY REFERENCES actor(uid) ON DELETE CASCADE,
-  jersey_num  TEXT,
-  position    TEXT,
-  role        TEXT
+CREATE TABLE IF NOT EXISTS person_role (
+  uid         TEXT PRIMARY KEY,
+  person_uid  TEXT NOT NULL REFERENCES person(uid) ON DELETE CASCADE,
+  role        TEXT NOT NULL,
+  attributes  JSONB DEFAULT '{}'
 );
 
+
 --------------------------------------------------------------------------------
--- observation_logs table
+-- journal_entry_logs table
 --------------------------------------------------------------------------------
-CREATE TABLE IF NOT EXISTS observation_logs (
+CREATE TABLE IF NOT EXISTS journal_entry_logs (
   uid             TEXT PRIMARY KEY,
-  observation_uid TEXT NOT NULL REFERENCES observation(uid) ON DELETE CASCADE,
+  observation_uid TEXT NOT NULL REFERENCES journal_entry(uid) ON DELETE CASCADE,
   log_entry       JSONB NOT NULL,
   created_at      TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
+CREATE INDEX IF NOT EXISTS idx_observation_logs_observation ON observation_logs(observation_uid);
 
 --------------------------------------------------------------------------------
--- observation table updates
+-- journal_entry table updates
 --------------------------------------------------------------------------------
 DO $$
 BEGIN
@@ -54,6 +59,8 @@ BEGIN
 END$$;
 
 ALTER TABLE observation
-  ADD COLUMN IF NOT EXISTS person_id   TEXT REFERENCES actor(uid),
+-- decide and update observation table reference
   ADD COLUMN IF NOT EXISTS session_uid TEXT REFERENCES intervention(uid),
   ADD COLUMN IF NOT EXISTS tagged_skills JSONB DEFAULT '[]'::jsonb;
+CREATE INDEX IF NOT EXISTS idx_observation_person ON observation(person_id);
+CREATE INDEX IF NOT EXISTS idx_observation_session ON observation(session_uid);

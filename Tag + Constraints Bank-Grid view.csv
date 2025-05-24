@@ -1,0 +1,92 @@
+﻿Name,UID,Tag Name,Category,Description,Active?,Common Use,Created Time,Last Modified
+Decision-Making,TC-250506-071402,Decision-Making,Skill,"Offensive read & react; quickly choose drive, pass, or shot",,,5/6/2025 3:14am,5/6/2025 7:41pm
+Footwork,TC-250506-071406,Footwork,Skill,"Pivoting, balance, movement fundamentals (stops, pivots, drives)",,,5/6/2025 3:14am,5/6/2025 7:41pm
+Finishing,TC-250506-071406,Finishing,Skill,"Layups, floaters, off-hand finishes, contact finishes",,,5/6/2025 3:14am,5/6/2025 7:41pm
+Spacing,TC-250506-071406,Spacing,Skill,Maintaining optimal distance from teammates & defenders,,,5/6/2025 3:14am,5/6/2025 7:41pm
+Ball Handling,TC-250506-071406,Ball Handling,Skill,"Dribble control, protection, change of direction under pressure",,,5/6/2025 3:14am,5/6/2025 7:41pm
+Passing,TC-250506-071406,Passing,Skill,"Accuracy, timing, variety of pass deliveries",,,5/6/2025 3:14am,5/6/2025 7:41pm
+Shooting,TC-250506-071406,Shooting,Skill,Perimeter and midrange shot fundamentals,,,5/6/2025 3:14am,5/6/2025 7:41pm
+Rebounding,TC-250506-071406,Rebounding,Skill,"Tracking flight of ball, boxing out, retrieving misses",,,5/6/2025 3:14am,5/6/2025 7:41pm
+Defensive Footwork,TC-250506-071406,Defensive Footwork,Skill,"Laterally staying in front, closeout technique, stance control",,,5/6/2025 3:14am,5/6/2025 7:41pm
+Off-Ball Movement,TC-250506-071406,Off-Ball Movement,Skill,"Relocating, cutting, screening away from the ball",,,5/6/2025 3:14am,5/6/2025 7:41pm
+Cognition,TC-250506-071406,Cognition,Theme,"Mental processing, scanning environment, anticipation",,,5/6/2025 3:14am,5/6/2025 7:41pm
+PnR Action,TC-250506-071406,PnR Action,Theme,Pick-and-roll concepts for both ball-handler & screener,,,5/6/2025 3:14am,5/6/2025 7:41pm
+DHO Action,TC-250506-071406,DHO Action,Theme,Dribble hand-off patterns and reads,,,5/6/2025 3:14am,5/6/2025 7:41pm
+Post Reaction,TC-250506-071406,Post Reaction,Theme,"Reading post-entry rotations, seals, & double teams",,,5/6/2025 3:14am,5/6/2025 7:41pm
+Off-Ball Screens,TC-250506-071406,Off-Ball Screens,Theme,Screen away/flair/down-screen usage and reads,,,5/6/2025 3:14am,5/6/2025 7:41pm
+Transition,TC-250506-071406,Transition,Theme,"Open-court pace, spacing, & advantage creation in fast break",,,5/6/2025 3:14am,5/6/2025 7:41pm
+Neutral Start,TC-250506-071406,Neutral Start,Advantage Level,No inherent edge; defenders matched or chest-to-chest,,,5/6/2025 3:14am,5/6/2025 7:41pm
+Small Advantage,TC-250506-071406,Small Advantage,Advantage Level,Slight momentum edge: defender trailing or delayed,,,5/6/2025 3:14am,5/6/2025 7:41pm
+Big Advantage,TC-250506-071406,Big Advantage,Advantage Level,Offense has a clear maintainable edge (defender behind/turned),,,5/6/2025 3:14am,5/6/2025 7:41pm
+From Static Start,TC-250506-071406,From Static Start,Origin Type,"Begins from dead ball, inbound, triple-threat (no built momentum)",,,5/6/2025 3:14am,5/6/2025 7:41pm
+From Action,TC-250506-071406,From Action,Origin Type,"Initiated by structured play (PnR, DHO, Zoom, etc.)",,,5/6/2025 3:14am,5/6/2025 7:41pm
+From Live Read,TC-250506-071406,From Live Read,Origin Type,"Advantage arises organically (kick-ahead, skip pass, semi-transition)",,,5/6/2025 3:14am,5/6/2025 7:41pm
+From Defensive Error,TC-250506-071406,From Defensive Error,Origin Type,"Late closeout, overhelp, mismatch switch, failed rotation",,,5/6/2025 3:14am,5/6/2025 7:41pm
+Under Coverage,TC-250506-071406,Under Coverage,Coverage,Defender goes under the screen or hand-off,,,5/6/2025 3:14am,5/6/2025 7:41pm
+Over Coverage,TC-250506-071406,Over Coverage,Coverage,Defender fights over the top of screen or hand-off,,,5/6/2025 3:14am,5/6/2025 7:41pm
+Switch Coverage,TC-250506-071406,Switch Coverage,Coverage,Defenders swap assignments on screen or hand-off,,,5/6/2025 3:14am,5/6/2025 7:41pm
+Ice Coverage,TC-250506-071406,Ice Coverage,Coverage,Sideline push coverage forcing ball-handler away from middle,,,5/6/2025 3:14am,5/7/2025 9:13pm
+Drop Coverage,TC-250506-071406,Drop Coverage,Coverage,"Big drops back in lane, giving mid-range or short floater",,,5/6/2025 3:14am,5/6/2025 7:41pm
+Hard Hedge,TC-250506-071406,Hard Hedge,Coverage,Screener’s defender steps out aggressively to deter ball-handler,,,5/6/2025 3:14am,5/6/2025 7:41pm
+Guided Defense,TC-250506-071406,Guided Defense,Coverage,Defense manipulates coverage to steer offense to a specific read,,,5/6/2025 3:14am,5/6/2025 7:41pm
+Battleship Rule,TC-250506-071406,Battleship Rule,Scoring Rule,Score from multiple distinct spots (sink opponent) before time,,,5/6/2025 3:14am,5/6/2025 7:41pm
+Short Clock,TC-250506-071406,Short Clock,Scoring Rule,"Limited time (8–12s) per possession, forcing quick decisions",,,5/6/2025 3:14am,5/6/2025 7:41pm
+2 Dribble Max,TC-250506-071406,2 Dribble Max,Constraint,Offense can use at most 2 dribbles before passing or shooting,,,5/6/2025 3:14am,5/6/2025 7:41pm
+No Catch and Hold,TC-250506-071406,No Catch and Hold,Constraint,"Player must pass, drive, or shoot immediately upon catching",,,5/6/2025 3:14am,5/6/2025 7:41pm
+No Dribble Reset,TC-250506-071406,No Dribble Reset,Constraint,No dribbling back out—forward momentum only,,,5/6/2025 3:14am,5/6/2025 7:41pm
+One Second Decision,TC-250506-071406,One Second Decision,Constraint,Team must decide within 1 second: pass/drive/shot,,,5/6/2025 3:14am,5/6/2025 7:41pm
+First to 2 Paint Touches,TC-250506-071406,First to 2 Paint Touches,Constraint,Team must get 2 paint touches before shooting,,,5/6/2025 3:14am,5/6/2025 7:41pm
+Contact Finishing Only,TC-250506-071406,Contact Finishing Only,Constraint,Finish attempts must involve initiated contact or body-to-body,,,5/6/2025 3:14am,5/6/2025 7:41pm
+Weak-Hand Only,TC-250506-071406,Weak-Hand Only,Constraint,Players can only dribble/finish with non-dominant hand,,,5/6/2025 3:14am,5/6/2025 7:41pm
+Hip Rip Start,TC-250506-071406,Hip Rip Start,Constraint,"Offense & defender side-by-side, slight advantage if offense rips ball",,,5/6/2025 3:14am,5/6/2025 7:41pm
+Collapse + Kick,TC-250506-071406,Collapse + Kick,Theme,Emphasizing dribble penetration that collapses the defense and leads to kick-outs,,,5/6/2025 3:14am,5/7/2025 10:09pm
+Decision Chains,TC-250506-071406,Decision Chains,Theme,Players must make 2–3 layered decisions under time/spatial pressure,,,5/6/2025 3:14am,5/6/2025 7:41pm
+Spacing Reactions,TC-250506-071406,Spacing Reactions,Theme,Emphasizes reacting to ball-handler’s vector using push/pull geometry,,,5/6/2025 3:14am,5/6/2025 7:41pm
+Defensive Recovery,TC-250506-071406,Defensive Recovery,Theme,Teaches defenders to recover to advantage under delayed help scenarios,,,5/6/2025 3:14am,5/6/2025 7:41pm
+Advantage Play,TC-250506-071406,Advantage Play,Theme,Focuses on maintaining/expanding advantage until a quality shot emerges,,,5/6/2025 3:14am,5/6/2025 7:41pm
+Base & Balance,TC-250506-071406,Base & Balance,Theme,"Foundational positioning, posture, and control for consistent decision-making",,,5/6/2025 3:14am,5/6/2025 7:41pm
+Constraint Response,TC-250506-071406,Constraint Response,Theme,Challenges players to adapt effectively to environmental or rules-based constraints,,,5/6/2025 3:14am,5/6/2025 7:41pm
+Transition Advantage,TC-250506-071406,Transition Advantage,Theme,Targets fast break/semi-transition situations to exploit numbers/space,,,5/6/2025 3:14am,5/6/2025 7:41pm
+First to Contact,TC-250506-071406,First to Contact,Theme,Instills habits of absorbing contact early in defensive sequences to neutralize attackers,,,5/6/2025 3:14am,5/6/2025 7:41pm
+Shot Discipline,TC-250506-071406,Shot Discipline,Theme,Develops recognition of high-value vs. low-value shots,,,5/6/2025 3:14am,5/6/2025 7:41pm
+Relocate & Respace,TC-250506-071406,Relocate & Respace,Theme,Focuses on off-ball movement after a pass or drive to maintain spacing,,,5/6/2025 3:14am,5/6/2025 7:41pm
+2-Side Reads,TC-250506-071406,2-Side Reads,Theme,Teaches how to make decisions when help defenders are on both sides,,,5/6/2025 3:14am,5/6/2025 7:41pm
+Early vs. Late Window Recognition,TC-250506-071406,Early vs. Late Window Recognition,Theme,Reading the timing of advantage ops & executing in the correct window,,,5/6/2025 3:14am,5/6/2025 7:41pm
+Commitment Under Pressure,TC-250506-071406,Commitment Under Pressure,Theme,Trains players to commit decisions in high-pressure moments without second-guessing,,,5/6/2025 3:14am,5/6/2025 7:41pm
+Multiple Efforts,TC-250506-071406,Multiple Efforts,Theme,Instills discipline around second & third efforts within a single defensive possession,,,5/6/2025 3:14am,5/6/2025 7:41pm
+Stunt-to-Recover,TC-250506-071406,Stunt-to-Recover,Theme,Builds awareness of help positioning & how to recover after providing help,,,5/6/2025 3:14am,5/6/2025 7:41pm
+Contain + Challenge,TC-250506-071406,Contain + Challenge,Theme,"Focuses on containing the ball handler, then vertical contest without fouling",,,5/6/2025 3:14am,5/6/2025 7:41pm
+Stop-to-Start Control,TC-250506-071406,Stop-to-Start Control,Theme,Develops body control transitioning from deceleration to acceleration,,,5/6/2025 3:14am,5/6/2025 7:41pm
+Acceleration Windows,TC-250506-071406,Acceleration Windows,Theme,"Trains timing & burst acceleration in short, reactive movements",,,5/6/2025 3:14am,5/6/2025 7:41pm
+Layered Read Stacks,TC-250506-071406,Layered Read Stacks,Theme,Players learn to chain reads: help → pass → closeout → shot decision,,,5/6/2025 3:14am,5/6/2025 7:41pm
+Instinct Expansion,TC-250506-071406,Instinct Expansion,Theme,"Encourages creativity, freedom, & unexpected choices in guided chaos environments",,,5/6/2025 3:14am,5/6/2025 7:41pm
+Transfer Checkpoint,TC-250506-071406,Transfer Checkpoint,Theme,Used to mark a practice or session that checks if a trained skill transfers to live play,,,5/6/2025 3:14am,5/6/2025 7:41pm
+Development Block,TC-250506-071406,Development Block,Theme,"Tag entire pods or multi-session themes under one shared learning arc (e.g., spacing week)",,,5/6/2025 3:14am,5/6/2025 7:41pm
+Initiate-to-Advantage,TC-250506-071406,Initiate-to-Advantage,Theme,Not all actions create scoring chances; teaches using actions to set up domino advantages,,,5/6/2025 3:14am,5/6/2025 7:41pm
+Shot Creation Footwork,TC-250506-071406,Shot Creation Footwork,Theme,"Centers on jab steps, lifts, punch dribbles, quick pickups for shot creation pre-shot",,,5/6/2025 3:14am,5/6/2025 7:41pm
+Collapse + Kick Variation,TC-250506-071406,Collapse & Kick Variation,Theme,Variant focus on perimeter re-spots and high skip passes after collapse,,,5/6/2025 3:14am,5/7/2025 9:14pm
+Transition Start (Full Court),TC-250506-071406,Transition Start (Full Court),Game Phase,Focus on immediate advantage off rebound/steal; opponents not fully set,,,5/6/2025 3:14am,5/6/2025 7:41pm
+Early Offense (14+ on Shot Clock),TC-250506-071406,Early Offense (14+ on Shot Clock),Game Phase,Semi-transition with partial defense set but still pacing advantage,,,5/6/2025 3:14am,5/6/2025 7:41pm
+Half Court Set,TC-250506-071406,Half Court Set,Game Phase,"Offense fully in half-court alignment, defense set",,,5/6/2025 3:14am,5/6/2025 7:41pm
+Late Clock (under 8s),TC-250506-071406,Late Clock (under 8s),Game Phase,Forcing quick shot or immediate action due to time constraints,,,5/6/2025 3:14am,5/6/2025 7:41pm
+End of Quarter/Period,TC-250506-071406,End of Quarter/Period,Game Phase,Focus on final possession for the period or quarter,,,5/6/2025 3:14am,5/6/2025 7:41pm
+Baseline Inbounds (BLOB),TC-250506-071406,Baseline Inbounds (BLOB),Game Phase,"Offense inbounding from baseline, using special sets or quick hitters",,,5/6/2025 3:14am,5/6/2025 7:41pm
+Sideline Inbounds (SLOB),TC-250506-071406,Sideline Inbounds (SLOB),Game Phase,"Offense inbounding from sideline, sets or triggers used",,,5/6/2025 3:14am,5/6/2025 7:41pm
+Press Break,TC-250506-071406,Press Break,Game Phase,"Facing full-court pressure, ensuring structured release or advantage",,,5/6/2025 3:14am,5/6/2025 7:41pm
+Foul or FT Scenario,TC-250506-071406,Foul or FT Scenario,Game Phase,"Adapting to free throws, rebound battles, or end-of-game foul logic",,,5/6/2025 3:14am,5/6/2025 7:41pm
+Crunch Time (last 2 minutes),TC-250506-071406,Crunch Time (last 2 minutes),Game Phase,Critical possessions with strategic time management & specialized sets,,,5/6/2025 3:14am,5/6/2025 7:41pm
+Level 1 - Base & Balance,TC-250506-191045,Level 1 - Base & Balance,Level,"Foundational stance, balance, and readiness for movement and control.",,,5/6/2025 3:10pm,5/7/2025 10:14pm
+Level 2 - Ball Control,TC-250506-191050,Level 2 - Ball Control,Level,"Mastery of dribble protection, footwork, and simple pass control.",,,5/6/2025 3:10pm,5/7/2025 10:14pm
+Level 3 - Finishing Foundation,TC-250506-191050,Level 3 - Finishing Foundation,Level,Ability to finish with both hands through contact in varied foot patterns.,,,5/6/2025 3:10pm,5/7/2025 10:14pm
+Level 4 - Reading Advantage,TC-250506-191050,Level 4 - Reading Advantage,Level,Recognition of advantage windows created by others or defense breakdowns.,,,5/6/2025 3:10pm,5/7/2025 10:14pm
+Level 5 - Creating Advantage,TC-250506-191050,Level 5 - Creating Advantage,Level,Creation of advantage through self-generated action or physical manipulation.,,,5/6/2025 3:10pm,5/7/2025 10:14pm
+Level 6 - Maintaining Advantage,TC-250506-191050,Level 6 - Maintaining Advantage,Level,Understanding how to maintain advantage through smart decisions or pacing.,,,5/6/2025 3:10pm,5/6/2025 7:41pm
+Level 7 - Layered Reads,TC-250506-191050,Level 7 - Layered Reads,Level,Reading defenders mid-rotation or stunt to choose among 2–3 layered options.,,,5/6/2025 3:10pm,5/6/2025 7:41pm
+Level 8 - Complex Scenarios,TC-250506-191050,Level 8 - Complex Scenarios,Level,Making adaptive decisions in high-pressure or complex game situations.,,,5/6/2025 3:10pm,5/6/2025 7:41pm
+Level 9 - Endgame Creation,TC-250506-191050,Level 9 - Endgame Creation,Level,Creating scoring opportunities under late-clock or high-stakes conditions.,,,5/6/2025 3:10pm,5/6/2025 7:41pm
+Layer 1 - Spacing Structure,TC-250506-191050,Layer 1 - Spacing Structure,Layer,Understands basic spatial roles and floor balance without needing cues.,,,5/6/2025 3:10pm,5/6/2025 7:41pm
+Layer 2 - Trigger Awareness,TC-250506-191050,Layer 2 - Trigger Awareness,Layer,"Responds to ball and player triggers with concept-based actions (e.g., cut, fill).",,,5/6/2025 3:10pm,5/6/2025 7:41pm
+Layer 3 - Advantage Chaining,TC-250506-191050,Layer 3 - Advantage Chaining,Layer,"Chains together multiple actions (e.g., kick, relocate, drive) without breakdown.",,,5/6/2025 3:10pm,5/6/2025 7:41pm
+Layer 4 - Counter Layer,TC-250506-191050,Layer 4 - Counter Layer,Layer,"Knows how to counter switches, recoveries, or deny coverage patterns.",,,5/6/2025 3:10pm,5/6/2025 7:41pm
+Layer 5 - Coverage Reads,TC-250506-191050,Layer 5 - Coverage Reads,Layer,"Adjusts based on team defensive coverages: drop, ICE, hard hedge, etc.",,,5/6/2025 3:10pm,5/6/2025 7:41pm
+Layer 6 - Adaptive Autonomy,TC-250506-191050,Layer 6 - Adaptive Autonomy,Layer,"Fully autonomous within conceptual framework—reads, decides, executes in flow.",,,5/6/2025 3:10pm,5/6/2025 7:41pm

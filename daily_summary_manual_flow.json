@@ -1,0 +1,70 @@
+{
+  "modules": [
+    {
+      "id": 1,
+      "type": "airtable:watchRecords",
+      "table": "Thought Log",
+      "trigger": false
+    },
+    {
+      "id": 2,
+      "type": "airtable:searchRecords",
+      "table": "Thought Log",
+      "filter": "{Summary Group ID} = \"DAILY-2025-05-11\"",
+      "fields": [
+        "Entry Content",
+        "UID"
+      ]
+    },
+    {
+      "id": 3,
+      "type": "tools:textAggregator",
+      "source": 2,
+      "textField": "Entry Content",
+      "rowSeparator": "\n\n"
+    },
+    {
+      "id": 4,
+      "type": "openai:createChatCompletion",
+      "model": "gpt-4o",
+      "messages": [
+        {
+          "role": "system",
+          "content": "You are a structured reflection parser. Your job is to read multiple structured thought entries and extract a synthesized daily summary using the following schema:\n\n- Theme: 1-line summary of the day\u2019s core focus.\n- Friction: Most common emotional or behavioral tension across entries.\n- Insight: Core truth or realization that emerged.\n- NextMove: A simple, high-leverage action step for forward motion.\n- Prompt: A reflection question that provokes depth or reorientation.\n- Summary: A brief, emotionally intelligent synthesis that captures the essence of the day (2\u20133 sentences).\n\nUse emotionally intelligent, precise language. Avoid fluff. Be honest, clear, and human. If any value is missing, return \"[UNKNOWN]\".\n\nOutput your response in **this exact JSON format**:\n\n```json\n{\n  \"Theme\": \"string\",\n  \"Friction\": \"string\",\n  \"Insight\": \"string\",\n  \"NextMove\": \"string\",\n  \"Prompt\": \"string\",\n  \"Summary\": \"string\"\n}\n```"
+        },
+        {
+          "role": "user",
+          "content": "{{3.text}}"
+        }
+      ],
+      "responseFormat": "json_object"
+    },
+    {
+      "id": 5,
+      "type": "json:parseJson",
+      "structure": {
+        "Theme": "string",
+        "Friction": "string",
+        "Insight": "string",
+        "NextMove": "string",
+        "Prompt": "string",
+        "Summary": "string"
+      },
+      "source": "4.result"
+    },
+    {
+      "id": 6,
+      "type": "airtable:createRecord",
+      "table": "Daily Summary",
+      "fields": {
+        "Theme": "{{5.Theme}}",
+        "Friction": "{{5.Friction}}",
+        "Insight": "{{5.Insight}}",
+        "Next Move": "{{5.NextMove}}",
+        "Prompt": "{{5.Prompt}}",
+        "Summary": "{{5.Summary}}",
+        "Linked Thought": "{{2.UID[]}}"
+      }
+    }
+  ]
+}

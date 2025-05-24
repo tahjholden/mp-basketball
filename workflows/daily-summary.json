@@ -1,0 +1,182 @@
+{
+  "name": "Daily Reflection Summary",
+  "nodes": [
+    {
+      "parameters": {
+        "mode": "custom",
+        "cronExpression": "30 21 * * *"
+      },
+      "id": "1",
+      "name": "Schedule Daily @ 9:30 PM",
+      "type": "n8n-nodes-base.cron",
+      "typeVersion": 1,
+      "position": [
+        200,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "list",
+        "application": "airtable",
+        "table": "Thought Log",
+        "baseId": "appNjKVuiw5ygyHHX",
+        "filterByFormula": "IS_SAME(DATESTR({Created Time}), DATESTR(TODAY()))",
+        "returnAll": true
+      },
+      "id": "2",
+      "name": "Get Today's Entries",
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 1,
+      "position": [
+        400,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "functionCode": "\nconst entries = items.map(item => item.json.fields[\"Entry Content\"]).filter(Boolean);\nreturn [{ json: { content: entries.join(\"\\n\\n\") } }];\n"
+      },
+      "id": "3",
+      "name": "Aggregate Entry Content",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [
+        600,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "requestMethod": "POST",
+        "url": "https://api.openai.com/v1/chat/completions",
+        "jsonParameters": true,
+        "options": {},
+        "bodyParametersJson": "{\"model\": \"gpt-4\", \"messages\": [{\"role\": \"system\", \"content\": \"You are a structured reflection parser. Read the combined journal entries and return a JSON summary with the following fields: Theme, Friction, Insight, NextMove, Prompt, Summary. Use emotionally intelligent, clear, honest language. Return only valid JSON, no markdown or commentary.\"}, {\"role\": \"user\", \"content\": \"{{$json[\\\"content\\\"]}}\"}], \"temperature\": 0.6, \"max_tokens\": 800}",
+        "headerParametersJson": "{\"Authorization\": \"Bearer YOUR_OPENAI_API_KEY\", \"Content-Type\": \"application/json\"}"
+      },
+      "id": "4",
+      "name": "GPT Daily Summary",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [
+        800,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "functionCode": "\nconst result = JSON.parse(items[0].json.body.replace(/```json|```/g, ''));\nreturn [{ json: result }];\n"
+      },
+      "id": "5",
+      "name": "Parse GPT Output",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [
+        1000,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "application": "airtable",
+        "baseId": "appNjKVuiw5ygyHHX",
+        "table": "Daily Summary",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "Theme",
+              "fieldValue": "={{$json[\"Theme\"]}}"
+            },
+            {
+              "fieldId": "Friction",
+              "fieldValue": "={{$json[\"Friction\"]}}"
+            },
+            {
+              "fieldId": "Insight",
+              "fieldValue": "={{$json[\"Insight\"]}}"
+            },
+            {
+              "fieldId": "Next Move",
+              "fieldValue": "={{$json[\"NextMove\"]}}"
+            },
+            {
+              "fieldId": "Prompt",
+              "fieldValue": "={{$json[\"Prompt\"]}}"
+            },
+            {
+              "fieldId": "Summary",
+              "fieldValue": "={{$json[\"Summary\"]}}"
+            }
+          ]
+        }
+      },
+      "id": "6",
+      "name": "Create Daily Summary Record",
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 1,
+      "position": [
+        1200,
+        300
+      ]
+    }
+  ],
+  "connections": {
+    "Schedule Daily @ 9:30 PM": {
+      "main": [
+        [
+          {
+            "node": "Get Today's Entries",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Today's Entries": {
+      "main": [
+        [
+          {
+            "node": "Aggregate Entry Content",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate Entry Content": {
+      "main": [
+        [
+          {
+            "node": "GPT Daily Summary",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GPT Daily Summary": {
+      "main": [
+        [
+          {
+            "node": "Parse GPT Output",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse GPT Output": {
+      "main": [
+        [
+          {
+            "node": "Create Daily Summary Record",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  }
+}

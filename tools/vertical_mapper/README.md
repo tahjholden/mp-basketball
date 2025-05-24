@@ -2,6 +2,7 @@
 
 This utility converts the canonical MP-Basketball SQL migrations and n8n workflow files
 into a new domain by applying string replacements defined in a YAML mapping file.
+It requires the [PyYAML](https://pyyaml.org/) package to parse the mapping file.
 
 ## Usage
 

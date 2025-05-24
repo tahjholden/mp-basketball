@@ -1,0 +1,29 @@
+
+MPB SYSTEM – DATABASE ARCHITECTURE FINALIZATION
+
+Core Principles:
+- UID-first design (hidden if necessary, always present for traceability)
+- Source UID field for any derived entry (e.g., PDP, DevNote, Session, Reflection)
+- All relational fields should be explicit and type-consistent (Linked Record, Single Select, etc.)
+
+Tables to Confirm:
+1. Player Profile
+2. Coach Profile
+3. PDP Tracker
+4. Development Notes
+5. Practice Plan Log
+6. Drill/Environment Library
+7. Tag + Constraint Bank
+8. Attendance Log
+9. Raw Communication Log
+10. Session Drill Link
+11. Reflection Tracker (Player and Coach)
+
+Each table must include:
+- UID (first column)
+- Human-readable Display Name (second column)
+- Source UID (if not a base entity)
+- Field types clearly labeled
+- Placeholder values (`TBD_LINK_<TABLE>`) for unlinked records
+
+Deliverable: Ensure each of the 11 tables meets this schema before automation proceeds.
