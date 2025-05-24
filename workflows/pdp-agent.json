@@ -243,7 +243,7 @@
               "role": "system"
             },
             {
-              "content": "=Create a comprehensive Player Development Plan (PDP) for {{player_name}} based on the following data.\n\nObservations:\n{{joined_observations}}\n\nSkill Tags:\n{{joined_tags}}\n\nConstraint Tags:\n{{joined_constraints}}\n\nInstructions:\n- Structure the PDP with these sections:\n    1. Player System Snapshot\n    2. Movement System Characteristics\n    3. Behavioral Attractors\n    4. Rate Limiters (with constraint tags and coach cues)\n    5. Constraint-Led Interventions (detail intervention, expected outcome, and link to tags)\n    6. Long-term System Targets (tied to skills and constraints)\n    7. Key Design Rules (decision frameworks and priorities)\n\n- Use clear, precise, and technical language suitable for directors and experienced coaches.\n- Reference tags and constraints directly.\n- Be specific and robust—assume this PDP will inform all downstream, more concise versions.\n- Output as Markdown.\n\nGenerate only the full PDP, no summary or meta comments."
+              "content": "=Create a comprehensive Player Development Plan (PDP) for {{player_name}} based on the following data.\n\nObservations:\n{{joined_observations}}\n\nSkill Tags:\n{{joined_tags}}\n\nConstraint Tags:\n{{joined_constraints}}\n\nInstructions:\n- Structure the PDP with these sections:\n    1. Player System Snapshot\n    2. Movement System Characteristics\n    3. Behavioral Attractors\n    4. Rate Limiters (with constraint tags and coach cues)\n    5. Constraint-Led Interventions (detail intervention, expected outcome, and link to tags)\n    6. Long-term System Targets (tied to skills and constraints)\n    7. Key Design Rules (decision frameworks and priorities)\n\n- Use clear, precise, and technical language suitable for directors and experienced coaches.\n- Reference tags and constraints directly.\n- Be specific and robust\u2014assume this PDP will inform all downstream, more concise versions.\n- Output as Markdown.\n\nGenerate only the full PDP, no summary or meta comments."
             }
           ]
         },
@@ -394,6 +394,17 @@
         [
           {
             "node": "AgentEvents_Trigger",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Truncate_LLM_Inputs": {
+      "main": [
+        [
+          {
+            "node": "OpenAI",
             "type": "main",
             "index": 0
           }

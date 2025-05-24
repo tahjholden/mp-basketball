@@ -1,0 +1,26 @@
+{
+  "name": "InsertPersonTest",
+  "nodes": [
+    {
+      "parameters": {},
+      "name": "Start",
+      "type": "n8n-nodes-base.start",
+      "typeVersion": 1,
+      "position": [240, 300]
+    },
+    {
+      "parameters": {
+        "functionCode": "const { Client } = require('pg');\n\nasync function run() {\n  const client = new Client({ connectionString: process.env.SUPABASE_DB_URL });\n  await client.connect();\n  await client.query(\"SET session \"request.jwt.claims\" = '{\\"org_uid\\":\\"ORG-DEFAULT\\"}'\");\n  const { rows: personRows } = await client.query(\"INSERT INTO person(display_name, role_type) VALUES('Workflow User','User') RETURNING uid, display_name, role_type\");\n  const personUid = personRows[0].uid;\n  const { rows: profileRows } = await client.query('INSERT INTO profile(person_uid) VALUES($1) RETURNING person_uid', [personUid]);\n  await client.end();\n  return [{ json: { person: personRows[0], profile: profileRows[0] } }];\n}\nreturn run();"
+      },
+      "name": "InsertFunction",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [460, 300]
+    }
+  ],
+  "connections": {
+    "Start": {
+      "main": [[{"node": "InsertFunction", "type": "main", "index": 0}]]
+    }
+  }
+}
