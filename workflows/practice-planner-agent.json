@@ -246,7 +246,6 @@
     {
       "parameters": {
         "operation": "getAll",
-blnmop-codex/update-workflows-with-attendance-comparison
         "tableId": "session",
         "returnAll": true,
         "filters": {
@@ -264,7 +263,6 @@ blnmop-codex/update-workflows-with-attendance-comparison
       "typeVersion": 1,
       "position": [
         220,
-blnmop-codex/update-workflows-with-attendance-comparison
         60
       ],
       "id": "1e56a4c9-1284-41ab-ad00-4c4e3fe9ae52",
@@ -278,7 +276,6 @@ blnmop-codex/update-workflows-with-attendance-comparison
     },
     {
       "parameters": {
-blnmop-codex/update-workflows-with-attendance-comparison
         "operation": "getAll",
         "tableId": "attendance",
         "returnAll": true,
@@ -315,7 +312,6 @@ blnmop-codex/update-workflows-with-attendance-comparison
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-blnmop-codex/update-workflows-with-attendance-comparison
         660,
         60
       ],
