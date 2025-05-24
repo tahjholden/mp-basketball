@@ -1,0 +1,1 @@
+INSERT INTO "public"."pod" ("id", "name", "team_id", "created_at") VALUES ('50723ae2-08ce-4d92-8f12-198e20ae22ea', 'Pod B', '376b841b-485a-459d-bd7c-fb1bfafbbb6d', '2025-05-19 17:14:27.636819'), ('ea14278f-ce84-420e-acad-2230f8ce3179', 'Pod A', '7b87e088-9d60-42aa-86bf-e1b6f5684424', '2025-05-19 17:14:27.636819');

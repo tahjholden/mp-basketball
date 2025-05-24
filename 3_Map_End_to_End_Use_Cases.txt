@@ -1,0 +1,30 @@
+
+MPB SYSTEM – USER FLOW MAPS
+
+USER ROLES:
+1. Coach
+2. Player
+3. System
+
+COACH FLOW:
+1. Observe behavior during session
+2. Log observation (voice/text)
+3. System parses → PDP updates → practice plan adapts
+4. Coach reviews prompts, adds override if needed
+5. Engages player based on updated plan
+
+PLAYER FLOW:
+1. Attends session
+2. Receives reflection prompt (auto-generated)
+3. Submits reflection
+4. Sees updated plan/focus
+5. Practices within new design, reflects again
+
+SYSTEM FLOW:
+1. Connects player profile to PDP
+2. Ingests coach + player input
+3. Routes GPT-generated suggestions
+4. Flags ethical or override drift
+5. Adjusts reflection & planning loop
+
+Each flow should be documented visually and updated in Notion for onboarding and external training.

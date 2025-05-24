@@ -1,0 +1,232 @@
+{
+  "name": "MPB – Observation Intake/Tagging",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 1
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        -160
+      ],
+      "id": "37e3eb9a-b234-41f6-9388-687f25490cfe",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "jsCode": "// 1) Grab the raw observations\nconst observations = $items(\"FetchObservations\");\n\n// 2) Grab the AI‐extracted tags (you told OpenAI to output JSON with tagged_skills & tagged_constraints)\nconst aiResults    = $items(\"OpenAI\").map(i => i.json.message.content);\n\n// 3) Merge them\nconst enriched = observations.map((obsItem, idx) => {\n  const base = obsItem.json;\n  const ai   = aiResults[idx] || { tagged_skills: [], tagged_constraints: [] };\n  return {\n    json: {\n      ...base,\n      tagged_skills:      ai.tagged_skills,\n      tagged_constraints: ai.tagged_constraints,\n    }\n  };\n});\n\nreturn enriched;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1036,
+        -160
+      ],
+      "id": "f3168324-23e4-44d6-be7b-351faaca974c",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "url": "https://htvyruodlvdbpfsnmuhz.supabase.co/rest/v1/observation?select=id,player_id,coach_id,raw_note,created_at&tagged_skills=is.null&tagged_constraints=is.null&order=created_at.asc",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh0dnlydW9kbHZkYnBmc25tdWh6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDcxNzg1MTQsImV4cCI6MjA2Mjc1NDUxNH0.0E_lA1rY5DsTHGwJGcyafpO0Wd61R9RvcAx01ky6gHg"
+            },
+            {
+              "name": "Authorization",
+              "value": "=Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh0dnlydW9kbHZkYnBmc25tdWh6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDcxNzg1MTQsImV4cCI6MjA2Mjc1NDUxNH0.0E_lA1rY5DsTHGwJGcyafpO0Wd61R9RvcAx01ky6gHg"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        220,
+        -160
+      ],
+      "id": "2b516fe8-a8fa-4c08-abce-66d3551ee416",
+      "name": "FetchObservations"
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "tableId": "tag",
+        "returnAll": true
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        440,
+        -160
+      ],
+      "id": "e8a9aa68-001b-413a-bb55-6da5b8481225",
+      "name": "FetchTagBank",
+      "credentials": {
+        "supabaseApi": {
+          "id": "snX7zXf3hb1iETnD",
+          "name": "Supabase <-> N8N MPBos"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-3.5-turbo",
+          "mode": "list",
+          "cachedResultName": "GPT-3.5-TURBO"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=Here is a list of possible tags (skills vs constraints):\n{{$json.tagBank}}\nAnd here is a coach’s note:\n“{{$json.raw_note}}”\nReturn two JSON arrays: “tagged_skills” and “tagged_constraints”, selecting from the tag bank.",
+              "role": "system"
+            },
+            {
+              "content": "=Tag bank:\n{{ $json.tagBank }}\n\nCoach’s note:\n“{{ $json.raw_note }}”"
+            }
+          ]
+        },
+        "jsonOutput": true,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        660,
+        -160
+      ],
+      "id": "c62d67a2-cd10-4bce-b47f-224f4d83cdf0",
+      "name": "OpenAI",
+      "alwaysOutputData": true,
+      "credentials": {
+        "openAiApi": {
+          "id": "KhaGQw1SlGfhaasb",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://htvyruodlvdbpfsnmuhz.supabase.co/rest/v1/observation?on_conflict=id",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh0dnlydW9kbHZkYnBmc25tdWh6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDcxNzg1MTQsImV4cCI6MjA2Mjc1NDUxNH0.0E_lA1rY5DsTHGwJGcyafpO0Wd61R9RvcAx01ky6gHg"
+            },
+            {
+              "name": "Authorization",
+              "value": "=Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh0dnlydW9kbHZkYnBmc25tdWh6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDcxNzg1MTQsImV4cCI6MjA2Mjc1NDUxNH0.0E_lA1rY5DsTHGwJGcyafpO0Wd61R9RvcAx01ky6gHg"
+            },
+            {
+              "name": "Prefer",
+              "value": "resolution=merge-duplicates"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ $items(\"Code\").map(item => item.json) }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1256,
+        -160
+      ],
+      "id": "9dc605b5-1e23-4081-8a74-8946edefce6c",
+      "name": "UpsertObservation"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "FetchObservations",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "FetchObservations": {
+      "main": [
+        [
+          {
+            "node": "FetchTagBank",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "FetchTagBank": {
+      "main": [
+        [
+          {
+            "node": "OpenAI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "UpsertObservation",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "1775a8ea-d7ba-4aef-9b41-94ca75414995",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "0abe8dd3af7b84dd650128b454cc932a6aae1d69499f17eccb6a7dec666a07a5"
+  },
+  "id": "RKQsN6nd2MmBFhYQ",
+  "tags": []
+}

@@ -1,0 +1,616 @@
+INSERT INTO tag (tag_name, tag_type, description, synonyms, use_case, verified, source_uid, suggested_by, pdp_group, tag_parent_id) VALUES
+('tag_name    Off-Ball Movement
+tag_name                  NaN
+Name: 0, dtype: object', 'Skill', 'Cutting, screening, relocating', '', 'PDP,Drill,Reflection', FALSE, NULL, NULL, 'General', NULL),
+('tag_name    Left-Hand Only
+tag_name               NaN
+Name: 1, dtype: object', 'Constraint', 'Player must use left hand only', '', 'PDP,Drill,Reflection', FALSE, NULL, NULL, 'General', NULL),
+('tag_name    Help Defense
+tag_name             NaN
+Name: 2, dtype: object', 'Skill', 'Rotations, rim protection', 'rotation, help-side', 'PDP,Drill', TRUE, NULL, NULL, 'Defensive Concepts', NULL),
+('tag_name    Shot Clock Constraint
+tag_name                      NaN
+Name: 3, dtype: object', 'Constraint', 'Must shoot within 5 seconds', 'fast decision, quick shot', 'Drill', TRUE, NULL, NULL, 'Constraint', NULL),
+('tag_name    Closeout Technique
+tag_name                   NaN
+Name: 4, dtype: object', 'Skill', 'Contesting while maintaining control', 'contest, closeout, hand-up', 'PDP,Drill', TRUE, NULL, NULL, 'Defensive Concepts', NULL),
+('tag_name    Help Defense
+tag_name             NaN
+Name: 5, dtype: object', 'Skill', 'Rotations, rim protection', '', 'PDP,Drill,Reflection', FALSE, NULL, NULL, 'General', NULL),
+('tag_name    Composure
+tag_name          NaN
+Name: 6, dtype: object', 'Skill', 'Staying calm under stress', '', 'PDP,Drill,Reflection', FALSE, NULL, NULL, 'General', NULL),
+('tag_name    Help Defense
+tag_name             NaN
+Name: 7, dtype: object', 'Skill', 'Rotations, rim protection', '', 'PDP,Drill,Reflection', FALSE, NULL, NULL, 'General', NULL),
+('tag_name    Work Rate / Effort
+tag_name                   NaN
+Name: 8, dtype: object', 'Skill', 'Hustle and consistent intensity', '', 'PDP,Drill,Reflection', FALSE, NULL, NULL, 'General', NULL),
+('tag_name    Focus
+tag_name      NaN
+Name: 9, dtype: object', 'Skill', 'Sustained attention under stress', 'locked-in, attention', 'PDP,Reflection', TRUE, NULL, NULL, 'Mental Tools', NULL),
+('tag_name    Shooting
+tag_name         NaN
+Name: 10, dtype: object', 'Skill', 'Catch-and-shoot, off-dribble, range', 'jump shot, spot-up, three-pointer', 'PDP,Drill', TRUE, NULL, NULL, 'Offensive Tools', NULL),
+('tag_name    Ball Pressure
+tag_name              NaN
+Name: 11, dtype: object', 'Skill', 'On-ball disruption', 'pressure, force turnovers', 'PDP,Drill', TRUE, NULL, NULL, 'Defensive Concepts', NULL),
+('tag_name    Passing
+tag_name        NaN
+Name: 12, dtype: object', 'Skill', 'Ball movement, assists, vision', 'assist, drop-off, kickout', 'PDP,Drill', TRUE, NULL, NULL, 'Offensive Tools', NULL),
+('tag_name    Closeout Technique
+tag_name                   NaN
+Name: 13, dtype: object', 'Skill', 'Contesting while maintaining control', '', 'PDP,Drill,Reflection', FALSE, NULL, NULL, 'General', NULL),
+('tag_name    Shooting
+tag_name         NaN
+Name: 14, dtype: object', 'Skill', 'Catch-and-shoot, off-dribble, range', 'jump shot, spot-up, three-pointer', 'PDP,Drill', TRUE, NULL, NULL, 'Offensive Tools', NULL),
+('tag_name    Off-Ball Movement
+tag_name                  NaN
+Name: 15, dtype: object', 'Skill', 'Cutting, screening, relocating', 'cutting, relocate, flare', 'PDP,Drill', TRUE, NULL, NULL, 'Offensive Tools', NULL),
+('tag_name    Closeout Technique
+tag_name                   NaN
+Name: 16, dtype: object', 'Skill', 'Contesting while maintaining control', 'contest, closeout, hand-up', 'PDP,Drill', TRUE, NULL, NULL, 'Defensive Concepts', NULL),
+('tag_name    Focus
+tag_name      NaN
+Name: 17, dtype: object', 'Skill', 'Sustained attention under stress', '', 'PDP,Drill,Reflection', FALSE, NULL, NULL, 'General', NULL),
+('tag_name    Shooting
+tag_name         NaN
+Name: 18, dtype: object', 'Skill', 'Catch-and-shoot, off-dribble, range', 'jump shot, spot-up, three-pointer', 'PDP,Drill', TRUE, NULL, NULL, 'Offensive Tools', NULL),
+('tag_name    Shot Clock Constraint
+tag_name                      NaN
+Name: 19, dtype: object', 'Constraint', 'Must shoot within 5 seconds', 'fast decision, quick shot', 'Drill', TRUE, NULL, NULL, 'Constraint', NULL),
+('tag_name    Mental Toughness
+tag_name                 NaN
+Name: 20, dtype: object', 'Skill', 'Resilience under pressure', 'grit, mental strength', 'PDP,Reflection', TRUE, NULL, NULL, 'Mental Tools', NULL),
+('tag_name    Passing
+tag_name        NaN
+Name: 21, dtype: object', 'Skill', 'Ball movement, assists, vision', '', 'PDP,Drill,Reflection', FALSE, NULL, NULL, 'General', NULL),
+('tag_name    Physicality
+tag_name            NaN
+Name: 22, dtype: object', 'Skill', 'Strength, contact tolerance', 'body control, toughness', 'PDP,Drill', TRUE, NULL, NULL, 'Core Execution', NULL),
+('tag_name    Left-Hand Only
+tag_name               NaN
+Name: 23, dtype: object', 'Constraint', 'Player must use left hand only', 'left hand, no right', 'Drill,Session', TRUE, NULL, NULL, 'Constraint', NULL),
+('tag_name    Passing
+tag_name        NaN
+Name: 24, dtype: object', 'Skill', 'Ball movement, assists, vision', 'assist, drop-off, kickout', 'PDP,Drill', TRUE, NULL, NULL, 'Offensive Tools', NULL),
+('tag_name    Focus
+tag_name      NaN
+Name: 25, dtype: object', 'Skill', 'Sustained attention under stress', 'locked-in, attention', 'PDP,Reflection', TRUE, NULL, NULL, 'Mental Tools', NULL),
+('tag_name    Passing
+tag_name        NaN
+Name: 26, dtype: object', 'Skill', 'Ball movement, assists, vision', 'assist, drop-off, kickout', 'PDP,Drill', TRUE, NULL, NULL, 'Offensive Tools', NULL),
+('tag_name    Chaos Level: High
+tag_name                  NaN
+Name: 27, dtype: object', 'Theme', 'Unstructured, reactive drills', '', 'PDP,Drill,Reflection', FALSE, NULL, NULL, 'General', NULL),
+('tag_name    Off-Ball Movement
+tag_name                  NaN
+Name: 28, dtype: object', 'Skill', 'Cutting, screening, relocating', 'cutting, relocate, flare', 'PDP,Drill', TRUE, NULL, NULL, 'Offensive Tools', NULL),
+('tag_name    Focus
+tag_name      NaN
+Name: 29, dtype: object', 'Skill', 'Sustained attention under stress', '', 'PDP,Drill,Reflection', FALSE, NULL, NULL, 'General', NULL),
+('tag_name    Floor is Lava
+tag_name              NaN
+Name: 30, dtype: object', NULL, 'Constraint to reinforce spacing around the paint', '', 'PDP,Drill,Reflection', FALSE, NULL, NULL, 'General', NULL),
+('tag_name    Finishing
+tag_name          NaN
+Name: 31, dtype: object', 'Skill', 'At-rim and short-range scoring', 'layups, floaters, paint scoring', 'PDP,Drill,Reflection', TRUE, NULL, NULL, 'Offensive Tools', NULL),
+('tag_name    Physicality
+tag_name            NaN
+Name: 32, dtype: object', 'Skill', 'Strength, contact tolerance', '', 'PDP,Drill,Reflection', FALSE, NULL, NULL, 'General', NULL),
+('tag_name    Shot Clock Constraint
+tag_name                      NaN
+Name: 33, dtype: object', 'Constraint', 'Must shoot within 5 seconds', '', 'PDP,Drill,Reflection', FALSE, NULL, NULL, 'General', NULL),
+('tag_name    Off-Ball Movement
+tag_name                  NaN
+Name: 34, dtype: object', 'Skill', 'Cutting, screening, relocating', 'cutting, relocate, flare', 'PDP,Drill', TRUE, NULL, NULL, 'Offensive Tools', NULL),
+('tag_name    Closeout Technique
+tag_name                   NaN
+Name: 35, dtype: object', 'Skill', 'Contesting while maintaining control', 'contest, closeout, hand-up', 'PDP,Drill', TRUE, NULL, NULL, 'Defensive Concepts', NULL),
+('tag_name    Composure
+tag_name          NaN
+Name: 36, dtype: object', 'Skill', 'Staying calm under stress', 'control, poise', 'PDP,Reflection', TRUE, NULL, NULL, 'Mental Tools', NULL),
+('tag_name    Physicality
+tag_name            NaN
+Name: 37, dtype: object', 'Skill', 'Strength, contact tolerance', 'body control, toughness', 'PDP,Drill', TRUE, NULL, NULL, 'Core Execution', NULL),
+('tag_name    Ball Pressure
+tag_name              NaN
+Name: 38, dtype: object', 'Skill', 'On-ball disruption', '', 'PDP,Drill,Reflection', FALSE, NULL, NULL, 'General', NULL),
+('tag_name    Shot Clock Constraint
+tag_name                      NaN
+Name: 39, dtype: object', 'Constraint', 'Must shoot within 5 seconds', 'fast decision, quick shot', 'Drill', TRUE, NULL, NULL, 'Constraint', NULL),
+('tag_name    Help Defense
+tag_name             NaN
+Name: 40, dtype: object', 'Skill', 'Rotations, rim protection', 'rotation, help-side', 'PDP,Drill', TRUE, NULL, NULL, 'Defensive Concepts', NULL),
+('tag_name    Ball Pressure
+tag_name              NaN
+Name: 41, dtype: object', 'Skill', 'On-ball disruption', 'pressure, force turnovers', 'PDP,Drill', TRUE, NULL, NULL, 'Defensive Concepts', NULL),
+('tag_name    Composure
+tag_name          NaN
+Name: 42, dtype: object', 'Skill', 'Staying calm under stress', '', 'PDP,Drill,Reflection', FALSE, NULL, NULL, 'General', NULL),
+('tag_name    Chaos Level: High
+tag_name                  NaN
+Name: 43, dtype: object', 'Theme', 'Unstructured, reactive drills', 'scramble, high chaos', 'Drill,Reflection', TRUE, NULL, NULL, 'Environment', NULL),
+('tag_name    Physicality
+tag_name            NaN
+Name: 44, dtype: object', 'Skill', 'Strength, contact tolerance', '', 'PDP,Drill,Reflection', FALSE, NULL, NULL, 'General', NULL),
+('tag_name    Communication
+tag_name              NaN
+Name: 45, dtype: object', 'Theme', 'Talking on defense/offense', '', 'PDP,Drill,Reflection', FALSE, NULL, NULL, 'General', NULL),
+('tag_name    Shooting
+tag_name         NaN
+Name: 46, dtype: object', 'Skill', 'Catch-and-shoot, off-dribble, range', '', 'PDP,Drill,Reflection', FALSE, NULL, NULL, 'General', NULL),
+('tag_name    Composure
+tag_name          NaN
+Name: 47, dtype: object', 'Skill', 'Staying calm under stress', 'control, poise', 'PDP,Reflection', TRUE, NULL, NULL, 'Mental Tools', NULL),
+('tag_name    Passing
+tag_name        NaN
+Name: 48, dtype: object', 'Skill', 'Ball movement, assists, vision', '', 'PDP,Drill,Reflection', FALSE, NULL, NULL, 'General', NULL),
+('tag_name    Ball Pressure
+tag_name              NaN
+Name: 49, dtype: object', 'Skill', 'On-ball disruption', '', 'PDP,Drill,Reflection', FALSE, NULL, NULL, 'General', NULL),
+('tag_name    Base and Balance
+tag_name                 NaN
+Name: 50, dtype: object', NULL, 'Shot base control and balance', '', 'PDP,Drill,Reflection', FALSE, NULL, NULL, 'General', NULL),
+('tag_name    Physicality
+tag_name            NaN
+Name: 51, dtype: object', 'Skill', 'Strength, contact tolerance', '', 'PDP,Drill,Reflection', FALSE, NULL, NULL, 'General', NULL),
+('tag_name    Work Rate / Effort
+tag_name                   NaN
+Name: 52, dtype: object', 'Skill', 'Hustle and consistent intensity', 'motor, grind', 'PDP', TRUE, NULL, NULL, 'Mental Tools', NULL),
+('tag_name    Work Rate / Effort
+tag_name                   NaN
+Name: 53, dtype: object', 'Skill', 'Hustle and consistent intensity', '', 'PDP,Drill,Reflection', FALSE, NULL, NULL, 'General', NULL),
+('tag_name    Closeout Technique
+tag_name                   NaN
+Name: 54, dtype: object', 'Skill', 'Contesting while maintaining control', '', 'PDP,Drill,Reflection', FALSE, NULL, NULL, 'General', NULL),
+('tag_name    Mental Toughness
+tag_name                 NaN
+Name: 55, dtype: object', 'Skill', 'Resilience under pressure', '', 'PDP,Drill,Reflection', FALSE, NULL, NULL, 'General', NULL),
+('tag_name    Physicality
+tag_name            NaN
+Name: 56, dtype: object', 'Skill', 'Strength, contact tolerance', '', 'PDP,Drill,Reflection', FALSE, NULL, NULL, 'General', NULL),
+('tag_name    Ball Pressure
+tag_name              NaN
+Name: 57, dtype: object', 'Skill', 'On-ball disruption', 'pressure, force turnovers', 'PDP,Drill', TRUE, NULL, NULL, 'Defensive Concepts', NULL),
+('tag_name    Focus
+tag_name      NaN
+Name: 58, dtype: object', 'Skill', 'Sustained attention under stress', 'locked-in, attention', 'PDP,Reflection', TRUE, NULL, NULL, 'Mental Tools', NULL),
+('tag_name    Communication
+tag_name              NaN
+Name: 59, dtype: object', 'Theme', 'Talking on defense/offense', 'call out, vocal', 'PDP,Drill', TRUE, NULL, NULL, 'Mental Tools', NULL),
+('tag_name    Mental Toughness
+tag_name                 NaN
+Name: 60, dtype: object', 'Skill', 'Resilience under pressure', '', 'PDP,Drill,Reflection', FALSE, NULL, NULL, 'General', NULL),
+('tag_name    Work Rate / Effort
+tag_name                   NaN
+Name: 61, dtype: object', 'Skill', 'Hustle and consistent intensity', '', 'PDP,Drill,Reflection', FALSE, NULL, NULL, 'General', NULL),
+('tag_name    Shooting
+tag_name         NaN
+Name: 62, dtype: object', 'Skill', 'Catch-and-shoot, off-dribble, range', 'jump shot, spot-up, three-pointer', 'PDP,Drill', TRUE, NULL, NULL, 'Offensive Tools', NULL),
+('tag_name    Off-Ball Movement
+tag_name                  NaN
+Name: 63, dtype: object', 'Skill', 'Cutting, screening, relocating', '', 'PDP,Drill,Reflection', FALSE, NULL, NULL, 'General', NULL),
+('tag_name    Work Rate / Effort
+tag_name                   NaN
+Name: 64, dtype: object', 'Skill', 'Hustle and consistent intensity', 'motor, grind', 'PDP', TRUE, NULL, NULL, 'Mental Tools', NULL),
+('tag_name    Ball Handling
+tag_name              NaN
+Name: 65, dtype: object', 'Skill', 'Control under pressure', '', 'PDP,Drill,Reflection', FALSE, NULL, NULL, 'General', NULL),
+('tag_name    Passing
+tag_name        NaN
+Name: 66, dtype: object', 'Skill', 'Ball movement, assists, vision', '', 'PDP,Drill,Reflection', FALSE, NULL, NULL, 'General', NULL),
+('tag_name    Passing
+tag_name        NaN
+Name: 67, dtype: object', 'Skill', 'Ball movement, assists, vision', '', 'PDP,Drill,Reflection', FALSE, NULL, NULL, 'General', NULL),
+('tag_name    Shooting
+tag_name         NaN
+Name: 68, dtype: object', 'Skill', 'Catch-and-shoot, off-dribble, range', '', 'PDP,Drill,Reflection', FALSE, NULL, NULL, 'General', NULL),
+('tag_name    Off-Ball Movement
+tag_name                  NaN
+Name: 69, dtype: object', 'Skill', 'Cutting, screening, relocating', 'cutting, relocate, flare', 'PDP,Drill', TRUE, NULL, NULL, 'Offensive Tools', NULL),
+('tag_name    Ball Handling
+tag_name              NaN
+Name: 70, dtype: object', 'Skill', 'Control under pressure', 'dribbling, protect the ball', 'PDP,Drill', TRUE, NULL, NULL, 'Core Execution', NULL),
+('tag_name    Work Rate / Effort
+tag_name                   NaN
+Name: 71, dtype: object', 'Skill', 'Hustle and consistent intensity', '', 'PDP,Drill,Reflection', FALSE, NULL, NULL, 'General', NULL),
+('tag_name    Ball Handling
+tag_name              NaN
+Name: 72, dtype: object', 'Skill', 'Control under pressure', 'dribbling, protect the ball', 'PDP,Drill', TRUE, NULL, NULL, 'Core Execution', NULL),
+('tag_name    Shot Clock Constraint
+tag_name                      NaN
+Name: 73, dtype: object', 'Constraint', 'Must shoot within 5 seconds', '', 'PDP,Drill,Reflection', FALSE, NULL, NULL, 'General', NULL),
+('tag_name    Communication
+tag_name              NaN
+Name: 74, dtype: object', 'Theme', 'Talking on defense/offense', 'call out, vocal', 'PDP,Drill', TRUE, NULL, NULL, 'Mental Tools', NULL),
+('tag_name    Physicality
+tag_name            NaN
+Name: 75, dtype: object', 'Skill', 'Strength, contact tolerance', 'body control, toughness', 'PDP,Drill', TRUE, NULL, NULL, 'Core Execution', NULL),
+('tag_name    Help Defense
+tag_name             NaN
+Name: 76, dtype: object', 'Skill', 'Rotations, rim protection', '', 'PDP,Drill,Reflection', FALSE, NULL, NULL, 'General', NULL),
+('tag_name    Composure
+tag_name          NaN
+Name: 77, dtype: object', 'Skill', 'Staying calm under stress', 'control, poise', 'PDP,Reflection', TRUE, NULL, NULL, 'Mental Tools', NULL),
+('tag_name    Passing
+tag_name        NaN
+Name: 78, dtype: object', 'Skill', 'Ball movement, assists, vision', 'assist, drop-off, kickout', 'PDP,Drill', TRUE, NULL, NULL, 'Offensive Tools', NULL),
+('tag_name    Passing
+tag_name        NaN
+Name: 79, dtype: object', 'Skill', 'Ball movement, assists, vision', '', 'PDP,Drill,Reflection', FALSE, NULL, NULL, 'General', NULL),
+('tag_name    Help Defense
+tag_name             NaN
+Name: 80, dtype: object', 'Skill', 'Rotations, rim protection', '', 'PDP,Drill,Reflection', FALSE, NULL, NULL, 'General', NULL),
+('tag_name    Ball Pressure
+tag_name              NaN
+Name: 81, dtype: object', 'Skill', 'On-ball disruption', 'pressure, force turnovers', 'PDP,Drill', TRUE, NULL, NULL, 'Defensive Concepts', NULL),
+('tag_name    Shot Clock Constraint
+tag_name                      NaN
+Name: 82, dtype: object', 'Constraint', 'Must shoot within 5 seconds', '', 'PDP,Drill,Reflection', FALSE, NULL, NULL, 'General', NULL),
+('tag_name    Physicality
+tag_name            NaN
+Name: 83, dtype: object', 'Skill', 'Strength, contact tolerance', '', 'PDP,Drill,Reflection', FALSE, NULL, NULL, 'General', NULL),
+('tag_name    Chaos Level: High
+tag_name                  NaN
+Name: 84, dtype: object', 'Theme', 'Unstructured, reactive drills', 'scramble, high chaos', 'Drill,Reflection', TRUE, NULL, NULL, 'Environment', NULL),
+('tag_name    Mental Toughness
+tag_name                 NaN
+Name: 85, dtype: object', 'Skill', 'Resilience under pressure', 'grit, mental strength', 'PDP,Reflection', TRUE, NULL, NULL, 'Mental Tools', NULL),
+('tag_name    Left-Hand Only
+tag_name               NaN
+Name: 86, dtype: object', 'Constraint', 'Player must use left hand only', 'left hand, no right', 'Drill,Session', TRUE, NULL, NULL, 'Constraint', NULL),
+('tag_name    Ball Pressure
+tag_name              NaN
+Name: 87, dtype: object', 'Skill', 'On-ball disruption', 'pressure, force turnovers', 'PDP,Drill', TRUE, NULL, NULL, 'Defensive Concepts', NULL),
+('tag_name    Chaos Level: High
+tag_name                  NaN
+Name: 88, dtype: object', 'Theme', 'Unstructured, reactive drills', '', 'PDP,Drill,Reflection', FALSE, NULL, NULL, 'General', NULL),
+('tag_name    Chaos Level: High
+tag_name                  NaN
+Name: 89, dtype: object', 'Theme', 'Unstructured, reactive drills', 'scramble, high chaos', 'Drill,Reflection', TRUE, NULL, NULL, 'Environment', NULL),
+('tag_name    Ball Pressure
+tag_name              NaN
+Name: 90, dtype: object', 'Skill', 'On-ball disruption', 'pressure, force turnovers', 'PDP,Drill', TRUE, NULL, NULL, 'Defensive Concepts', NULL),
+('tag_name    Focus
+tag_name      NaN
+Name: 91, dtype: object', 'Skill', 'Sustained attention under stress', '', 'PDP,Drill,Reflection', FALSE, NULL, NULL, 'General', NULL),
+('tag_name    Work Rate / Effort
+tag_name                   NaN
+Name: 92, dtype: object', 'Skill', 'Hustle and consistent intensity', '', 'PDP,Drill,Reflection', FALSE, NULL, NULL, 'General', NULL),
+('tag_name    Composure
+tag_name          NaN
+Name: 93, dtype: object', 'Skill', 'Staying calm under stress', 'control, poise', 'PDP,Reflection', TRUE, NULL, NULL, 'Mental Tools', NULL),
+('tag_name    Push/Pull
+tag_name          NaN
+Name: 94, dtype: object', NULL, 'Off-ball movement cue based on ball handler''s vector', '', 'PDP,Drill,Reflection', FALSE, NULL, NULL, 'General', NULL),
+('tag_name    Focus
+tag_name      NaN
+Name: 95, dtype: object', 'Skill', 'Sustained attention under stress', '', 'PDP,Drill,Reflection', FALSE, NULL, NULL, 'General', NULL),
+('tag_name    Focus
+tag_name      NaN
+Name: 96, dtype: object', 'Skill', 'Sustained attention under stress', 'locked-in, attention', 'PDP,Reflection', TRUE, NULL, NULL, 'Mental Tools', NULL),
+('tag_name    Ball Pressure
+tag_name              NaN
+Name: 97, dtype: object', 'Skill', 'On-ball disruption', 'pressure, force turnovers', 'PDP,Drill', TRUE, NULL, NULL, 'Defensive Concepts', NULL),
+('tag_name    Focus
+tag_name      NaN
+Name: 98, dtype: object', 'Skill', 'Sustained attention under stress', 'locked-in, attention', 'PDP,Reflection', TRUE, NULL, NULL, 'Mental Tools', NULL),
+('tag_name    Focus
+tag_name      NaN
+Name: 99, dtype: object', 'Skill', 'Sustained attention under stress', '', 'PDP,Drill,Reflection', FALSE, NULL, NULL, 'General', NULL),
+('tag_name    Work Rate / Effort
+tag_name                   NaN
+Name: 100, dtype: object', 'Skill', 'Hustle and consistent intensity', '', 'PDP,Drill,Reflection', FALSE, NULL, NULL, 'General', NULL),
+('tag_name    Ball Handling
+tag_name              NaN
+Name: 101, dtype: object', 'Skill', 'Control under pressure', 'dribbling, protect the ball', 'PDP,Drill', TRUE, NULL, NULL, 'Core Execution', NULL),
+('tag_name    Ball Handling
+tag_name              NaN
+Name: 102, dtype: object', 'Skill', 'Control under pressure', '', 'PDP,Drill,Reflection', FALSE, NULL, NULL, 'General', NULL),
+('tag_name    Chaos Level: High
+tag_name                  NaN
+Name: 103, dtype: object', 'Theme', 'Unstructured, reactive drills', '', 'PDP,Drill,Reflection', FALSE, NULL, NULL, 'General', NULL),
+('tag_name    No Paint Touch
+tag_name               NaN
+Name: 104, dtype: object', 'Constraint', 'Cannot enter paint area', 'perimeter only', 'Drill', TRUE, NULL, NULL, 'Constraint', NULL),
+('tag_name    Off-Ball Movement
+tag_name                  NaN
+Name: 105, dtype: object', 'Skill', 'Cutting, screening, relocating', 'cutting, relocate, flare', 'PDP,Drill', TRUE, NULL, NULL, 'Offensive Tools', NULL),
+('tag_name    Left-Hand Only
+tag_name               NaN
+Name: 106, dtype: object', 'Constraint', 'Player must use left hand only', '', 'PDP,Drill,Reflection', FALSE, NULL, NULL, 'General', NULL),
+('tag_name    Communication
+tag_name              NaN
+Name: 107, dtype: object', 'Theme', 'Talking on defense/offense', 'call out, vocal', 'PDP,Drill', TRUE, NULL, NULL, 'Mental Tools', NULL),
+('tag_name    Off-Ball Movement
+tag_name                  NaN
+Name: 108, dtype: object', 'Skill', 'Cutting, screening, relocating', '', 'PDP,Drill,Reflection', FALSE, NULL, NULL, 'General', NULL),
+('tag_name    Finishing
+tag_name          NaN
+Name: 109, dtype: object', 'Skill', 'At-rim and short-range scoring', '', 'PDP,Drill,Reflection', FALSE, NULL, NULL, 'General', NULL),
+('tag_name    Work Rate / Effort
+tag_name                   NaN
+Name: 110, dtype: object', 'Skill', 'Hustle and consistent intensity', '', 'PDP,Drill,Reflection', FALSE, NULL, NULL, 'General', NULL),
+('tag_name    Help Defense
+tag_name             NaN
+Name: 111, dtype: object', 'Skill', 'Rotations, rim protection', '', 'PDP,Drill,Reflection', FALSE, NULL, NULL, 'General', NULL),
+('tag_name    Off-Ball Movement
+tag_name                  NaN
+Name: 112, dtype: object', 'Skill', 'Cutting, screening, relocating', 'cutting, relocate, flare', 'PDP,Drill', TRUE, NULL, NULL, 'Offensive Tools', NULL),
+('tag_name    Shooting
+tag_name         NaN
+Name: 113, dtype: object', 'Skill', 'Catch-and-shoot, off-dribble, range', '', 'PDP,Drill,Reflection', FALSE, NULL, NULL, 'General', NULL),
+('tag_name    Physicality
+tag_name            NaN
+Name: 114, dtype: object', 'Skill', 'Strength, contact tolerance', 'body control, toughness', 'PDP,Drill', TRUE, NULL, NULL, 'Core Execution', NULL),
+('tag_name    Left-Hand Only
+tag_name               NaN
+Name: 115, dtype: object', 'Constraint', 'Player must use left hand only', 'left hand, no right', 'Drill,Session', TRUE, NULL, NULL, 'Constraint', NULL),
+('tag_name    Work Rate / Effort
+tag_name                   NaN
+Name: 116, dtype: object', 'Skill', 'Hustle and consistent intensity', 'motor, grind', 'PDP', TRUE, NULL, NULL, 'Mental Tools', NULL),
+('tag_name    Chaos Level: High
+tag_name                  NaN
+Name: 117, dtype: object', 'Theme', 'Unstructured, reactive drills', 'scramble, high chaos', 'Drill,Reflection', TRUE, NULL, NULL, 'Environment', NULL),
+('tag_name    Communication
+tag_name              NaN
+Name: 118, dtype: object', 'Theme', 'Talking on defense/offense', '', 'PDP,Drill,Reflection', FALSE, NULL, NULL, 'General', NULL),
+('tag_name    Finishing
+tag_name          NaN
+Name: 119, dtype: object', 'Skill', 'At-rim and short-range scoring', 'layups, floaters, paint scoring', 'PDP,Drill,Reflection', TRUE, NULL, NULL, 'Offensive Tools', NULL),
+('tag_name    Communication
+tag_name              NaN
+Name: 120, dtype: object', 'Theme', 'Talking on defense/offense', '', 'PDP,Drill,Reflection', FALSE, NULL, NULL, 'General', NULL),
+('tag_name    Ball Handling
+tag_name              NaN
+Name: 121, dtype: object', 'Skill', 'Control under pressure', '', 'PDP,Drill,Reflection', FALSE, NULL, NULL, 'General', NULL),
+('tag_name    Communication
+tag_name              NaN
+Name: 122, dtype: object', 'Theme', 'Talking on defense/offense', 'call out, vocal', 'PDP,Drill', TRUE, NULL, NULL, 'Mental Tools', NULL),
+('tag_name    Shot Clock Constraint
+tag_name                      NaN
+Name: 123, dtype: object', 'Constraint', 'Must shoot within 5 seconds', '', 'PDP,Drill,Reflection', FALSE, NULL, NULL, 'General', NULL),
+('tag_name    Passing
+tag_name        NaN
+Name: 124, dtype: object', 'Skill', 'Ball movement, assists, vision', '', 'PDP,Drill,Reflection', FALSE, NULL, NULL, 'General', NULL),
+('tag_name    Passing
+tag_name        NaN
+Name: 125, dtype: object', 'Skill', 'Ball movement, assists, vision', '', 'PDP,Drill,Reflection', FALSE, NULL, NULL, 'General', NULL),
+('tag_name    Shooting
+tag_name         NaN
+Name: 126, dtype: object', 'Skill', 'Catch-and-shoot, off-dribble, range', 'jump shot, spot-up, three-pointer', 'PDP,Drill', TRUE, NULL, NULL, 'Offensive Tools', NULL),
+('tag_name    Help Defense
+tag_name             NaN
+Name: 127, dtype: object', 'Skill', 'Rotations, rim protection', '', 'PDP,Drill,Reflection', FALSE, NULL, NULL, 'General', NULL),
+('tag_name    Communication
+tag_name              NaN
+Name: 128, dtype: object', 'Theme', 'Talking on defense/offense', '', 'PDP,Drill,Reflection', FALSE, NULL, NULL, 'General', NULL),
+('tag_name    Ball Pressure
+tag_name              NaN
+Name: 129, dtype: object', 'Skill', 'On-ball disruption', '', 'PDP,Drill,Reflection', FALSE, NULL, NULL, 'General', NULL),
+('tag_name    Composure
+tag_name          NaN
+Name: 130, dtype: object', 'Skill', 'Staying calm under stress', 'control, poise', 'PDP,Reflection', TRUE, NULL, NULL, 'Mental Tools', NULL),
+('tag_name    Mental Toughness
+tag_name                 NaN
+Name: 131, dtype: object', 'Skill', 'Resilience under pressure', '', 'PDP,Drill,Reflection', FALSE, NULL, NULL, 'General', NULL),
+('tag_name    Work Rate / Effort
+tag_name                   NaN
+Name: 132, dtype: object', 'Skill', 'Hustle and consistent intensity', 'motor, grind', 'PDP', TRUE, NULL, NULL, 'Mental Tools', NULL),
+('tag_name    Composure
+tag_name          NaN
+Name: 133, dtype: object', 'Skill', 'Staying calm under stress', '', 'PDP,Drill,Reflection', FALSE, NULL, NULL, 'General', NULL),
+('tag_name    Ball Pressure
+tag_name              NaN
+Name: 134, dtype: object', 'Skill', 'On-ball disruption', '', 'PDP,Drill,Reflection', FALSE, NULL, NULL, 'General', NULL),
+('tag_name    Composure
+tag_name          NaN
+Name: 135, dtype: object', 'Skill', 'Staying calm under stress', '', 'PDP,Drill,Reflection', FALSE, NULL, NULL, 'General', NULL),
+('tag_name    Ball Handling
+tag_name              NaN
+Name: 136, dtype: object', 'Skill', 'Control under pressure', 'dribbling, protect the ball', 'PDP,Drill', TRUE, NULL, NULL, 'Core Execution', NULL),
+('tag_name    Ball Pressure
+tag_name              NaN
+Name: 137, dtype: object', 'Skill', 'On-ball disruption', '', 'PDP,Drill,Reflection', FALSE, NULL, NULL, 'General', NULL),
+('tag_name    No Paint Touch
+tag_name               NaN
+Name: 138, dtype: object', 'Constraint', 'Cannot enter paint area', 'perimeter only', 'Drill', TRUE, NULL, NULL, 'Constraint', NULL),
+('tag_name    Focus
+tag_name      NaN
+Name: 139, dtype: object', 'Skill', 'Sustained attention under stress', 'locked-in, attention', 'PDP,Reflection', TRUE, NULL, NULL, 'Mental Tools', NULL),
+('tag_name    Focus
+tag_name      NaN
+Name: 140, dtype: object', 'Skill', 'Sustained attention under stress', 'locked-in, attention', 'PDP,Reflection', TRUE, NULL, NULL, 'Mental Tools', NULL),
+('tag_name    Mental Toughness
+tag_name                 NaN
+Name: 141, dtype: object', 'Skill', 'Resilience under pressure', '', 'PDP,Drill,Reflection', FALSE, NULL, NULL, 'General', NULL),
+('tag_name    Communication
+tag_name              NaN
+Name: 142, dtype: object', 'Theme', 'Talking on defense/offense', '', 'PDP,Drill,Reflection', FALSE, NULL, NULL, 'General', NULL),
+('tag_name    Left-Hand Only
+tag_name               NaN
+Name: 143, dtype: object', 'Constraint', 'Player must use left hand only', 'left hand, no right', 'Drill,Session', TRUE, NULL, NULL, 'Constraint', NULL),
+('tag_name    Left-Hand Only
+tag_name               NaN
+Name: 144, dtype: object', 'Constraint', 'Player must use left hand only', '', 'PDP,Drill,Reflection', FALSE, NULL, NULL, 'General', NULL),
+('tag_name    Shot Clock Constraint
+tag_name                      NaN
+Name: 145, dtype: object', 'Constraint', 'Must shoot within 5 seconds', 'fast decision, quick shot', 'Drill', TRUE, NULL, NULL, 'Constraint', NULL),
+('tag_name    Ball Pressure
+tag_name              NaN
+Name: 146, dtype: object', 'Skill', 'On-ball disruption', 'pressure, force turnovers', 'PDP,Drill', TRUE, NULL, NULL, 'Defensive Concepts', NULL),
+('tag_name    Chaos Level: High
+tag_name                  NaN
+Name: 147, dtype: object', 'Theme', 'Unstructured, reactive drills', '', 'PDP,Drill,Reflection', FALSE, NULL, NULL, 'General', NULL),
+('tag_name    Help Defense
+tag_name             NaN
+Name: 148, dtype: object', 'Skill', 'Rotations, rim protection', '', 'PDP,Drill,Reflection', FALSE, NULL, NULL, 'General', NULL),
+('tag_name    Communication
+tag_name              NaN
+Name: 149, dtype: object', 'Theme', 'Talking on defense/offense', 'call out, vocal', 'PDP,Drill', TRUE, NULL, NULL, 'Mental Tools', NULL),
+('tag_name    Focus
+tag_name      NaN
+Name: 150, dtype: object', 'Skill', 'Sustained attention under stress', '', 'PDP,Drill,Reflection', FALSE, NULL, NULL, 'General', NULL),
+('tag_name    Ball Handling
+tag_name              NaN
+Name: 151, dtype: object', 'Skill', 'Control under pressure', 'dribbling, protect the ball', 'PDP,Drill', TRUE, NULL, NULL, 'Core Execution', NULL),
+('tag_name    Communication
+tag_name              NaN
+Name: 152, dtype: object', 'Theme', 'Talking on defense/offense', 'call out, vocal', 'PDP,Drill', TRUE, NULL, NULL, 'Mental Tools', NULL),
+('tag_name    Passing
+tag_name        NaN
+Name: 153, dtype: object', 'Skill', 'Ball movement, assists, vision', 'assist, drop-off, kickout', 'PDP,Drill', TRUE, NULL, NULL, 'Offensive Tools', NULL),
+('tag_name    Passing
+tag_name        NaN
+Name: 154, dtype: object', 'Skill', 'Ball movement, assists, vision', 'assist, drop-off, kickout', 'PDP,Drill', TRUE, NULL, NULL, 'Offensive Tools', NULL),
+('tag_name    Shooting
+tag_name         NaN
+Name: 155, dtype: object', 'Skill', 'Catch-and-shoot, off-dribble, range', 'jump shot, spot-up, three-pointer', 'PDP,Drill', TRUE, NULL, NULL, 'Offensive Tools', NULL),
+('tag_name    Stride Stop Finish
+tag_name                   NaN
+Name: 156, dtype: object', NULL, 'Finishing off two feet with control', '', 'PDP,Drill,Reflection', FALSE, NULL, NULL, 'General', NULL),
+('tag_name    Composure
+tag_name          NaN
+Name: 157, dtype: object', 'Skill', 'Staying calm under stress', 'control, poise', 'PDP,Reflection', TRUE, NULL, NULL, 'Mental Tools', NULL),
+('tag_name    Ball Pressure
+tag_name              NaN
+Name: 158, dtype: object', 'Skill', 'On-ball disruption', '', 'PDP,Drill,Reflection', FALSE, NULL, NULL, 'General', NULL),
+('tag_name    Finishing
+tag_name          NaN
+Name: 159, dtype: object', 'Skill', 'At-rim and short-range scoring', '', 'PDP,Drill,Reflection', FALSE, NULL, NULL, 'General', NULL),
+('tag_name    Focus
+tag_name      NaN
+Name: 160, dtype: object', 'Skill', 'Sustained attention under stress', '', 'PDP,Drill,Reflection', FALSE, NULL, NULL, 'General', NULL),
+('tag_name    Closeout Technique
+tag_name                   NaN
+Name: 161, dtype: object', 'Skill', 'Contesting while maintaining control', '', 'PDP,Drill,Reflection', FALSE, NULL, NULL, 'General', NULL),
+('tag_name    Finishing
+tag_name          NaN
+Name: 162, dtype: object', 'Skill', 'At-rim and short-range scoring', 'layups, floaters, paint scoring', 'PDP,Drill,Reflection', TRUE, NULL, NULL, 'Offensive Tools', NULL),
+('tag_name    Physicality
+tag_name            NaN
+Name: 163, dtype: object', 'Skill', 'Strength, contact tolerance', '', 'PDP,Drill,Reflection', FALSE, NULL, NULL, 'General', NULL),
+('tag_name    Mental Toughness
+tag_name                 NaN
+Name: 164, dtype: object', 'Skill', 'Resilience under pressure', '', 'PDP,Drill,Reflection', FALSE, NULL, NULL, 'General', NULL),
+('tag_name    Physicality
+tag_name            NaN
+Name: 165, dtype: object', 'Skill', 'Strength, contact tolerance', '', 'PDP,Drill,Reflection', FALSE, NULL, NULL, 'General', NULL),
+('tag_name    Passing
+tag_name        NaN
+Name: 166, dtype: object', 'Skill', 'Ball movement, assists, vision', '', 'PDP,Drill,Reflection', FALSE, NULL, NULL, 'General', NULL),
+('tag_name    Shooting
+tag_name         NaN
+Name: 167, dtype: object', 'Skill', 'Catch-and-shoot, off-dribble, range', 'jump shot, spot-up, three-pointer', 'PDP,Drill', TRUE, NULL, NULL, 'Offensive Tools', NULL),
+('tag_name    No Paint Touch
+tag_name               NaN
+Name: 168, dtype: object', 'Constraint', 'Cannot enter paint area', 'perimeter only', 'Drill', TRUE, NULL, NULL, 'Constraint', NULL),
+('tag_name    Communication
+tag_name              NaN
+Name: 169, dtype: object', 'Theme', 'Talking on defense/offense', 'call out, vocal', 'PDP,Drill', TRUE, NULL, NULL, 'Mental Tools', NULL),
+('tag_name    Passing
+tag_name        NaN
+Name: 170, dtype: object', 'Skill', 'Ball movement, assists, vision', 'assist, drop-off, kickout', 'PDP,Drill', TRUE, NULL, NULL, 'Offensive Tools', NULL),
+('tag_name    Passing
+tag_name        NaN
+Name: 171, dtype: object', 'Skill', 'Ball movement, assists, vision', '', 'PDP,Drill,Reflection', FALSE, NULL, NULL, 'General', NULL),
+('tag_name    Work Rate / Effort
+tag_name                   NaN
+Name: 172, dtype: object', 'Skill', 'Hustle and consistent intensity', '', 'PDP,Drill,Reflection', FALSE, NULL, NULL, 'General', NULL),
+('tag_name    Passing
+tag_name        NaN
+Name: 173, dtype: object', 'Skill', 'Ball movement, assists, vision', '', 'PDP,Drill,Reflection', FALSE, NULL, NULL, 'General', NULL),
+('tag_name    Communication
+tag_name              NaN
+Name: 174, dtype: object', 'Theme', 'Talking on defense/offense', '', 'PDP,Drill,Reflection', FALSE, NULL, NULL, 'General', NULL),
+('tag_name    Closeout Technique
+tag_name                   NaN
+Name: 175, dtype: object', 'Skill', 'Contesting while maintaining control', 'contest, closeout, hand-up', 'PDP,Drill', TRUE, NULL, NULL, 'Defensive Concepts', NULL),
+('tag_name    Shooting
+tag_name         NaN
+Name: 176, dtype: object', 'Skill', 'Catch-and-shoot, off-dribble, range', '', 'PDP,Drill,Reflection', FALSE, NULL, NULL, 'General', NULL),
+('tag_name    Communication
+tag_name              NaN
+Name: 177, dtype: object', 'Theme', 'Talking on defense/offense', '', 'PDP,Drill,Reflection', FALSE, NULL, NULL, 'General', NULL),
+('tag_name    Passing
+tag_name        NaN
+Name: 178, dtype: object', 'Skill', 'Ball movement, assists, vision', 'assist, drop-off, kickout', 'PDP,Drill', TRUE, NULL, NULL, 'Offensive Tools', NULL),
+('tag_name    Shot Clock Constraint
+tag_name                      NaN
+Name: 179, dtype: object', 'Constraint', 'Must shoot within 5 seconds', 'fast decision, quick shot', 'Drill', TRUE, NULL, NULL, 'Constraint', NULL),
+('tag_name    Focus
+tag_name      NaN
+Name: 180, dtype: object', 'Skill', 'Sustained attention under stress', '', 'PDP,Drill,Reflection', FALSE, NULL, NULL, 'General', NULL),
+('tag_name    Shooting
+tag_name         NaN
+Name: 181, dtype: object', 'Skill', 'Catch-and-shoot, off-dribble, range', '', 'PDP,Drill,Reflection', FALSE, NULL, NULL, 'General', NULL),
+('tag_name    Chaos Level: High
+tag_name                  NaN
+Name: 182, dtype: object', 'Theme', 'Unstructured, reactive drills', 'scramble, high chaos', 'Drill,Reflection', TRUE, NULL, NULL, 'Environment', NULL),
+('tag_name    Physicality
+tag_name            NaN
+Name: 183, dtype: object', 'Skill', 'Strength, contact tolerance', '', 'PDP,Drill,Reflection', FALSE, NULL, NULL, 'General', NULL),
+('tag_name    Off-Ball Movement
+tag_name                  NaN
+Name: 184, dtype: object', 'Skill', 'Cutting, screening, relocating', '', 'PDP,Drill,Reflection', FALSE, NULL, NULL, 'General', NULL),
+('tag_name    Closeout Technique
+tag_name                   NaN
+Name: 185, dtype: object', 'Skill', 'Contesting while maintaining control', 'contest, closeout, hand-up', 'PDP,Drill', TRUE, NULL, NULL, 'Defensive Concepts', NULL),
+('tag_name    Shot Clock Constraint
+tag_name                      NaN
+Name: 186, dtype: object', 'Constraint', 'Must shoot within 5 seconds', 'fast decision, quick shot', 'Drill', TRUE, NULL, NULL, 'Constraint', NULL),
+('tag_name    Shot Clock Constraint
+tag_name                      NaN
+Name: 187, dtype: object', 'Constraint', 'Must shoot within 5 seconds', 'fast decision, quick shot', 'Drill', TRUE, NULL, NULL, 'Constraint', NULL),
+('tag_name    Left-Hand Only
+tag_name               NaN
+Name: 188, dtype: object', 'Constraint', 'Player must use left hand only', '', 'PDP,Drill,Reflection', FALSE, NULL, NULL, 'General', NULL),
+('tag_name    Shooting
+tag_name         NaN
+Name: 189, dtype: object', 'Skill', 'Catch-and-shoot, off-dribble, range', '', 'PDP,Drill,Reflection', FALSE, NULL, NULL, 'General', NULL),
+('tag_name    Finishing
+tag_name          NaN
+Name: 190, dtype: object', 'Skill', 'At-rim and short-range scoring', 'layups, floaters, paint scoring', 'PDP,Drill,Reflection', TRUE, NULL, NULL, 'Offensive Tools', NULL),
+('tag_name    Finishing
+tag_name          NaN
+Name: 191, dtype: object', 'Skill', 'At-rim and short-range scoring', '', 'PDP,Drill,Reflection', FALSE, NULL, NULL, 'General', NULL),
+('tag_name    Chaos Level: High
+tag_name                  NaN
+Name: 192, dtype: object', 'Theme', 'Unstructured, reactive drills', '', 'PDP,Drill,Reflection', FALSE, NULL, NULL, 'General', NULL),
+('tag_name    Mental Toughness
+tag_name                 NaN
+Name: 193, dtype: object', 'Skill', 'Resilience under pressure', '', 'PDP,Drill,Reflection', FALSE, NULL, NULL, 'General', NULL),
+('tag_name    Right-Hand Constraint
+tag_name                      NaN
+Name: 194, dtype: object', NULL, 'Must use right hand during live reps', '', 'PDP,Drill,Reflection', FALSE, NULL, NULL, 'General', NULL),
+('tag_name    Chaos Level: High
+tag_name                  NaN
+Name: 195, dtype: object', 'Theme', 'Unstructured, reactive drills', 'scramble, high chaos', 'Drill,Reflection', TRUE, NULL, NULL, 'Environment', NULL),
+('tag_name    Finishing
+tag_name          NaN
+Name: 196, dtype: object', 'Skill', 'At-rim and short-range scoring', 'layups, floaters, paint scoring', 'PDP,Drill,Reflection', TRUE, NULL, NULL, 'Offensive Tools', NULL),
+('tag_name    Work Rate / Effort
+tag_name                   NaN
+Name: 197, dtype: object', 'Skill', 'Hustle and consistent intensity', '', 'PDP,Drill,Reflection', FALSE, NULL, NULL, 'General', NULL),
+('tag_name    Chaos Level: High
+tag_name                  NaN
+Name: 198, dtype: object', 'Theme', 'Unstructured, reactive drills', '', 'PDP,Drill,Reflection', FALSE, NULL, NULL, 'General', NULL),
+('tag_name    Help Defense
+tag_name             NaN
+Name: 199, dtype: object', 'Skill', 'Rotations, rim protection', 'rotation, help-side', 'PDP,Drill', TRUE, NULL, NULL, 'Defensive Concepts', NULL),
+('tag_name    Off-Ball Movement
+tag_name                  NaN
+Name: 200, dtype: object', 'Skill', 'Cutting, screening, relocating', 'cutting, relocate, flare', 'PDP,Drill', TRUE, NULL, NULL, 'Offensive Tools', NULL),
+('tag_name    Shot Clock Constraint
+tag_name                      NaN
+Name: 201, dtype: object', 'Constraint', 'Must shoot within 5 seconds', 'fast decision, quick shot', 'Drill', TRUE, NULL, NULL, 'Constraint', NULL),
+('tag_name    Finishing
+tag_name          NaN
+Name: 202, dtype: object', 'Skill', 'At-rim and short-range scoring', 'layups, floaters, paint scoring', 'PDP,Drill,Reflection', TRUE, NULL, NULL, 'Offensive Tools', NULL),
+('tag_name    Ball Handling
+tag_name              NaN
+Name: 203, dtype: object', 'Skill', 'Control under pressure', '', 'PDP,Drill,Reflection', FALSE, NULL, NULL, 'General', NULL),
+('tag_name    Mental Toughness
+tag_name                 NaN
+Name: 204, dtype: object', 'Skill', 'Resilience under pressure', '', 'PDP,Drill,Reflection', FALSE, NULL, NULL, 'General', NULL);

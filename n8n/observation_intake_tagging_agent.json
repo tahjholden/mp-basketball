@@ -1,0 +1,20 @@
+{
+  "nodes": [
+    {
+      "name": "HTTP Request",
+      "type": "n8n-nodes-base.httpRequest",
+      "parameters": {
+        "url": "https://api.example.com/endpoint",
+        "method": "GET",
+        "headers": {
+          "Authorization": "=Bearer {{$credentials.exampleApi.apiKey}}"
+        }
+      },
+      "typeVersion": 1,
+      "credentials": {
+        "httpHeaderAuth": "Example API"
+      }
+    }
+  ],
+  "connections": {}
+}

@@ -1,0 +1,46 @@
+
+MPB SYSTEM – MANUAL LOOP TEST CASE: COLE HOLDEN
+
+PLAYER CONTEXT
+---------------
+Name: Cole Holden
+Age: 10
+Level: 3
+Primary Development Focus: Pressure Read
+Constraint Friction: Avoids paint under pressure
+
+SESSION CONTEXT
+----------------
+Session UID: SES-012
+Date: 2025-05-07
+Drills Used: 2v1 Decision Constraint, Contact Finish into 1v1 Closeout
+Coach Cues: Be decisive with space, Hold your ground before reacting
+Observed Friction: Passed early every time, Avoided contact near rim
+
+PLAYER REFLECTION PROMPTS (Generated)
+-------------------------------------
+- What made it hard to hold your dribble near the rim today?
+- Describe a moment when you made a quick decision—what helped?
+- What did you see just before the help defender stepped up?
+- Was there a time you felt confident in the paint? What made it different?
+- How did Coach’s cue 'hold your ground' show up in your play?
+
+PLAYER RESPONSES
+-----------------
+- I thought I would get blocked so I picked up the ball too soon.
+- When I saw no one in front of me, it was easier to decide to shoot.
+- I saw a taller kid sliding over and got nervous.
+- Yes, once when I was already close to the hoop—it felt automatic.
+- It helped me not rush the first step after catching it.
+
+PDP UPDATE
+-----------
+- Tag Added: Pre-contact hesitation
+- Drill Constraint Added: Must drive through light contact before decision
+- New Coach Cue: Be late to decide, early to see
+
+NEXT PRACTICE ADAPTATION
+--------------------------
+Drill: Bump Then Play – 1v1 Start
+Constraint: Initiate contact on first move, play live after
+Intended Outcome: Desensitize hesitation on paint entry under pressure
