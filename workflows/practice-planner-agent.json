@@ -77,7 +77,7 @@
               "role": "system"
             },
             {
-              "content": "=You are provided with the latest Player Development Profiles (PDPs) for today\u2019s session roster. Each PDP includes:\n- player_id\n- skill_tags\n- constraint_tags\n- theme_tags\n- advancement_level (1\u201310)\n- responsibility_tier (1\u20136)\n- collective_growth_phase (1\u20136)\n- pdp_text_full, pdp_text_coach, pdp_text_player\n\n  The current team or pod collective growth phase is: 3\n\nDesign a session plan for this group that:\n- Addresses both individual and shared constraints/skills.\n- Recommends 3\u20135 practice blocks (warm-up, SSGs, team concept, individual work, etc.).\n- For each block, specify:\n    \u2022 Block Name\n    \u2022 Format (e.g., 1v1, 2v2, 3v3, 5v5, coach-in, pod split, etc.)\n    \u2022 Targeted skills/constraints (by tag name, not summary)\n    \u2022 Which players benefit most (by player_id or tag match)\n    \u2022 Collective Growth phase alignment (C-phase)\n    \u2022 Key coaching cues (constraint language)\n\nThe output MUST be valid JSON, like:\n{\n  \"session_plan\": [\n    {\n      \"block_name\": \"Spacing to Advantage\",\n      \"format\": \"3v3\",\n      \"skills\": [\"Spacing\", \"Early Advantage\"],\n      \"constraints\": [\"Fight For Your Feet\"],\n      \"players\": [\"8ce6193d-3041-4f11-8c1d-a63d10d12569\"],\n      \"collective_growth_phase\": 2,\n      \"coaching_cues\": [\"Land and pause\", \"Find spacing before action\"]\n    },\n    ...\n  ]\n}\n\nBase your decisions ONLY on the supplied PDPs and team growth phase. Recommend only blocks that align with your ARC philosophy. Do not invent tags. Make sure each constraint or skill targeted comes directly from the PDPs or team phase.\n\nIf there are duplicate needs, prioritize blocks that address multiple players\u2019 needs at once."
+              "content": "=You are provided with the latest Player Development Profiles (PDPs) for today’s session roster. Each PDP includes:\n- player_id\n- skill_tags\n- constraint_tags\n- theme_tags\n- advancement_level (1–10)\n- responsibility_tier (1–6)\n- collective_growth_phase (1–6)\n- pdp_text_full, pdp_text_coach, pdp_text_player\n\n  The current team or pod collective growth phase is: 3\n\nDesign a session plan for this group that:\n- Addresses both individual and shared constraints/skills.\n- Recommends 3–5 practice blocks (warm-up, SSGs, team concept, individual work, etc.).\n- For each block, specify:\n    • Block Name\n    • Format (e.g., 1v1, 2v2, 3v3, 5v5, coach-in, pod split, etc.)\n    • Targeted skills/constraints (by tag name, not summary)\n    • Which players benefit most (by player_id or tag match)\n    • Collective Growth phase alignment (C-phase)\n    • Key coaching cues (constraint language)\n\nThe output MUST be valid JSON, like:\n{\n  \"session_plan\": [\n    {\n      \"block_name\": \"Spacing to Advantage\",\n      \"format\": \"3v3\",\n      \"skills\": [\"Spacing\", \"Early Advantage\"],\n      \"constraints\": [\"Fight For Your Feet\"],\n      \"players\": [\"8ce6193d-3041-4f11-8c1d-a63d10d12569\"],\n      \"collective_growth_phase\": 2,\n      \"coaching_cues\": [\"Land and pause\", \"Find spacing before action\"]\n    },\n    ...\n  ]\n}\n\nBase your decisions ONLY on the supplied PDPs and team growth phase. Recommend only blocks that align with your ARC philosophy. Do not invent tags. Make sure each constraint or skill targeted comes directly from the PDPs or team phase.\n\nIf there are duplicate needs, prioritize blocks that address multiple players’ needs at once."
             }
           ]
         },
@@ -306,7 +306,7 @@
     {
       "parameters": {
         "jsCode": "const expected = $items(\"FetchExpected\")[0].json.player_ids;\nconst actual = $items(\"FetchActual\").map(i => i.json.player_id);\nconst present = expected.filter(id => actual.includes(id));\nconst missing = expected.filter(id => !actual.includes(id));\nconst unexpected = actual.filter(id => !expected.includes(id));\nreturn [{json: {present, missing, unexpected}}];"
-        
+
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -316,6 +316,71 @@
       ],
       "id": "353a6503-afbd-44d1-bb0a-94864d50c5e7",
       "name": "CompareAttendance"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "rules": [
+            {
+              "id": "591272c1-3a7c-4c10-a201-f05fe3a85cb9",
+              "leftValue": "={{$json[\"missing\"].length}}",
+              "operator": {
+                "type": "number",
+                "operation": "larger"
+              },
+              "rightValue": 0
+            },
+            {
+              "id": "77bc5e9a-ce42-41a6-bf4b-c8a265174752",
+              "leftValue": "={{$json[\"unexpected\"].length}}",
+              "operator": {
+                "type": "number",
+                "operation": "larger"
+              },
+              "rightValue": 0
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        880,
+        60
+      ],
+      "id": "d111659d-b683-4c15-a668-b396e4bfed7f",
+      "name": "IfAttendanceMismatch"
+    },
+    {
+      "parameters": {
+        "url": "https://example.com/rest/v1/agent_events",
+        "method": "POST"
+      },
+      "type": "n8n-nodes-observation-intake.dbWriter",
+      "typeVersion": 1,
+      "position": [
+        1080,
+        60
+      ],
+      "id": "987f0d78-5d5c-44b3-ae6d-6a36843bd22b",
+      "name": "LogAttendanceMismatch"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://hooks.example.com/slack"
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [
+        1080,
+        -40
+      ],
+      "id": "2e2e47a4-2b32-4f16-9e65-b07b334e7439",
+      "name": "NotifyCoaches"
+
     }
   ],
   "pinData": {},
@@ -507,10 +572,45 @@
             "type": "main",
             "index": 0
           }
+        ],
+        [
+          {
+            "node": "IfAttendanceMismatch",
+            "type": "main",
+            "index": 0
+          }
         ]
       ]
     },
     "Code_NoAttendanceWarning": {
+      "main": [
+        []
+      ]
+    },
+    "IfAttendanceMismatch": {
+      "main": [
+        [
+          {
+            "node": "LogAttendanceMismatch",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    },
+    "LogAttendanceMismatch": {
+      "main": [
+        [
+          {
+            "node": "NotifyCoaches",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "NotifyCoaches": {
       "main": [
         []
       ]
