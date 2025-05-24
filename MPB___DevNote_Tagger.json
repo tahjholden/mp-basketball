@@ -1,0 +1,82 @@
+{
+  "name": "MPB – DevNote Tagger",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 15
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "08ba24e9-55fc-4f73-98a1-ad9e4dbc9d67",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "url": "https://htvyruodlvdbpfsnmuhz.supabase.co",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh0dnlydW9kbHZkYnBmc25tdWh6Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc0NzE3ODUxNCwiZXhwIjoyMDYyNzU0NTE0fQ.itFGgJBxAxJ7k6XtXOzPber886kFYjtitRldziW5piU"
+            },
+            {
+              "name": "Authorization",
+              "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh0dnlydW9kbHZkYnBmc25tdWh6Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc0NzE3ODUxNCwiZXhwIjoyMDYyNzU0NTE0fQ.itFGgJBxAxJ7k6XtXOzPber886kFYjtitRldziW5piU"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        220,
+        0
+      ],
+      "id": "ab227fba-1108-4960-ba56-ea1c3544395f",
+      "name": "HTTP Request"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "60230480-d80d-4169-8758-779f856bc985",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "0abe8dd3af7b84dd650128b454cc932a6aae1d69499f17eccb6a7dec666a07a5"
+  },
+  "id": "RKQsN6nd2MmBFhYQ",
+  "tags": []
+}

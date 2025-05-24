@@ -1,0 +1,1 @@
+INSERT INTO "public"."coach_pod" ("coach_id", "pod_id") VALUES ('5979b34c-969c-4df0-a773-91bff3b8032c', 'ea14278f-ce84-420e-acad-2230f8ce3179'), ('692ad0cd-8e13-4c49-9b3c-7335991b81cf', '50723ae2-08ce-4d92-8f12-198e20ae22ea'), ('692ad0cd-8e13-4c49-9b3c-7335991b81cf', 'ea14278f-ce84-420e-acad-2230f8ce3179');

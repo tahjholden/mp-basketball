@@ -1,0 +1,15 @@
+{
+  "id": 1002,
+  "module": "json:ParseJSON",
+  "version": 1,
+  "parameters": {},
+  "mapper": {
+    "json": "{{1001.result}}"
+  },
+  "metadata": {
+    "designer": {
+      "x": 600,
+      "y": 300
+    }
+  }
+}

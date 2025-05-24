@@ -1,0 +1,50 @@
+UID,Tag Name,Category,Scope,Tier Flag,Alias(es),Description
+TAC-45CUT-20250513,45 Cut,Origin Type,Team,Core,,Diagonal cut from wing to rim.
+TAC-BACKCU-20250513,Back Cut,Origin Type,Team,Core,,Basket cut behind defender toward hoop.
+TAC-FACECU-20250513,Face Cut,Origin Type,Team,Core,,"Cut in front of defender’s face, often corner to hoop."
+TAC-CROSSS-20250513,Cross Screen,Origin Type,Team,Core,,Horizontal off‑ball screen across lane.
+TAC-FLARES-20250513,Flare Screen,Origin Type,Team,Core,,Off‑ball screen sending cutter along 3‑pt line away from ball.
+TAC-BACKSC-20250513,Back Screen,Origin Type,Team,Core,,Off‑ball screen to free cutter toward hoop.
+TAC-BRUSHS-20250513,Brush Screen,Origin Type,Team,Core,Brush Cut,Non‑contact cut that impedes defender like a screen.
+TAC-FLEXSC-20250513,Flex Screen,Origin Type,Team,Core,,Cross screen near block for corner cutter.
+TAC-STAGGE-20250513,Stagger,Origin Type,Team,Advanced,,Two consecutive screens in same direction.
+TAC-DOUBLE-20250513,Double Drag,Origin Type,Team,Advanced,,Two staggered ball screens in transition.
+TAC-SPAINP-20250513,Spain PnR,Origin Type,Team,Advanced,Stack PnR,Ball screen plus backscreen on roller.
+TAC-DHO-20250513,DHO,Origin Type,Team,Core,Dribble Handoff,Ballhandler hands off to teammate.
+TAC-GHOSTS-20250513,Ghost Screen,Origin Type,Team,Advanced,Slide/Blur,Fake ball screen pop to space.
+TAC-FLIP-20250513,Flip,Origin Type,Team,Advanced,Varejao,Late angle‑change on ballscreen.
+TAC-RAMSCR-20250513,Ram Screen,Origin Type,Team,Advanced,,Screen then immediately set ballscreen.
+TAC-VEERSC-20250513,Veer Screen,Origin Type,Team,Advanced,,Ballscreen followed by off‑ball screen.
+TAC-SLICES-20250513,Slice Screen,Origin Type,Team,Core,Shuffle,Backscreen for wing cutter.
+TAC-SLIP-20250513,Slip,Origin Type,Team,Core,,Would‑be screener cuts to hoop before contact.
+TAC-SLIP-20250513,Slip,Origin Type,Team,Core,,Would‑be screener cuts to hoop before contact.
+TAC-BARKLE-20250513,Barkley,Origin Type,Team,Core,,Perimeter dribble into low‑block post‑up.
+TAC-STAMPE-20250513,Stampede Cut,Origin Type,Team,Advanced,,Cutter catches on the move to hoop.
+TAC-CATCHG-20250513,Catch‑Go Rule,Constraint,Individual,Core,,"On catch, immediate dribble unless tagged otherwise."
+TAC-BASEBA-20250513,Base & Balance,Constraint,Individual,Core,Fight‑For‑Feet,"Player must land in stable, wide stance."
+TAC-05SECO-20250513,0‑5 Second Decision,Constraint,Team,Core,,Player must decide within 0.5 s of catch.
+TAC-SHORTR-20250513,Short‑Roll Trigger,Constraint,Team,Advanced,,Roller stops at FT line; play thru middle.
+TAC-EMPTYC-20250513,Empty Corner Only,Constraint,Team,Advanced,,PnR must occur with empty strong‑side corner.
+TAC-DROP-20250513,Drop,Coverage,Team,Core,,"Screen defender drops below level, retreats with roller."
+TAC-BLITZ-20250513,Blitz,Coverage,Team,Advanced,,Aggressive trap by screener’s defender at level.
+TAC-HARDHE-20250513,Hard Hedge,Coverage,Team,Advanced,Show,Defender steps out to redirect ball then recovers.
+TAC-FLATHE-20250513,Flat Hedge,Coverage,Team,Advanced,,Defender contains dribble just below screen.
+TAC-ICE-20250513,ICE,Coverage,Team,Core,Blue/Down/Push,"On‑ball directs handler to sideline, denies screen."
+TAC-OVER-20250513,Over,Coverage,Team,Core,,On‑ball goes over screen.
+TAC-UNDER-20250513,Under,Coverage,Team,Core,,On‑ball goes under screen.
+TAC-CONTAC-20250513,Contact Switch,Coverage,Team,Advanced,Jump Switch/Hedge Switch,Aggressive switch with contact.
+TAC-TAGSWI-20250513,Tag Switch,Help‑Rotation,Team,Advanced,,Weak‑side tag switches onto roller.
+TAC-XOUT-20250513,X‑Out,Help‑Rotation,Team,Advanced,,Two defenders exchange on kick‑out pass.
+TAC-PEELSW-20250513,Peel Switch,Help‑Rotation,Team,Advanced,,"On drive, helper takes ball, original defender rotates out."
+TAC-SCRAMS-20250513,Scram Switch,Help‑Rotation,Team,Advanced,,Low‑man pulls small out of post by switching.
+TAC-SHRINK-20250513,Shrink the Floor,Help‑Rotation,Team,Core,,Off‑ball defenders pinch in to deter drive.
+TAC-EMPTY-20250513,Empty,Modifier,Team,Core,,No strong‑side corner in PnR alignment.
+TAC-BLOB-20250513,BLOB,Game Phase,Team,Core,BOB,Baseline out‑of‑bounds scenario.
+TAC-SLOB-20250513,SLOB,Game Phase,Team,Core,,Sideline out‑of‑bounds scenario.
+TAC-ATO-20250513,ATO,Game Phase,Team,Core,,Action called immediately after timeout.
+TAC-EXCHAN-20250513,Exchange,Modifier,Team,Core,,Two weak‑side players swap spots to occupy help.
+TAC-GET-20250513,Get,Origin Type,Team,Core,Throw‑and‑Get,Pass and follow for handoff.
+TAC-GRENAD-20250513,Grenade,Origin Type,Team,Advanced,,Low‑block dribble handoff.
+TAC-GUTDHO-20250513,Gut DHO,Origin Type,Team,Advanced,Spanoulis,Cut up through paint into handoff near top.
+TAC-ADVANC-20250513,Advance Slot Cut,Origin Type,Team,Core,,Slot fills ahead in transition for spacing.
+TAC-DRAGEA-20250513,Drag Early,Origin Type,Team,Core,,Early transition ball screen at top.

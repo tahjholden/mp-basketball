@@ -22,6 +22,7 @@ for file in supabase/seed/*.sql; do
   psql "$SUPABASE_DB_URL" -f "$file"
 done
 ```
+codex/update-readme-files-for-actor/person-structure
 
 ## Loading CSV seed files
 
