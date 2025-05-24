@@ -187,16 +187,46 @@
     },
     {
       "parameters": {
-        "jsCode": "const limit = 2000;\nconst fields = ['joined_observations','joined_tags','joined_constraints'];\nreturn $input.map(item => {\n  const json = {...item.json};\n  for (const f of fields) {\n    const val = json[f];\n    if (typeof val === 'string' && val.length > limit) {\n      console.log(`${f} original length: ${val.length}`);\n      json[f] = val.slice(0, limit);\n    }\n  }\n  return {json};\n});"
+        "operation": "getAll",
+        "tableId": "player",
+        "returnAll": true,
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "={{$json.player_id}}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        880,
+        -220
+      ],
+      "id": "6c7b38d1-8fe7-4ee9-9d9c-05b97970cfa3",
+      "name": "Fetch_Player_Name",
+      "credentials": {
+        "supabaseApi": {
+          "id": "snX7zXf3hb1iETnD",
+          "name": "Supabase <-> N8N MPBos"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const rows = $input.all();\nif (rows.length !== 1) {\n  throw new Error(`Expected 1 player record for ${$json.player_id}, found ${rows.length}`);\n}\nconst playerName = rows[0].json.display_name;\nconst agg = $items(\"Aggregate_Observations_Skills_Tags\", 0, $itemIndex)[0].json;\nreturn [{ json: { ...agg, player_name: playerName } }];"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        770,
-        -100
+        880,
+        -160
       ],
-      "id": "60865b77-a28c-42fc-9827-a4a5dc8eaacc",
-      "name": "Truncate_LLM_Inputs"
+      "id": "f1f437d3-3e00-4b0d-b116-d9d483d3405c",
+      "name": "Validate_Player_Name"
     },
     {
       "parameters": {
@@ -297,7 +327,29 @@
       "main": [
         [
           {
-            "node": "Truncate_LLM_Inputs",
+            "node": "Fetch_Player_Name",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch_Player_Name": {
+      "main": [
+        [
+          {
+            "node": "Validate_Player_Name",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validate_Player_Name": {
+      "main": [
+        [
+          {
+            "node": "OpenAI",
             "type": "main",
             "index": 0
           }
