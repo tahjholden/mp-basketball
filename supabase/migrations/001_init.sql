@@ -31,6 +31,8 @@ CREATE TABLE IF NOT EXISTS profile (
   attributes_json  JSONB NOT NULL DEFAULT '{}',
   created_at       TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
+-- Indexes for fast joins on foreign keys
+CREATE INDEX IF NOT EXISTS idx_profile_actor ON profile(actor_uid);
 
 --------------------------------------------------------------------------------
 -- JOURNAL_ENTRY : personal notes and reflections
@@ -47,6 +49,7 @@ CREATE TABLE IF NOT EXISTS journal_entry (
   predicted_tag_uid UUID,     -- filled by GPT tagger later
   org_uid     TEXT DEFAULT 'ORG-DEFAULT'
 );
+CREATE INDEX IF NOT EXISTS idx_observation_actor ON observation(actor_uid);
 
 --------------------------------------------------------------------------------
 -- INTERVENTION : practice session, game, etc.
@@ -70,6 +73,7 @@ CREATE TABLE IF NOT EXISTS metric (
   timestamp    TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   org_uid      TEXT DEFAULT 'ORG-DEFAULT'
 );
+CREATE INDEX IF NOT EXISTS idx_metric_actor ON metric(actor_uid);
 
 --------------------------------------------------------------------------------
 -- LINK : generic parent‑child relation
@@ -82,6 +86,8 @@ CREATE TABLE IF NOT EXISTS link (
   created_at     TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   org_uid        TEXT DEFAULT 'ORG-DEFAULT'
 );
+CREATE INDEX IF NOT EXISTS idx_link_parent ON link(parent_uid);
+CREATE INDEX IF NOT EXISTS idx_link_child ON link(child_uid);
 
 --------------------------------------------------------------------------------
 -- TAG : skills / constraints (optional embeddings)
@@ -119,6 +125,8 @@ CREATE TABLE IF NOT EXISTS routine_tag (
   context_json JSONB DEFAULT '{}',
   PRIMARY KEY (routine_uid, tag_uid)
 );
+CREATE INDEX IF NOT EXISTS idx_routine_tag_routine ON routine_tag(routine_uid);
+CREATE INDEX IF NOT EXISTS idx_routine_tag_tag ON routine_tag(tag_uid);
 
 --------------------------------------------------------------------------------
 -- ROUTINE_INSTANCE : routines scheduled inside an intervention
@@ -130,6 +138,8 @@ CREATE TABLE IF NOT EXISTS routine_instance (
   seq_order      INT  NOT NULL,
   org_uid        TEXT DEFAULT 'ORG-DEFAULT'
 );
+CREATE INDEX IF NOT EXISTS idx_routine_instance_intervention ON routine_instance(intervention_uid);
+CREATE INDEX IF NOT EXISTS idx_routine_instance_routine ON routine_instance(routine_uid);
 
 --------------------------------------------------------------------------------
 -- rename player_exposure table and adjust foreign keys
@@ -144,6 +154,9 @@ CREATE TABLE IF NOT EXISTS person_exposure (
   tag_uid           UUID NOT NULL REFERENCES tag(uid)           ON DELETE CASCADE,
   count             INT  NOT NULL DEFAULT 1
 );
+CREATE INDEX IF NOT EXISTS idx_habit_exposure_instance ON habit_exposure(routine_instance_uid);
+CREATE INDEX IF NOT EXISTS idx_habit_exposure_player ON habit_exposure(player_uid);
+CREATE INDEX IF NOT EXISTS idx_habit_exposure_tag ON habit_exposure(tag_uid);
 
 --------------------------------------------------------------------------------
 -- TAG_RELATION : hierarchical or exclusive tag links
@@ -154,6 +167,8 @@ CREATE TABLE IF NOT EXISTS tag_relation (
   relation_type   TEXT NOT NULL,
   tag_id_child    UUID NOT NULL REFERENCES tag(uid) ON DELETE CASCADE
 );
+CREATE INDEX IF NOT EXISTS idx_tag_relation_parent ON tag_relation(tag_id_parent);
+CREATE INDEX IF NOT EXISTS idx_tag_relation_child ON tag_relation(tag_id_child);
 
 --------------------------------------------------------------------------------
 -- FLAGGED_NAME : store unmatched player names
