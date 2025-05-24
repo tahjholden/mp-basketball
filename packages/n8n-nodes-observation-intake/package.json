@@ -1,0 +1,32 @@
+{
+  "name": "n8n-nodes-observation-intake",
+  "version": "0.1.0",
+  "description": "Custom nodes for the Observation Intake workflow",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "lint": "eslint src --ext .ts || true",
+    "prepare": "npm run build"
+  },
+  "dependencies": {
+    "@n8n/workflow": "^1.0.0",
+    "@n8n/core": "^1.0.0",
+    "uuid": "^9.0.0"
+  },
+  "devDependencies": {
+    "typescript": "^4.9.0",
+    "@types/node": "^18.0.0",
+    "@types/express": "*",
+    "@types/luxon": "*",
+    "@types/ssh2": "*",
+    "@types/request-promise-native": "*"
+  },
+  "n8n": {
+    "nodes": [
+      "dist/NormalizeText.node.js",
+      "dist/TagResolver.node.js",
+      "dist/DBWriter.node.js"
+    ]
+  }
+}

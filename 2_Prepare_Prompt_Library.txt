@@ -1,0 +1,24 @@
+
+MPB SYSTEM – GPT PROMPT LIBRARY SETUP
+
+Use Prompt Format:
+- Title
+- Description
+- Input Fields
+- Output Format
+- Example Inputs
+- Example Output
+
+Core Prompts to Finalize:
+1. Player Reflection Generator (dynamic based on PDP, Level, Friction, Age)
+2. Session Summary Generator (from raw coach notes)
+3. PDP Update Suggestion (from DevNote or Reflection)
+4. Practice Plan Generator (from PDP + Attendance)
+5. Override Review Flag (detects manual edits outside expected progression)
+6. Drill Label Synthesizer (based on constraints, action, format)
+
+Prompt Pack Format:
+- Text file for each with all parameters
+- One master JSON or CSV index to map inputs/outputs
+
+Goal: Deliver this to automator as `MPB_Prompt_Pack_v1`

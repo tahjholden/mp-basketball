@@ -1,0 +1,50 @@
+
+MPB SYSTEM – CUE–PHASE ALIGNMENT PROTOCOL
+
+Purpose:
+Ensure that every cue used in practice planning aligns with the decision tempo and cognitive load of its corresponding phase (Refine, Adapt, Challenge, Compete).
+
+STRUCTURE:
+
+1. REFINE PHASE
+- Tempo: Slowed, self-directed
+- Decision Timing: Open-ended
+- Cue Type: Technical, internal, emotional reset
+- Acceptable Cues:
+  - “Land, pause, launch.”
+  - “Feel your base before the shot.”
+  - “Cue your breath before moving.”
+  - “Hold your shape after contact.”
+
+2. ADAPT PHASE
+- Tempo: Controlled but dynamic
+- Decision Timing: 0.5s–1s reads
+- Cue Type: Perceptual + bodily integration
+- Acceptable Cues:
+  - “See while you move.”
+  - “Land into your read.”
+  - “Catch it ready.”
+  - “Play with vision before touch.”
+
+3. CHALLENGE PHASE
+- Tempo: Unpredictable, randomized
+- Decision Timing: 0–0.5s reads
+- Cue Type: Externalized + fast pattern recognition
+- Acceptable Cues:
+  - “Decide before you land.”
+  - “Don’t wait—respond.”
+  - “Play off the cue, not the catch.”
+
+4. COMPETE PHASE
+- Tempo: Full-speed chaos
+- Decision Timing: Continuous flow
+- Cue Type: Constraint enforcement + behavior correction
+- Acceptable Cues:
+  - “You’re outside constraint—reset.”
+  - “Find the domino.”
+  - “Did that trigger an advantage?”
+
+NOTES:
+• Cues can be embedded into drills ONLY if phase-aligned.
+• “Pause before you act” is illegal in Challenge and Compete phases.
+• If the cue is emotional (breathing, reset), ensure it doesn’t break decision continuity.

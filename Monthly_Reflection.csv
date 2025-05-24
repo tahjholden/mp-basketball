@@ -1,0 +1,3 @@
+UID,Month,Narrative Arc,Breakthroughs,Friction Patterns,Domain Summary,Missed Opportunities,Next Month Theme,Prompt,Projects Created?
+Formula,Single select,Long text,Long text,Long text,Long text,Long text,Single line text,Long text,Checkbox
+MR-{RECORD_ID()},,,,,,,,,

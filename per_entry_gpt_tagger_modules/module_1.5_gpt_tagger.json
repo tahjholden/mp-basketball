@@ -1,0 +1,33 @@
+{
+  "id": 1001,
+  "module": "openai-gpt-3:CreateCompletion",
+  "version": 1,
+  "parameters": {
+    "__IMTCONN__": 3234112
+  },
+  "mapper": {
+    "model": "gpt-4",
+    "select": "chat",
+    "temperature": "0.3",
+    "top_p": "1",
+    "n_completions": "1",
+    "max_tokens": "100",
+    "response_format": "text",
+    "messages": [
+      {
+        "role": "system",
+        "content": "You are a tagger for reflection logs. Your job is to assign up to 3 tags from a fixed list that best capture the emotional, behavioral, or thematic essence of this entry. Only return matching tags. If none fit, return an empty array.\n\nValid Tags: burnout, clarity, connection, control, fatherhood, freedom, grief, legacy, loop, resistance, shift, shipping, perfectionism, system readiness, balance, execution loop, perfection, action, confidence, handoff, doubt, identity, fear, builder, presence, adjusting, awareness"
+      },
+      {
+        "role": "user",
+        "content": "Entry:\n{{1.`Entry Content`}}"
+      }
+    ]
+  },
+  "metadata": {
+    "designer": {
+      "x": 300,
+      "y": 300
+    }
+  }
+}

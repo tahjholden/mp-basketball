@@ -11,38 +11,56 @@ CREATE TABLE IF NOT EXISTS flagged_entities (
   created_at     TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   org_uid        TEXT DEFAULT 'ORG-DEFAULT'
 );
+-- Index for quick lookup by entity
+CREATE INDEX IF NOT EXISTS idx_flagged_entities_entity ON flagged_entities(entity_uid);
 
 --------------------------------------------------------------------------------
--- player table (subtype of actor)
+-- Remove legacy player and coach tables if they exist
+DROP TABLE IF EXISTS player CASCADE;
+DROP TABLE IF EXISTS coach  CASCADE;
+
 --------------------------------------------------------------------------------
-CREATE TABLE IF NOT EXISTS player (
-  uid         TEXT PRIMARY KEY REFERENCES actor(uid) ON DELETE CASCADE,
-  jersey_num  TEXT,
-  position    TEXT
+-- rename actor table and update references
+-- person_role table (replaces player/coach subtypes)
+--------------------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS person_role (
+  uid         TEXT PRIMARY KEY,
+  person_uid  TEXT NOT NULL REFERENCES person(uid) ON DELETE CASCADE,
+  role        TEXT NOT NULL,
+  attributes  JSONB DEFAULT '{}'
 );
 
---------------------------------------------------------------------------------
--- coach table (subtype of actor)
---------------------------------------------------------------------------------
-CREATE TABLE IF NOT EXISTS coach (
-  uid         TEXT PRIMARY KEY REFERENCES actor(uid) ON DELETE CASCADE,
-  role        TEXT
-);
 
 --------------------------------------------------------------------------------
--- observation_logs table
+-- journal_entry_logs table
 --------------------------------------------------------------------------------
-CREATE TABLE IF NOT EXISTS observation_logs (
+CREATE TABLE IF NOT EXISTS journal_entry_logs (
   uid             TEXT PRIMARY KEY,
-  observation_uid TEXT NOT NULL REFERENCES observation(uid) ON DELETE CASCADE,
+  observation_uid TEXT NOT NULL REFERENCES journal_entry(uid) ON DELETE CASCADE,
   log_entry       JSONB NOT NULL,
   created_at      TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
+CREATE INDEX IF NOT EXISTS idx_observation_logs_observation ON observation_logs(observation_uid);
 
 --------------------------------------------------------------------------------
--- observation table updates
+-- journal_entry table updates
 --------------------------------------------------------------------------------
+DO $$
+BEGIN
+  IF EXISTS (
+       SELECT 1 FROM information_schema.columns
+        WHERE table_name='observation' AND column_name='actor_uid'
+     ) AND NOT EXISTS (
+       SELECT 1 FROM information_schema.columns
+        WHERE table_name='observation' AND column_name='person_id'
+     ) THEN
+    ALTER TABLE observation RENAME COLUMN actor_uid TO person_id;
+  END IF;
+END$$;
+
 ALTER TABLE observation
-  ADD COLUMN IF NOT EXISTS player_id   TEXT REFERENCES actor(uid),
+-- decide and update observation table reference
   ADD COLUMN IF NOT EXISTS session_uid TEXT REFERENCES intervention(uid),
   ADD COLUMN IF NOT EXISTS tagged_skills JSONB DEFAULT '[]'::jsonb;
+CREATE INDEX IF NOT EXISTS idx_observation_person ON observation(person_id);
+CREATE INDEX IF NOT EXISTS idx_observation_session ON observation(session_uid);

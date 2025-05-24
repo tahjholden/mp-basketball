@@ -1,0 +1,26 @@
+{
+  "name": "mp-basketball-tests",
+  "version": "1.0.0",
+  "description": "Tests for mp-basketball supabase migrations and workflows",
+  "scripts": {
+    "test": "jest"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "type": "commonjs",
+  "devDependencies": {
+    "jest": "^29.6.1",
+    "ts-jest": "^29.1.1",
+    "typescript": "^4.9.0",
+    "@types/jest": "^29.5.11",
+    "@types/express": "*",
+    "@types/luxon": "*",
+    "@types/ssh2": "*",
+    "@types/request-promise-native": "*"
+  },
+  "dependencies": {
+    "pg": "^8.11.3",
+    "@supabase/supabase-js": "^2.39.0"
+  }
+}

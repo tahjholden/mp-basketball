@@ -1,0 +1,20 @@
+# Example mapping file for converting basketball schema to consulting domain
+# Tables map to new table names
+# Fields map to new field names
+# Values map domain specific enumerations or fixed strings
+
+# Replace table names
+# e.g. replace 'player' table with 'consultant'
+tables:
+  player: consultant
+  coach: manager
+
+# Replace column names
+fields:
+  first_name: given_name
+  last_name: family_name
+
+# Replace enum or other literal values in SQL and JSON
+values:
+  Player: Consultant
+  Coach: Manager

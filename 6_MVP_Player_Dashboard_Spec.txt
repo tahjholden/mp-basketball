@@ -1,0 +1,23 @@
+
+MPB SYSTEM – MINIMUM VIABLE PLAYER DASHBOARD
+
+Platform: Softr or Glide (No-Code Option)
+
+Display Fields:
+- Player Name
+- Current Level (non-comparative)
+- Primary Dev Focus
+- Last 3 Reflections
+- Last 3 Practices
+- Last 3 Prompts + Player Responses
+
+Bonus:
+- “Show Me My Growth” button: Line chart of Friction Index over time
+- “My Focus” summary: Pulls tags from PDP with plain-English cues
+
+Functionality:
+- One-click reflection form access
+- Profile page loads data from Airtable in real time
+- No login required (access via UID)
+
+Goal: Lightweight UI that mirrors system’s language back to player.

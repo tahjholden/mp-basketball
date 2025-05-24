@@ -1,0 +1,629 @@
+{
+  "name": "Session Plan Generator",
+  "nodes": [
+    {
+      "parameters": {
+        "operation": "getAll",
+        "tableId": "pdp",
+        "returnAll": true,
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "is_current",
+              "condition": "eq",
+              "keyValue": "true"
+            },
+            {
+              "keyName": "player_id",
+              "condition": "in",
+              "keyValue": "={{$items(\"Code_AttendanceList\")[0].json.map(p => p.player_id).join(\",\")}}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        220,
+        -140
+      ],
+      "id": "0685cb04-1041-4716-9c9c-318874316532",
+      "name": "FetchPDPs",
+      "credentials": {
+        "supabaseApi": {
+          "id": "snX7zXf3hb1iETnD",
+          "name": "Supabase <-> N8N MPBos"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const pdps = $input.all().map(item => item.json);\nconst pdpMap = {};\n\npdps.forEach(pdp => {\n  // Only add if not already present for this player_id and is not \"blank\"\n  if (\n    !pdpMap[pdp.player_id] &&\n    pdp.is_current &&\n    (\n      (pdp.skill_tags && pdp.skill_tags.length) ||\n      (pdp.constraint_tags && pdp.constraint_tags.length) ||\n      (pdp.pdp_text_full && pdp.pdp_text_full.trim() !== \"\")\n    )\n  ) {\n    pdpMap[pdp.player_id] = pdp;\n  }\n});\n\n// Output one object per player (only \"current\" and non-blank)\nreturn Object.values(pdpMap);"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        440,
+        -140
+      ],
+      "id": "ea23e79f-3e39-470a-8e74-66097f882bae",
+      "name": "Code_FilterDeduplicatePDPs"
+    },
+    {
+      "parameters": {
+        "jsCode": "const present = $items('CompareAttendance')[0].json.present;\nreturn $input.all().map(i => i.json).filter(p => present.includes(p.player_id)).map(pdp => ({\n  player_id: pdp.player_id,\n  is_current: pdp.is_current,\n  skill_tags: pdp.skill_tags || [],\n  constraint_tags: pdp.constraint_tags || [],\n  theme_tags: pdp.theme_tags || [],\n  advancement_level: pdp.advancement_level || null,\n  responsibility_tier: pdp.responsibility_tier || null,\n  collective_growth_phase: pdp.collective_growth_phase || pdp.team_course_phase || null,\n  pdp_text_full: pdp.pdp_text_full || '',\n  pdp_text_coach: pdp.pdp_text_coach || '',\n  pdp_text_player: pdp.pdp_text_player || '',\n  source_observation_ids: pdp.source_observation_ids || [],\n  created_at: pdp.created_at || null,\n  updated_at: pdp.updated_at || null,\n  last_updated: pdp.last_updated || null,\n  pdp_id: pdp.id || null\n}));"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        660,
+        -140
+      ],
+      "id": "5afd94a6-2ce6-4b48-b58a-bf2470780e0f",
+      "name": "Code_SessionPlanContext"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-3.5-turbo",
+          "mode": "list",
+          "cachedResultName": "GPT-3.5-TURBO"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "You are a world-class basketball practice designer and player development architect. Your job is to design session plans that maximize skill growth, decision-making, and team cohesion, rooted in constraints-led, ARC-driven coaching.",
+              "role": "system"
+            },
+            {
+              "content": "=You are provided with the latest Player Development Profiles (PDPs) for today’s session roster. Each PDP includes:\n- player_id\n- skill_tags\n- constraint_tags\n- theme_tags\n- advancement_level (1–10)\n- responsibility_tier (1–6)\n- collective_growth_phase (1–6)\n- pdp_text_full, pdp_text_coach, pdp_text_player\n\n  The current team or pod collective growth phase is: 3\n\nDesign a session plan for this group that:\n- Addresses both individual and shared constraints/skills.\n- Recommends 3–5 practice blocks (warm-up, SSGs, team concept, individual work, etc.).\n- For each block, specify:\n    • Block Name\n    • Format (e.g., 1v1, 2v2, 3v3, 5v5, coach-in, pod split, etc.)\n    • Targeted skills/constraints (by tag name, not summary)\n    • Which players benefit most (by player_id or tag match)\n    • Collective Growth phase alignment (C-phase)\n    • Key coaching cues (constraint language)\n\nThe output MUST be valid JSON, like:\n{\n  \"session_plan\": [\n    {\n      \"block_name\": \"Spacing to Advantage\",\n      \"format\": \"3v3\",\n      \"skills\": [\"Spacing\", \"Early Advantage\"],\n      \"constraints\": [\"Fight For Your Feet\"],\n      \"players\": [\"8ce6193d-3041-4f11-8c1d-a63d10d12569\"],\n      \"collective_growth_phase\": 2,\n      \"coaching_cues\": [\"Land and pause\", \"Find spacing before action\"]\n    },\n    ...\n  ]\n}\n\nBase your decisions ONLY on the supplied PDPs and team growth phase. Recommend only blocks that align with your ARC philosophy. Do not invent tags. Make sure each constraint or skill targeted comes directly from the PDPs or team phase.\n\nIf there are duplicate needs, prioritize blocks that address multiple players’ needs at once."
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        880,
+        -140
+      ],
+      "id": "4280df3c-0a8d-45ac-adfd-9f9291973a14",
+      "name": "OpenAI_SessionPlanGenerator",
+      "credentials": {
+        "openAiApi": {
+          "id": "KhaGQw1SlGfhaasb",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const ai = $input.item.json.message.content;\nlet parsed = {};\n\ntry {\n  parsed = JSON.parse(ai);\n} catch (e) {\n  parsed = { error: \"Failed to parse OpenAI output\", raw: ai };\n}\n\n// Add optional fields to every block (if missing)\nparsed.session_plan = parsed.session_plan.map((block, idx) => ({\n  ...block,\n  advancement_levels: block.advancement_levels || [],\n  responsibility_tiers: block.responsibility_tiers || [],\n  team_id: block.team_id || \"YOUR_TEAM_UUID\",\n  pod_id: block.pod_id || null,\n  session_id: block.session_id || null,\n  session_date: block.session_date || new Date().toISOString().slice(0,10),\n  start_time: block.start_time || null,\n  end_time: block.end_time || null,\n  duration_minutes: block.duration_minutes || null,\n  location: block.location || \"\",\n  block_order: idx + 1,\n  drill_id: block.drill_id || null,\n  notes: block.notes || \"\",\n  feedback_fields: block.feedback_fields || {\n    coach_reflection: \"\",\n    player_reflection: \"\",\n    observed_transfer_score: null,\n    attendance: []\n  }\n}));\n\n// Add top-level optional fields\nparsed.session_id = parsed.session_id || null;\nparsed.team_id = parsed.team_id || \"YOUR_TEAM_UUID\";\nparsed.pod_id = parsed.pod_id || null;\nparsed.session_date = parsed.session_date || new Date().toISOString().slice(0,10);\nparsed.created_by = parsed.created_by || null;\nparsed.created_at = parsed.created_at || new Date().toISOString();\nparsed.last_updated = parsed.last_updated || new Date().toISOString();\nparsed.overall_theme_tags = parsed.overall_theme_tags || [];\nparsed.collective_growth_phase = parsed.collective_growth_phase || null;\nparsed.advancement_levels = parsed.advancement_levels || [];\nparsed.responsibility_tiers = parsed.responsibility_tiers || [];\nparsed.planned_attendance = parsed.planned_attendance || [];\nparsed.session_notes = parsed.session_notes || \"\";\nparsed.reflection_fields = parsed.reflection_fields || {\n  coach_post_session: \"\",\n  player_feedback: [],\n  observed_transfer_map: {}\n};\n\nreturn [ { json: parsed } ];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1256,
+        -140
+      ],
+      "id": "9e32e7db-bdaa-4858-864f-7d17a672733a",
+      "name": "Code_ParseSessionPlan"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "ba6554fe-4c89-40f2-9c52-50e29dce081b",
+              "leftValue": "={{$json[\"session_id\"]}}",
+              "rightValue": "null",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "9ea4c120-19b9-41b5-9a74-d84dee656ed3",
+              "leftValue": "={{$json[\"session_id\"]}}",
+              "rightValue": "null",
+              "operator": {
+                "type": "string",
+                "operation": "notEquals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1476,
+        -140
+      ],
+      "id": "7f0eb3d1-9e17-47fc-8ced-71a2535982c1",
+      "name": "IfUpsertSession"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "session",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "={{$json[\"session_id\"]}}"
+            }
+          ]
+        },
+        "dataToSend": "autoMapInputData"
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1696,
+        -240
+      ],
+      "id": "eaa42acc-9f85-40bb-834a-5a8364b1fd11",
+      "name": "UpdateSession",
+      "credentials": {
+        "supabaseApi": {
+          "id": "snX7zXf3hb1iETnD",
+          "name": "Supabase <-> N8N MPBos"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://htvyruodlvdbpfsnmuhz.supabase.co/rest/v1/pdp",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh0dnlydW9kbHZkYnBmc25tdWh6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDcxNzg1MTQsImV4cCI6MjA2Mjc1NDUxNH0.0E_lA1rY5DsTHGwJGcyafpO0Wd61R9RvcAx01ky6gHg"
+            },
+            {
+              "name": "Authorization",
+              "value": "=Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh0dnlydW9kbHZkYnBmc25tdWh6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDcxNzg1MTQsImV4cCI6MjA2Mjc1NDUxNH0.0E_lA1rY5DsTHGwJGcyafpO0Wd61R9RvcAx01ky6gHg"
+            },
+            {
+              "name": "Prefer",
+              "value": "resolution=merge-duplicates"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ $items(\"Code_SessionPlanContext\")[0].json }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1696,
+        -40
+      ],
+      "id": "2e04d0cf-d6fb-4e8c-a511-030f8d15aa2e",
+      "name": "InsertSession"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 1
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        -140
+      ],
+      "id": "63719578-f262-420a-9d72-a0592ba545f2",
+      "name": "ScheduleTrigger"
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "tableId": "session",
+        "returnAll": true,
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "={{$json[\"session_id\"]}}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        220,
+        60
+      ],
+      "id": "1e56a4c9-1284-41ab-ad00-4c4e3fe9ae52",
+      "name": "FetchExpected",
+      "credentials": {
+        "supabaseApi": {
+          "id": "snX7zXf3hb1iETnD",
+          "name": "Supabase <-> N8N MPBos"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "tableId": "attendance",
+        "returnAll": true,
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "session_id",
+              "condition": "eq",
+              "keyValue": "={{$json[\"session_id\"]}}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        440,
+        60
+      ],
+      "id": "b7a49a3d-a87a-45d0-bd6d-ad3aad304bae",
+      "name": "FetchActual",
+      "credentials": {
+        "supabaseApi": {
+          "id": "snX7zXf3hb1iETnD",
+          "name": "Supabase <-> N8N MPBos"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const expected = $items(\"FetchExpected\")[0].json.player_ids;\nconst actual = $items(\"FetchActual\").map(i => i.json.player_id);\nconst present = expected.filter(id => actual.includes(id));\nconst missing = expected.filter(id => !actual.includes(id));\nconst unexpected = actual.filter(id => !expected.includes(id));\nreturn [{json: {present, missing, unexpected}}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        660,
+        60
+      ],
+      "id": "353a6503-afbd-44d1-bb0a-94864d50c5e7",
+      "name": "CompareAttendance"
+
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "rules": [
+            {
+              "id": "591272c1-3a7c-4c10-a201-f05fe3a85cb9",
+              "leftValue": "={{$json[\"missing\"].length}}",
+              "operator": {
+                "type": "number",
+                "operation": "larger"
+              },
+              "rightValue": 0
+            },
+            {
+              "id": "77bc5e9a-ce42-41a6-bf4b-c8a265174752",
+              "leftValue": "={{$json[\"unexpected\"].length}}",
+              "operator": {
+                "type": "number",
+                "operation": "larger"
+              },
+              "rightValue": 0
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        880,
+        60
+      ],
+      "id": "d111659d-b683-4c15-a668-b396e4bfed7f",
+      "name": "IfAttendanceMismatch"
+    },
+    {
+      "parameters": {
+        "url": "https://example.com/rest/v1/agent_events",
+        "method": "POST"
+      },
+      "type": "n8n-nodes-observation-intake.dbWriter",
+      "typeVersion": 1,
+      "position": [
+        1080,
+        60
+      ],
+      "id": "987f0d78-5d5c-44b3-ae6d-6a36843bd22b",
+      "name": "LogAttendanceMismatch"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://hooks.example.com/slack"
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [
+        1080,
+        -40
+      ],
+      "id": "2e2e47a4-2b32-4f16-9e65-b07b334e7439",
+      "name": "NotifyCoaches"
+
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "FetchPDPs": {
+      "main": [
+        [
+          {
+            "node": "Code_FilterDeduplicatePDPs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code_FilterDeduplicatePDPs": {
+      "main": [
+        [
+          {
+            "node": "Code_SessionPlanContext",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code_SessionPlanContext": {
+      "main": [
+        [
+          {
+            "node": "OpenAI_SessionPlanGenerator",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI_SessionPlanGenerator": {
+      "main": [
+        [
+          {
+            "node": "Code_ParseSessionPlan",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code_ParseSessionPlan": {
+      "main": [
+        [
+          {
+            "node": "IfUpsertSession",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IfUpsertSession": {
+      "main": [
+        [
+          {
+            "node": "UpdateSession",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "InsertSession",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "UpdateSession": {
+      "main": [
+        []
+      ]
+    },
+    "ScheduleTrigger": {
+      "main": [
+        [
+          {
+            "node": "FetchAttendance",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "FetchAttendance": {
+      "main": [
+        [
+          {
+            "node": "Code_AttendanceList",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code_AttendanceList": {
+      "main": [
+        [
+          {
+            "node": "IfAttendance",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IfAttendance": {
+      "main": [
+        [
+          {
+            "node": "FetchPDPs",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "FetchExpected",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "FetchExpected": {
+      "main": [
+        [
+          {
+            "node": "FetchActual",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "FetchActual": {
+      "main": [
+        [
+          {
+            "node": "CompareAttendance",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CompareAttendance": {
+      "main": [
+        [
+          {
+            "node": "Code_SessionPlanContext",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "FetchActual": {
+      "main": [
+        [
+          {
+            "node": "CompareAttendance",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CompareAttendance": {
+      "main": [
+        [
+          {
+            "node": "Code_SessionPlanContext",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Code_NoAttendanceWarning",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "IfAttendanceMismatch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code_NoAttendanceWarning": {
+      "main": [
+        []
+      ]
+    },
+    "IfAttendanceMismatch": {
+      "main": [
+        [
+          {
+            "node": "LogAttendanceMismatch",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    },
+    "LogAttendanceMismatch": {
+      "main": [
+        [
+          {
+            "node": "NotifyCoaches",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "NotifyCoaches": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "056de264-2041-4d3a-ad2a-12dd871fc4b8",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "0abe8dd3af7b84dd650128b454cc932a6aae1d69499f17eccb6a7dec666a07a5"
+  },
+  "id": "CZ0BbAOKQ1s6MYSb",
+  "tags": []
+}
