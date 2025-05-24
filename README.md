@@ -6,6 +6,7 @@ Supabase + n8n workflows for MPOS-Basketball MVP.
 
 - [Supabase CLI](https://supabase.com/docs/guides/cli) installed globally
 - [n8n](https://n8n.io/) running locally or via Docker
+- [PyYAML](https://pyyaml.org/) for running the mapping utility
 
 ## How to Use
 
