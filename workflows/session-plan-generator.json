@@ -246,7 +246,6 @@
     {
       "parameters": {
         "operation": "getAll",
-blnmop-codex/update-workflows-with-attendance-comparison
         "tableId": "session",
         "returnAll": true,
         "filters": {
@@ -255,7 +254,6 @@ blnmop-codex/update-workflows-with-attendance-comparison
               "keyName": "id",
               "condition": "eq",
               "keyValue": "={{$json[\"session_id\"]}}"
-
             }
           ]
         }
@@ -264,7 +262,6 @@ blnmop-codex/update-workflows-with-attendance-comparison
       "typeVersion": 1,
       "position": [
         220,
- blnmop-codex/update-workflows-with-attendance-comparison
         60
       ],
       "id": "1e56a4c9-1284-41ab-ad00-4c4e3fe9ae52",
@@ -278,7 +275,6 @@ blnmop-codex/update-workflows-with-attendance-comparison
     },
     {
       "parameters": {
- blnmop-codex/update-workflows-with-attendance-comparison
         "operation": "getAll",
         "tableId": "attendance",
         "returnAll": true,
@@ -310,18 +306,15 @@ blnmop-codex/update-workflows-with-attendance-comparison
     {
       "parameters": {
         "jsCode": "const expected = $items(\"FetchExpected\")[0].json.player_ids;\nconst actual = $items(\"FetchActual\").map(i => i.json.player_id);\nconst present = expected.filter(id => actual.includes(id));\nconst missing = expected.filter(id => !actual.includes(id));\nconst unexpected = actual.filter(id => !expected.includes(id));\nreturn [{json: {present, missing, unexpected}}];"
-
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-blnmop-codex/update-workflows-with-attendance-comparison
         660,
         60
       ],
       "id": "353a6503-afbd-44d1-bb0a-94864d50c5e7",
       "name": "CompareAttendance"
-
     }
   ],
   "pinData": {},
@@ -458,6 +451,28 @@ blnmop-codex/update-workflows-with-attendance-comparison
         [
           {
             "node": "FetchActual",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "FetchActual": {
+      "main": [
+        [
+          {
+            "node": "CompareAttendance",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CompareAttendance": {
+      "main": [
+        [
+          {
+            "node": "Code_SessionPlanContext",
             "type": "main",
             "index": 0
           }
