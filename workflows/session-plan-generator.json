@@ -12,6 +12,11 @@
               "keyName": "is_current",
               "condition": "eq",
               "keyValue": "true"
+            },
+            {
+              "keyName": "player_id",
+              "condition": "in",
+              "keyValue": "={{$items(\"Code_AttendanceList\")[0].json.map(p => p.player_id).join(\",\")}}"
             }
           ]
         }
@@ -237,6 +242,99 @@
       ],
       "id": "63719578-f262-420a-9d72-a0592ba545f2",
       "name": "ScheduleTrigger"
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "tableId": "attendance",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "session_id",
+              "condition": "eq",
+              "keyValue": "={{$json[\"session_id\"]}}"
+            },
+            {
+              "keyName": "present",
+              "condition": "eq",
+              "keyValue": "true"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        220,
+        -240
+      ],
+      "id": "36f428b1-e2e8-40b3-be36-ac3ea5ecb9db",
+      "name": "FetchAttendance",
+      "credentials": {
+        "supabaseApi": {
+          "id": "snX7zXf3hb1iETnD",
+          "name": "Supabase <-> N8N MPBos"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const list = $input.all().map(item => ({ player_id: item.json.player_id }));\nreturn [{ json: list }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        440,
+        -240
+      ],
+      "id": "e9b71abf-35c8-4c8a-8d44-4b78dbdb9ffc",
+      "name": "Code_AttendanceList"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "cond-length",
+              "leftValue": "={{$json.length}}",
+              "rightValue": "0",
+              "operator": {
+                "type": "number",
+                "operation": "larger"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        660,
+        -240
+      ],
+      "id": "ad2bd121-bb1e-4e41-a81c-30f34cfe27af",
+      "name": "IfAttendance"
+    },
+    {
+      "parameters": {
+        "jsCode": "return [{ json: { warning: 'No attendance records found' } }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        880,
+        -120
+      ],
+      "id": "ae021bb9-e2ef-44ba-9113-f6646a06f8ec",
+      "name": "Code_NoAttendanceWarning"
     }
   ],
   "pinData": {},
@@ -323,11 +421,56 @@
       "main": [
         [
           {
-            "node": "FetchPDPs",
+            "node": "FetchAttendance",
             "type": "main",
             "index": 0
           }
         ]
+      ]
+    },
+    "FetchAttendance": {
+      "main": [
+        [
+          {
+            "node": "Code_AttendanceList",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code_AttendanceList": {
+      "main": [
+        [
+          {
+            "node": "IfAttendance",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IfAttendance": {
+      "main": [
+        [
+          {
+            "node": "FetchPDPs",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Code_NoAttendanceWarning",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code_NoAttendanceWarning": {
+      "main": [
+        []
       ]
     }
   },
