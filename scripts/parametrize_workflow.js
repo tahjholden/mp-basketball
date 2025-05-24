@@ -18,32 +18,11 @@ function parseArgs(argv) {
   return args;
 }
 
-const args = parseArgs(process.argv);
-
-if (!args.workflow) {
-  console.error('Usage: node scripts/parametrize_workflow.js --workflow <file> [--config config.json] [--output file]');
-  process.exit(1);
-}
-
-let config = {};
-if (args.config) {
-  config = JSON.parse(fs.readFileSync(args.config, 'utf8'));
-}
-
-if (process.env.SUPABASE_URL && !config.supabaseUrl) {
-  config.supabaseUrl = process.env.SUPABASE_URL;
-}
-if (process.env.SUPABASE_CREDENTIAL_ID && !config.supabaseCredentialId) {
-  config.supabaseCredentialId = process.env.SUPABASE_CREDENTIAL_ID;
-}
-
-const workflow = JSON.parse(fs.readFileSync(args.workflow, 'utf8'));
-
 const urlRegex = /https?:\/\/[^/]*\.supabase\.co/g;
 
-function traverse(node) {
+function traverse(node, config) {
   if (Array.isArray(node)) {
-    node.forEach(traverse);
+    node.forEach((child) => traverse(child, config));
     return;
   }
   if (node && typeof node === 'object') {
@@ -57,18 +36,47 @@ function traverse(node) {
           node[key] = val.replace(urlRegex, config.supabaseUrl);
         }
       } else {
-        traverse(val);
+        traverse(val, config);
       }
     }
   }
 }
 
-traverse(workflow);
+function main() {
+  const args = parseArgs(process.argv);
 
-const output = JSON.stringify(workflow, null, 2);
+  if (!args.workflow) {
+    console.error('Usage: node scripts/parametrize_workflow.js --workflow <file> [--config config.json] [--output file]');
+    process.exit(1);
+  }
 
-if (args.output) {
-  fs.writeFileSync(args.output, output);
-} else {
-  process.stdout.write(output + '\n');
+  let config = {};
+  if (args.config) {
+    config = JSON.parse(fs.readFileSync(args.config, 'utf8'));
+  }
+
+  if (process.env.SUPABASE_URL && !config.supabaseUrl) {
+    config.supabaseUrl = process.env.SUPABASE_URL;
+  }
+  if (process.env.SUPABASE_CREDENTIAL_ID && !config.supabaseCredentialId) {
+    config.supabaseCredentialId = process.env.SUPABASE_CREDENTIAL_ID;
+  }
+
+  const workflow = JSON.parse(fs.readFileSync(args.workflow, 'utf8'));
+
+  traverse(workflow, config);
+
+  const output = JSON.stringify(workflow, null, 2);
+
+  if (args.output) {
+    fs.writeFileSync(args.output, output);
+  } else {
+    process.stdout.write(output + '\n');
+  }
 }
+
+if (require.main === module) {
+  main();
+}
+
+module.exports = { parseArgs, traverse };
