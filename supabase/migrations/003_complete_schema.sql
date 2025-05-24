@@ -31,6 +31,7 @@ CREATE TABLE IF NOT EXISTS pod (
   team_id    TEXT REFERENCES team(id),
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
+CREATE INDEX IF NOT EXISTS idx_pod_team ON pod(team_id);
 
 --------------------------------------------------------------------------------
 -- SESSION table
@@ -62,6 +63,8 @@ CREATE TABLE IF NOT EXISTS session (
   planned_attendance    JSONB,
   reflection_fields     JSONB
 );
+CREATE INDEX IF NOT EXISTS idx_session_team ON session(team_id);
+CREATE INDEX IF NOT EXISTS idx_session_pod ON session(pod_id);
 
 --------------------------------------------------------------------------------
 -- MPB_DOCS table
@@ -118,6 +121,7 @@ CREATE TABLE IF NOT EXISTS pdp (
   pdp_id                 TEXT,
   updated_at             TIMESTAMPTZ
 );
+CREATE INDEX IF NOT EXISTS idx_pdp_player ON pdp(player_id);
 
 --------------------------------------------------------------------------------
 -- JOIN TABLES
