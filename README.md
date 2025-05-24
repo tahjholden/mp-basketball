@@ -130,7 +130,7 @@ python tools/schema_diff.py \
 <!-- set up jest with package.json -->
 ## Install dependencies
 
-Run `npm install` to install the dev dependencies for running tests.
+Run `npm install` to install the dev dependencies for running tests. This fetches Jest and `ts-jest` along with the other required packages.
 Packages that include custom n8n nodes (under `packages/`) also require `npm install` from inside each package directory before executing tests.
 
 Run tests with `npm test` and generate coverage reports using `npm run coverage`.
