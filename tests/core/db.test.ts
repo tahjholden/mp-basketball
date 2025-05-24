@@ -29,7 +29,7 @@ describe('startDB / stopDB', () => {
     const url = await startDB();
 
     expect(execSyncMock).toHaveBeenCalledWith(
-      'docker run -d --rm --name mpb_test_1234 -e POSTGRES_PASSWORD=postgres -p 54329:5432 postgres:15-alpine',
+      'docker run -d --rm --name mpb_test_1234 -e POSTGRES_PASSWORD=postgres -p 54329:5432 pgvector/pgvector:pg15',
       { stdio: 'ignore' },
     );
     expect(connectMock).toHaveBeenCalled();
