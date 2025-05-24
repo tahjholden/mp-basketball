@@ -46,6 +46,7 @@ ALTER TABLE observation
 -- Indexes for new foreign keys
 --------------------------------------------------------------------------------
 CREATE INDEX IF NOT EXISTS idx_flagged_entities_entity ON flagged_entities(entity_uid);
-CREATE INDEX IF NOT EXISTS idx_journal_entry_logs_observation ON journal_entry_logs(observation_uid);
+-- index for fast lookup of log entries by associated observation
+CREATE INDEX IF NOT EXISTS idx_journal_entry_logs_observation_uid ON journal_entry_logs(observation_uid);
 CREATE INDEX IF NOT EXISTS idx_observation_person ON observation(person_id);
 CREATE INDEX IF NOT EXISTS idx_observation_session ON observation(session_uid);
