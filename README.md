@@ -27,7 +27,8 @@ codex/rename-actor-table-and-update-references
 supabase db remote set "$SUPABASE_DB_URL"
 ```
 
-Apply the migrations with:
+Apply the migrations with the Supabase CLI. This pulls in the newest migration that creates the
+`attendance` table used by the practice planner:
 
 ```bash
 supabase db push
@@ -41,6 +42,8 @@ Example rows are stored in `./supabase/seed`. After the migrations run you can l
 for f in supabase/seed/*.sql; do
   psql "$SUPABASE_DB_URL" -f "$f"
 done
+# make sure to load the new attendance rows
+psql "$SUPABASE_DB_URL" -f supabase/seed/attendance_rows.sql
 ```
 
 To import the CSV files as well:
@@ -58,6 +61,25 @@ All workflow exports are located in `./workflows`. Import them from the n8n UI o
 
 ```bash
 n8n import:workflow --input workflows/mpos-basketball.json
+```
+
+The practice-planner workflows now read from the `attendance` table. Only players
+marked `present` are included when generating a session plan. Any names that do
+not match existing players are stored in the `flagged_entities` table for later
+review.
+
+Example code nodes used in the workflow:
+
+```javascript
+// FetchAttendance (Supabase node)
+const { data } = await supabase
+  .from('attendance')
+  .select('*')
+  .eq('session_uid', $json.session_id)
+
+// FilterPresentPlayers (Code node)
+const present = data.filter(row => row.status === 'present')
+return present.map(r => ({ json: { person_uid: r.person_uid } }))
 ```
 
 ## How to Extend/Clone for New Verticals
