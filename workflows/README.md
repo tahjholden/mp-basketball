@@ -4,6 +4,7 @@ This folder contains exported n8n workflows used by the MPB project. Each JSON f
 
 - **file-chat-agent.json** – workflow for the File Chat agent.
 - **mpos-basketball.json** – demo workflow for MPOS Basketball.
+- **daily-summary.json** – sends a reflection summary email each day.
 - **observation-intake-tagging-agent.json** – tags observation data automatically.
 - **pdp-agent.json** – updates Personal Development Plans when events occur.
 - **practice-planner-agent.json** – builds practice plans from routines.
