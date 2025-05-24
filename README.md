@@ -112,5 +112,9 @@ python tools/schema_diff.py \
   --html diff.html
 ```
 
-The script prints a unified diff to stdout and writes a side-by-side HTML diff if
-`--html` is specified. It also suggests the filename for the next migration.
+codex/set-up-jest-with-package.json
+## Install dependencies
+
+Run `npm install` to install the dev dependencies for running tests.
+
+Run tests with `npm test`.
