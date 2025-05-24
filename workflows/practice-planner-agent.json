@@ -12,6 +12,11 @@
               "keyName": "is_current",
               "condition": "eq",
               "keyValue": "true"
+            },
+            {
+              "keyName": "player_id",
+              "condition": "in",
+              "keyValue": "={{$items(\"Code_AttendanceList\")[0].json.map(p => p.player_id).join(\",\")}}"
             }
           ]
         }
@@ -46,7 +51,7 @@
     },
     {
       "parameters": {
-        "jsCode": "return $input.all().map(item => {\n  const pdp = item.json;\n  return {\n    player_id: pdp.player_id,\n    is_current: pdp.is_current,\n    skill_tags: pdp.skill_tags || [],\n    constraint_tags: pdp.constraint_tags || [],\n    theme_tags: pdp.theme_tags || [],\n    advancement_level: pdp.advancement_level || null,\n    responsibility_tier: pdp.responsibility_tier || null,\n    collective_growth_phase: pdp.collective_growth_phase || pdp.team_course_phase || null,\n    pdp_text_full: pdp.pdp_text_full || \"\",\n    pdp_text_coach: pdp.pdp_text_coach || \"\",\n    pdp_text_player: pdp.pdp_text_player || \"\",\n    source_observation_ids: pdp.source_observation_ids || [],\n    created_at: pdp.created_at || null,\n    updated_at: pdp.updated_at || null,\n    last_updated: pdp.last_updated || null,\n    pdp_id: pdp.id || null // In case you want to track the PDP record itself\n  };\n});"
+        "jsCode": "const present = $items('CompareAttendance')[0].json.present;\nreturn $input.all().map(i => i.json).filter(p => present.includes(p.player_id)).map(pdp => ({\n  player_id: pdp.player_id,\n  is_current: pdp.is_current,\n  skill_tags: pdp.skill_tags || [],\n  constraint_tags: pdp.constraint_tags || [],\n  theme_tags: pdp.theme_tags || [],\n  advancement_level: pdp.advancement_level || null,\n  responsibility_tier: pdp.responsibility_tier || null,\n  collective_growth_phase: pdp.collective_growth_phase || pdp.team_course_phase || null,\n  pdp_text_full: pdp.pdp_text_full || '',\n  pdp_text_coach: pdp.pdp_text_coach || '',\n  pdp_text_player: pdp.pdp_text_player || '',\n  source_observation_ids: pdp.source_observation_ids || [],\n  created_at: pdp.created_at || null,\n  updated_at: pdp.updated_at || null,\n  last_updated: pdp.last_updated || null,\n  pdp_id: pdp.id || null\n}));"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -237,6 +242,145 @@
       ],
       "id": "63719578-f262-420a-9d72-a0592ba545f2",
       "name": "ScheduleTrigger"
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "tableId": "session",
+        "returnAll": true,
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "={{$json[\"session_id\"]}}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        220,
+        60
+      ],
+      "id": "1e56a4c9-1284-41ab-ad00-4c4e3fe9ae52",
+      "name": "FetchExpected",
+      "credentials": {
+        "supabaseApi": {
+          "id": "snX7zXf3hb1iETnD",
+          "name": "Supabase <-> N8N MPBos"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "tableId": "attendance",
+        "returnAll": true,
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "session_id",
+              "condition": "eq",
+              "keyValue": "={{$json[\"session_id\"]}}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        440,
+        60
+      ],
+      "id": "b7a49a3d-a87a-45d0-bd6d-ad3aad304bae",
+      "name": "FetchActual",
+      "credentials": {
+        "supabaseApi": {
+          "id": "snX7zXf3hb1iETnD",
+          "name": "Supabase <-> N8N MPBos"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const expected = $items(\"FetchExpected\")[0].json.player_ids;\nconst actual = $items(\"FetchActual\").map(i => i.json.player_id);\nconst present = expected.filter(id => actual.includes(id));\nconst missing = expected.filter(id => !actual.includes(id));\nconst unexpected = actual.filter(id => !expected.includes(id));\nreturn [{json: {present, missing, unexpected}}];"
+
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        660,
+        60
+      ],
+      "id": "353a6503-afbd-44d1-bb0a-94864d50c5e7",
+      "name": "CompareAttendance"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "rules": [
+            {
+              "id": "591272c1-3a7c-4c10-a201-f05fe3a85cb9",
+              "leftValue": "={{$json[\"missing\"].length}}",
+              "operator": {
+                "type": "number",
+                "operation": "larger"
+              },
+              "rightValue": 0
+            },
+            {
+              "id": "77bc5e9a-ce42-41a6-bf4b-c8a265174752",
+              "leftValue": "={{$json[\"unexpected\"].length}}",
+              "operator": {
+                "type": "number",
+                "operation": "larger"
+              },
+              "rightValue": 0
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        880,
+        60
+      ],
+      "id": "d111659d-b683-4c15-a668-b396e4bfed7f",
+      "name": "IfAttendanceMismatch"
+    },
+    {
+      "parameters": {
+        "url": "https://example.com/rest/v1/agent_events",
+        "method": "POST"
+      },
+      "type": "n8n-nodes-observation-intake.dbWriter",
+      "typeVersion": 1,
+      "position": [
+        1080,
+        60
+      ],
+      "id": "987f0d78-5d5c-44b3-ae6d-6a36843bd22b",
+      "name": "LogAttendanceMismatch"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://hooks.example.com/slack"
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [
+        1080,
+        -40
+      ],
+      "id": "2e2e47a4-2b32-4f16-9e65-b07b334e7439",
+      "name": "NotifyCoaches"
+
     }
   ],
   "pinData": {},
@@ -323,11 +467,152 @@
       "main": [
         [
           {
-            "node": "FetchPDPs",
+            "node": "FetchAttendance",
             "type": "main",
             "index": 0
           }
         ]
+      ]
+    },
+    "FetchAttendance": {
+      "main": [
+        [
+          {
+            "node": "Code_AttendanceList",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code_AttendanceList": {
+      "main": [
+        [
+          {
+            "node": "IfAttendance",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IfAttendance": {
+      "main": [
+        [
+          {
+            "node": "FetchPDPs",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "FetchExpected",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "FetchExpected": {
+      "main": [
+        [
+          {
+            "node": "FetchActual",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "FetchActual": {
+      "main": [
+        [
+          {
+            "node": "CompareAttendance",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CompareAttendance": {
+      "main": [
+        [
+          {
+            "node": "Code_SessionPlanContext",
+            "type": "main",
+            "index": 0
+
+          }
+        ]
+      ]
+    },
+    "FetchActual": {
+      "main": [
+        [
+          {
+            "node": "CompareAttendance",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CompareAttendance": {
+      "main": [
+        [
+          {
+            "node": "Code_SessionPlanContext",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Code_NoAttendanceWarning",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "IfAttendanceMismatch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code_NoAttendanceWarning": {
+      "main": [
+        []
+      ]
+    },
+    "IfAttendanceMismatch": {
+      "main": [
+        [
+          {
+            "node": "LogAttendanceMismatch",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    },
+    "LogAttendanceMismatch": {
+      "main": [
+        [
+          {
+            "node": "NotifyCoaches",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "NotifyCoaches": {
+      "main": [
+        []
       ]
     }
   },

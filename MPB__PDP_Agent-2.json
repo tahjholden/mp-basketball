@@ -1,0 +1,305 @@
+{
+  "name": "MPB__PDP_Agent",
+  "nodes": [
+    {
+      "parameters": {
+        "operation": "getAll",
+        "tableId": "agent_events",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "event_type",
+              "condition": "eq",
+              "keyValue": "update_pdp"
+            },
+            {
+              "keyName": "status",
+              "condition": "eq",
+              "keyValue": "pending"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        220,
+        -100
+      ],
+      "id": "cb181f2a-a6e0-4188-8a40-d82bd7732d04",
+      "name": "AgentEvents_Trigger",
+      "credentials": {
+        "supabaseApi": {
+          "id": "snX7zXf3hb1iETnD",
+          "name": "Supabase <-> N8N MPBos"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "tableId": "observation",
+        "returnAll": true
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        440,
+        -100
+      ],
+      "id": "2d13bab7-744e-4c23-bedd-0dc1ccdbbdfd",
+      "name": "Fetch_Observations_For_Player",
+      "credentials": {
+        "supabaseApi": {
+          "id": "snX7zXf3hb1iETnD",
+          "name": "Supabase <-> N8N MPBos"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Get all observations (fetched as .json array)\nconst obs = $input.all().map(i => i.json);\n\n// Group by player_id\nconst playerGroups = {};\nobs.forEach(item => {\n  const pid = item.player_id;\n  if (!playerGroups[pid]) playerGroups[pid] = [];\n  playerGroups[pid].push(item);\n});\n\nconst summaries = [];\n\nfor (const player_id in playerGroups) {\n  const allSkills = [];\n  const allConstraints = [];\n  playerGroups[player_id].forEach(obs => {\n    if (Array.isArray(obs.tagged_skills)) allSkills.push(...obs.tagged_skills);\n    if (Array.isArray(obs.tagged_constraints)) allConstraints.push(...obs.tagged_constraints);\n  });\n\n  // Count occurrences\n  const countTags = arr =>\n    arr.reduce((acc, tag) => {\n      acc[tag] = (acc[tag] || 0) + 1;\n      return acc;\n    }, {});\n\n  const skillsSummary = countTags(allSkills);\n  const constraintsSummary = countTags(allConstraints);\n\n  summaries.push({\n    json: {\n      player_id,\n      skills_summary: skillsSummary,\n      constraints_summary: constraintsSummary,\n      last_updated: new Date().toISOString()\n    }\n  });\n}\n\nreturn summaries;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        660,
+        -100
+      ],
+      "id": "755ade3d-2dfb-4426-a0aa-a8ee7437b1f4",
+      "name": "Aggregate_Observations_Skills_Tags"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://htvyruodlvdbpfsnmuhz.supabase.co/rest/v1/pdp",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh0dnlydW9kbHZkYnBmc25tdWh6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDcxNzg1MTQsImV4cCI6MjA2Mjc1NDUxNH0.0E_lA1rY5DsTHGwJGcyafpO0Wd61R9RvcAx01ky6gHg"
+            },
+            {
+              "name": "Authorization",
+              "value": "=Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh0dnlydW9kbHZkYnBmc25tdWh6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDcxNzg1MTQsImV4cCI6MjA2Mjc1NDUxNH0.0E_lA1rY5DsTHGwJGcyafpO0Wd61R9RvcAx01ky6gHg"
+            },
+            {
+              "name": "Prefer",
+              "value": "resolution=merge-duplicates"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ $items(\"Aggregate_Observations_Skills_Tags\").map(item => item.json) }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1256,
+        -100
+      ],
+      "id": "d4df1e27-b217-4c3c-be19-bc6481c004a4",
+      "name": "Insert_New_PDP"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "agent_events",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "={{$json[\"id\"]}}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "status",
+              "fieldValue": "handled"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1476,
+        -100
+      ],
+      "id": "ac594401-6a2d-44b4-a132-cee83bd78297",
+      "name": "Mark_Event_As_Handled",
+      "credentials": {
+        "supabaseApi": {
+          "id": "snX7zXf3hb1iETnD",
+          "name": "Supabase <-> N8N MPBos"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "agent_events",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "agent_id",
+              "fieldValue": "pdp_agent"
+            },
+            {
+              "fieldId": "details",
+              "fieldValue": "={{ $json[\"pdp_id\"] ? JSON.stringify({ \"pdp_id\": $json[\"pdp_id\"], \"note\": \"Plan updated at \" + $now }) : \"\" }}"
+            },
+            {
+              "fieldId": "status",
+              "fieldValue": "pending"
+            },
+            {
+              "fieldId": "player_id",
+              "fieldValue": "={{$json[\"player_id\"]}}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1696,
+        -100
+      ],
+      "id": "f636e76a-ccce-4078-9156-924ffb2e13f9",
+      "name": "Supabase",
+      "credentials": {
+        "supabaseApi": {
+          "id": "snX7zXf3hb1iETnD",
+          "name": "Supabase <-> N8N MPBos"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "chatgpt-4o-latest",
+          "mode": "list",
+          "cachedResultName": "CHATGPT-4O-LATEST"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=Generate a detailed Player Development Plan (PDP) for {{player_name}} using the following data:\n\n- Observations: {{joined_observations}}\n- Skill Tags: {{joined_tags}}\n- Constraint Tags: {{joined_constraints}}\n\nInstructions:\n- Structure the PDP using these sections:\n    1. Player System Snapshot\n    2. Movement System Characteristics\n    3. Behavioral Attractors\n    4. Rate Limiters (list with constraint tags and coach cues)\n    5. Constraint-Led Interventions (detail intervention, expected outcome, and link to tags)\n    6. Long-term System Targets (big picture, tied to skill/tag trends)\n    7. Key Design Rules (decision frameworks and priorities)\n\n- Use language suitable for a director or senior coach, referencing ecological dynamics/CLA.\n- Output in Markdown, robust enough for full tag review and coach audit.",
+              "role": "system"
+            },
+            {
+              "content": "=Create a comprehensive Player Development Plan (PDP) for {{player_name}} based on the following data.\n\nObservations:\n{{joined_observations}}\n\nSkill Tags:\n{{joined_tags}}\n\nConstraint Tags:\n{{joined_constraints}}\n\nInstructions:\n- Structure the PDP with these sections:\n    1. Player System Snapshot\n    2. Movement System Characteristics\n    3. Behavioral Attractors\n    4. Rate Limiters (with constraint tags and coach cues)\n    5. Constraint-Led Interventions (detail intervention, expected outcome, and link to tags)\n    6. Long-term System Targets (tied to skills and constraints)\n    7. Key Design Rules (decision frameworks and priorities)\n\n- Use clear, precise, and technical language suitable for directors and experienced coaches.\n- Reference tags and constraints directly.\n- Be specific and robust—assume this PDP will inform all downstream, more concise versions.\n- Output as Markdown.\n\nGenerate only the full PDP, no summary or meta comments."
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        880,
+        -100
+      ],
+      "id": "0a2a9408-7ff8-4b4a-8844-5812fc84ca15",
+      "name": "OpenAI",
+      "credentials": {
+        "openAiApi": {
+          "id": "KhaGQw1SlGfhaasb",
+          "name": "OpenAi account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "AgentEvents_Trigger": {
+      "main": [
+        [
+          {
+            "node": "Fetch_Observations_For_Player",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch_Observations_For_Player": {
+      "main": [
+        [
+          {
+            "node": "Aggregate_Observations_Skills_Tags",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate_Observations_Skills_Tags": {
+      "main": [
+        [
+          {
+            "node": "OpenAI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Insert_New_PDP": {
+      "main": [
+        [
+          {
+            "node": "Mark_Event_As_Handled",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mark_Event_As_Handled": {
+      "main": [
+        [
+          {
+            "node": "Supabase",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI": {
+      "main": [
+        [
+          {
+            "node": "Insert_New_PDP",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "6e14dc7c-47d6-480b-8cfd-c8c100805d31",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "0abe8dd3af7b84dd650128b454cc932a6aae1d69499f17eccb6a7dec666a07a5"
+  },
+  "id": "ZQGTbxHU5ImEZuu5",
+  "tags": []
+}

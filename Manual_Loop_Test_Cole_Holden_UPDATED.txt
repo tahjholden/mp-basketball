@@ -1,0 +1,61 @@
+
+MPB SYSTEM – UPDATED MANUAL LOOP: COLE HOLDEN
+
+PLAYER CONTEXT
+---------------
+Name: Cole Holden
+Age: 10
+Level: 3 (Team Layer 2)
+Primary Development Focus: Base and Balance
+Active Constraints:
+- Must establish base before shot (Fight for Feet)
+- Cue-based shot rhythm after contact or pressure
+- Breath + bounce reset after emotional friction
+
+SESSION SNAPSHOT
+-----------------
+Recent Dates: April 15, 2025, April 17, 2025
+Session Tags: Constraint Execution, Emotional Rebooting, Push/Pull Reads
+Coach Cues Used: Be decisive with space, Reset base before launch, Land, breathe, then shoot
+Behavioral Patterns Observed:
+- Rushed shot pacing under pressure
+- Collapsed base when speed increased
+- Emotional spiral after early misses
+
+PREVIOUS INSIGHTS
+------------------
+Player Reflection Summary:
+> Process sound, but emotionally anchored to result. Frustrated by disconnect between good read and missed outcome.
+
+Coach Observation Summary:
+> Cole executed core constraint ~50%. Emotional dysregulation spiked after first miss. FFF understood but not stabilized under pressure.
+
+UPDATED REFLECTION PROMPTS
+---------------------------
+- What changed about your balance when things sped up today?
+- How did you respond after your first shot miss? What did you notice?
+- Describe one moment you stayed grounded before you acted.
+- What helped you find your base? What pulled you out of it?
+- Next time pressure builds, what do you want to feel in your body first?
+
+PLAYER RESPONSES (SIMULATED)
+-----------------------------
+- I felt myself rushing and kind of falling forward too much.
+- After I missed, I got frustrated and wanted to fix it too fast.
+- I stayed grounded one time when I caught it and paused before I shot.
+- Breathing helped once, but I forgot it later when I felt rushed.
+- I want to feel my feet strong and then breathe before I go next time.
+
+PDP UPDATE
+-----------
+New Tags:
+- Base instability under perceived pressure
+- Emotional reactivity loop
+- Needs embedded breath cue pre-shot
+
+NEXT PRACTICE ADAPTATION
+--------------------------
+Drill: Breath → Set → Launch
+Constraint: Player must audibly or internally cue breath and land in a wide base before shooting
+Scaffold Tag: Refine → Adapt
+Practice Context: Shooting block or decision start constraints under time pressure
