@@ -2,11 +2,10 @@
 
 Supabase + n8n workflows for MPOS-Basketball MVP.
 
-### Actor and person tables
+### Person table
 
-All participants live in a single `actor` table with an `actor_type` of `Player`,
-`Coach`, `Team` or `Group`. The `person` table stores extra fields for human
-actors (players or coaches) such as jersey numbers and roles.
+All participants live in a single `person` table. Player and coach details, such
+as jersey numbers or positions, are stored in the related `person_role` table.
 
 ## Prerequisites
 
@@ -53,7 +52,7 @@ psql "$SUPABASE_DB_URL" -c "\copy agent_events FROM 'supabase/seed/agent_events_
 psql "$SUPABASE_DB_URL" -c "\copy person FROM 'supabase/seed/coach_rows.csv' CSV HEADER"
 ```
 
-This loads the sample rows for the new `actor`/`person` structure and related tables.
+This loads the sample rows for the new `person`/`person_role` structure and related tables.
 
 ### Import n8n workflows
 

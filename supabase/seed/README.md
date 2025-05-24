@@ -2,7 +2,7 @@
 
 This directory contains SQL and CSV files used to populate a Supabase database with sample rows.
 
-The schema groups every participant in an `actor` table. Extra attributes for players and coaches are stored in `person` rows that reference the actor id. Many of the seed scripts insert data into these two tables along with related team and session tables.
+The schema now stores every participant in the `person` table. Player and coach information lives in `person_role` rows linked to each person. Many of the seed scripts insert data into these tables along with related team and session tables.
 
 ## Prerequisites
 
