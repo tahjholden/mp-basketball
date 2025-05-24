@@ -17,19 +17,13 @@ as jersey numbers or positions, are stored in the related `person_role` table.
 
 ### Apply database migrations
 
-<!-- renamed actor table and updated references -->
-   ```bash
-   supabase db remote set "$SUPABASE_DB_URL"
-   ```
+
+Link the Supabase CLI to your database then apply the migrations. This pulls in
+`007_create_attendance.sql`, which creates the `attendance` table used by the
+practice planner:
 
 ```bash
 supabase db remote set "$SUPABASE_DB_URL"
-```
-
-Apply the migrations with the Supabase CLI. This pulls in the newest migration that creates the
-`attendance` table used by the practice planner:
-
-```bash
 supabase db push
 ```
 
@@ -64,7 +58,7 @@ n8n import:workflow --input workflows/mpos-basketball.json
 
 The practice-planner workflows now read from the `attendance` table. Only players
 marked `present` are included when generating a session plan. Any names that do
-not match existing players are stored in the `flagged_entities` table for later
+not match existing players are logged in the `flagged_entities` table for later
 review.
 
 Example code nodes used in the workflow:
