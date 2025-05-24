@@ -135,14 +135,15 @@ CREATE TABLE IF NOT EXISTS routine_instance (
 );
 
 --------------------------------------------------------------------------------
--- HABIT_EXPOSURE : tag exposures accumulated per player per routine_instance
+codex/rename-player_exposure-and-adjust-foreign-keys
+-- PERSON_EXPOSURE : tag exposures accumulated per actor per session_drill
 --------------------------------------------------------------------------------
-CREATE TABLE IF NOT EXISTS habit_exposure (
+CREATE TABLE IF NOT EXISTS person_exposure (
   uid               TEXT PRIMARY KEY,
 codex/rename-actor-table-and-update-references
   session_drill_uid TEXT NOT NULL REFERENCES session_drill(uid) ON DELETE CASCADE,
-  person_uid        TEXT NOT NULL REFERENCES person(uid)        ON DELETE CASCADE,
-
+codex/rename-player_exposure-and-adjust-foreign-keys
+  person_uid        TEXT NOT NULL REFERENCES actor(uid)         ON DELETE CASCADE,
   tag_uid           TEXT NOT NULL REFERENCES tag(uid)           ON DELETE CASCADE,
   count             INT  NOT NULL DEFAULT 1
 );
@@ -200,7 +201,8 @@ WHEN (NEW.obs_type IN ('Reflection','GoalProgress','Idea'))
 EXECUTE PROCEDURE update_pdp(NEW.uid);
 
 --------------------------------------------------------------------------------
--- UDF : expand_exposure() – creates habit_exposure rows for each tag
+codex/rename-player_exposure-and-adjust-foreign-keys
+-- UDF : expand_exposure() – creates person_exposure rows for each tag
 --------------------------------------------------------------------------------
 CREATE OR REPLACE FUNCTION expand_exposure() RETURNS TRIGGER LANGUAGE plpgsql AS $$
 DECLARE
@@ -208,14 +210,15 @@ DECLARE
 BEGIN
   -- loop over tags attached to the routine
   FOR rec IN
-codex/rename-actor-table-and-update-references
-      SELECT dt.tag_uid, pr.person_uid
+codex/rename-player_exposure-and-adjust-foreign-keys
+      SELECT dt.tag_uid, a.uid AS person_uid
         FROM drill_tag dt
         CROSS JOIN person_role pr
         WHERE dt.drill_uid = NEW.drill_uid
           AND pr.role = 'Player'
   LOOP
-    INSERT INTO player_exposure(uid, session_drill_uid, person_uid, tag_uid, count)
+codex/rename-player_exposure-and-adjust-foreign-keys
+    INSERT INTO person_exposure(uid, session_drill_uid, person_uid, tag_uid, count)
     VALUES (
       uuid_generate_v4()::text,
       NEW.uid,
@@ -223,9 +226,9 @@ codex/rename-actor-table-and-update-references
       rec.tag_uid,
       1
     )
-codex/rename-actor-table-and-update-references
+codex/rename-player_exposure-and-adjust-foreign-keys
     ON CONFLICT (session_drill_uid, person_uid, tag_uid) DO UPDATE
-    SET count = player_exposure.count + 1;
+    SET count = person_exposure.count + 1;
 
   END LOOP;
   RETURN NEW;
