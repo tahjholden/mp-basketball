@@ -1,5 +1,4 @@
-import { IExecuteFunctions } from 'n8n-core';
-import { IDataObject, INodeExecutionData, INodeType, INodeTypeDescription } from 'n8n-workflow';
+import type { IExecuteFunctions, IDataObject, INodeExecutionData, INodeType, INodeTypeDescription } from '@n8n/workflow';
 
 export class DBWriter implements INodeType {
   description: INodeTypeDescription = {

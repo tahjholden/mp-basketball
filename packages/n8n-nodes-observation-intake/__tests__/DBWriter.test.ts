@@ -1,5 +1,5 @@
 import { DBWriter } from '../src/DBWriter.node';
-import { IExecuteFunctions, INodeExecutionData } from 'n8n-core';
+import type { IExecuteFunctions, INodeExecutionData } from '@n8n/workflow';
 
 describe('DBWriter node', () => {
   test('sends items via httpRequest', async () => {
