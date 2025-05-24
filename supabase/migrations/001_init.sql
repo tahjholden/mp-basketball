@@ -31,14 +31,16 @@ CREATE TABLE IF NOT EXISTS profile (
   attributes_json  JSONB NOT NULL DEFAULT '{}',
   created_at       TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
+-- Indexes for fast joins on foreign keys
+CREATE INDEX IF NOT EXISTS idx_profile_actor ON profile(actor_uid);
 
 --------------------------------------------------------------------------------
 -- JOURNAL_ENTRY : personal notes and reflections
 --------------------------------------------------------------------------------
-CREATE TABLE IF NOT EXISTS journal_entry (
-  uid         UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
--- decide and update observation table reference
-  person_id   UUID NOT NULL REFERENCES person(uid) ON DELETE CASCADE,
+CREATE TABLE IF NOT EXISTS observation (
+  uid         TEXT PRIMARY KEY,
+  person_id   TEXT NOT NULL REFERENCES actor(uid) ON DELETE CASCADE,
+
   obs_type    TEXT NOT NULL CHECK (obs_type IN ('DevNote','CoachReflection','PlayerReflection')),
   payload     JSONB NOT NULL,
   timestamp   TIMESTAMPTZ NOT NULL,
@@ -47,6 +49,7 @@ CREATE TABLE IF NOT EXISTS journal_entry (
   predicted_tag_uid UUID,     -- filled by GPT tagger later
   org_uid     TEXT DEFAULT 'ORG-DEFAULT'
 );
+CREATE INDEX IF NOT EXISTS idx_observation_actor ON observation(actor_uid);
 
 --------------------------------------------------------------------------------
 -- INTERVENTION : practice session, game, etc.
@@ -70,6 +73,7 @@ CREATE TABLE IF NOT EXISTS metric (
   timestamp    TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   org_uid      TEXT DEFAULT 'ORG-DEFAULT'
 );
+CREATE INDEX IF NOT EXISTS idx_metric_actor ON metric(actor_uid);
 
 --------------------------------------------------------------------------------
 -- LINK : generic parent‑child relation
@@ -82,6 +86,8 @@ CREATE TABLE IF NOT EXISTS link (
   created_at     TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   org_uid        TEXT DEFAULT 'ORG-DEFAULT'
 );
+CREATE INDEX IF NOT EXISTS idx_link_parent ON link(parent_uid);
+CREATE INDEX IF NOT EXISTS idx_link_child ON link(child_uid);
 
 --------------------------------------------------------------------------------
 -- TAG : skills / constraints (optional embeddings)
@@ -119,6 +125,8 @@ CREATE TABLE IF NOT EXISTS routine_tag (
   context_json JSONB DEFAULT '{}',
   PRIMARY KEY (routine_uid, tag_uid)
 );
+CREATE INDEX IF NOT EXISTS idx_routine_tag_routine ON routine_tag(routine_uid);
+CREATE INDEX IF NOT EXISTS idx_routine_tag_tag ON routine_tag(tag_uid);
 
 --------------------------------------------------------------------------------
 -- ROUTINE_INSTANCE : routines scheduled inside an intervention
@@ -130,6 +138,8 @@ CREATE TABLE IF NOT EXISTS routine_instance (
   seq_order      INT  NOT NULL,
   org_uid        TEXT DEFAULT 'ORG-DEFAULT'
 );
+CREATE INDEX IF NOT EXISTS idx_routine_instance_intervention ON routine_instance(intervention_uid);
+CREATE INDEX IF NOT EXISTS idx_routine_instance_routine ON routine_instance(routine_uid);
 
 --------------------------------------------------------------------------------
 -- rename player_exposure table and adjust foreign keys
@@ -144,6 +154,9 @@ CREATE TABLE IF NOT EXISTS person_exposure (
   tag_uid           UUID NOT NULL REFERENCES tag(uid)           ON DELETE CASCADE,
   count             INT  NOT NULL DEFAULT 1
 );
+CREATE INDEX IF NOT EXISTS idx_habit_exposure_instance ON habit_exposure(routine_instance_uid);
+CREATE INDEX IF NOT EXISTS idx_habit_exposure_player ON habit_exposure(player_uid);
+CREATE INDEX IF NOT EXISTS idx_habit_exposure_tag ON habit_exposure(tag_uid);
 
 --------------------------------------------------------------------------------
 -- TAG_RELATION : hierarchical or exclusive tag links
@@ -154,6 +167,8 @@ CREATE TABLE IF NOT EXISTS tag_relation (
   relation_type   TEXT NOT NULL,
   tag_id_child    UUID NOT NULL REFERENCES tag(uid) ON DELETE CASCADE
 );
+CREATE INDEX IF NOT EXISTS idx_tag_relation_parent ON tag_relation(tag_id_parent);
+CREATE INDEX IF NOT EXISTS idx_tag_relation_child ON tag_relation(tag_id_child);
 
 --------------------------------------------------------------------------------
 -- FLAGGED_NAME : store unmatched player names
@@ -461,7 +476,8 @@ CREATE INDEX IF NOT EXISTS idx_tag_relation_child ON tag_relation(tag_id_child);
 CREATE INDEX IF NOT EXISTS idx_flagged_name_observation ON flagged_name(raw_observation_id);
 -- extend supabase 001_init.sql with schema
 CREATE INDEX IF NOT EXISTS idx_flagged_entities_entity ON flagged_entities(entity_uid);
-CREATE INDEX IF NOT EXISTS idx_journal_entry_logs_observation ON journal_entry_logs(observation_uid);
+-- index for fast lookup of log entries by associated observation
+CREATE INDEX IF NOT EXISTS idx_journal_entry_logs_observation_uid ON journal_entry_logs(observation_uid);
 CREATE INDEX IF NOT EXISTS idx_pod_team ON pod(team_id);
 CREATE INDEX IF NOT EXISTS idx_session_team ON session(team_id);
 CREATE INDEX IF NOT EXISTS idx_session_pod ON session(pod_id);
@@ -497,13 +513,12 @@ CREATE UNIQUE INDEX IF NOT EXISTS idx_player_exposure_triplet ON player_exposure
 --------------------------------------------------------------------------------
 CREATE OR REPLACE FUNCTION update_pdp(obs_uid UUID) RETURNS VOID LANGUAGE plpgsql AS $$
 DECLARE
--- decide and update observation table reference
-  v_person_id UUID;
+  v_person_id TEXT;
 BEGIN
   SELECT person_id INTO v_person_id FROM observation WHERE uid = obs_uid;
   UPDATE profile
      SET attributes_json = jsonb_set(attributes_json, '{last_observation}', to_jsonb(obs_uid), true)
-   WHERE person_uid = v_person_id;
+   WHERE actor_uid = v_person_id;
 END;
 $$;
 

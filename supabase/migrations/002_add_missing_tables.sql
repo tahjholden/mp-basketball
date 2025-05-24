@@ -11,6 +11,14 @@ CREATE TABLE IF NOT EXISTS flagged_entities (
   created_at     TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   org_uid        TEXT DEFAULT 'ORG-DEFAULT'
 );
+-- Index for quick lookup by entity
+CREATE INDEX IF NOT EXISTS idx_flagged_entities_entity ON flagged_entities(entity_uid);
+
+--------------------------------------------------------------------------------
+-- Remove legacy player and coach tables if they exist
+DROP TABLE IF EXISTS player CASCADE;
+DROP TABLE IF EXISTS coach  CASCADE;
+
 --------------------------------------------------------------------------------
 -- rename actor table and update references
 -- person_role table (replaces player/coach subtypes)
@@ -32,20 +40,27 @@ CREATE TABLE IF NOT EXISTS journal_entry_logs (
   log_entry       JSONB NOT NULL,
   created_at      TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
+CREATE INDEX IF NOT EXISTS idx_observation_logs_observation ON observation_logs(observation_uid);
 
 --------------------------------------------------------------------------------
 -- journal_entry table updates
 --------------------------------------------------------------------------------
--- rename actor table and update references
+DO $$
+BEGIN
+  IF EXISTS (
+       SELECT 1 FROM information_schema.columns
+        WHERE table_name='observation' AND column_name='actor_uid'
+     ) AND NOT EXISTS (
+       SELECT 1 FROM information_schema.columns
+        WHERE table_name='observation' AND column_name='person_id'
+     ) THEN
+    ALTER TABLE observation RENAME COLUMN actor_uid TO person_id;
+  END IF;
+END$$;
+
 ALTER TABLE observation
 -- decide and update observation table reference
   ADD COLUMN IF NOT EXISTS session_uid TEXT REFERENCES intervention(uid),
   ADD COLUMN IF NOT EXISTS tagged_skills JSONB DEFAULT '[]'::jsonb;
-
---------------------------------------------------------------------------------
--- Indexes for new foreign keys
---------------------------------------------------------------------------------
-CREATE INDEX IF NOT EXISTS idx_flagged_entities_entity ON flagged_entities(entity_uid);
-CREATE INDEX IF NOT EXISTS idx_journal_entry_logs_observation ON journal_entry_logs(observation_uid);
 CREATE INDEX IF NOT EXISTS idx_observation_person ON observation(person_id);
 CREATE INDEX IF NOT EXISTS idx_observation_session ON observation(session_uid);

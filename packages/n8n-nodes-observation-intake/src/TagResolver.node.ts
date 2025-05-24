@@ -1,5 +1,4 @@
-import { IExecuteFunctions } from 'n8n-core';
-import { INodeExecutionData, INodeType, INodeTypeDescription } from 'n8n-workflow';
+import type { IExecuteFunctions, INodeExecutionData, INodeType, INodeTypeDescription } from '@n8n/workflow';
 
 function extractTags(text: string, tags: string[]): string[] {
   const lower = text.toLowerCase();

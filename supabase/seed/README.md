@@ -2,7 +2,7 @@
 
 This directory contains SQL and CSV files used to populate a Supabase database with sample rows.
 
-The schema now stores every participant in the `person` table. Player and coach information lives in `person_role` rows linked to each person. Many of the seed scripts insert data into these tables along with related team and session tables.
+The schema organizes everyone under a unified `person` table. Specific details for a coach or player are stored in `person_role` records that point back to the person. The seed scripts insert sample people along with teams, pods and sessions so the n8n workflows have data to operate on.
 
 ## Prerequisites
 
@@ -15,14 +15,13 @@ supabase db remote set "$SUPABASE_DB_URL"
 
 ## Loading SQL seed files
 
-Each `*.sql` file inserts rows into one of the project tables. After migrations finish you can load them with `psql`:
+Each `*.sql` file inserts rows into one of the project tables. After migrations finish you can load them with `psql`. `person_rows.sql` adds sample players and coaches using the new `person`/`person_role` layout:
 
 ```bash
 for file in supabase/seed/*.sql; do
   psql "$SUPABASE_DB_URL" -f "$file"
 done
 ```
-<!-- update readme files for actor/person structure -->
 
 ## Loading CSV seed files
 
@@ -33,4 +32,4 @@ psql "$SUPABASE_DB_URL" -c "\copy agent_events FROM 'supabase/seed/agent_events_
 psql "$SUPABASE_DB_URL" -c "\copy person FROM 'supabase/seed/coach_rows.csv' CSV HEADER"
 ```
 
-This will insert the rows defined in each CSV file into the corresponding table.
+`agent_events_rows.csv` provides initial tasks for the workflow engine and `coach_rows.csv` adds a couple of sample coaches.

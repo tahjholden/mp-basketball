@@ -25,7 +25,7 @@ export async function startDB(): Promise<string> {
   containerName = `mpb_test_${uuidv4()}`;
   databaseUrl = 'postgres://postgres:postgres@localhost:54329/postgres';
 
-  execSync(`docker run -d --rm --name ${containerName} -e POSTGRES_PASSWORD=postgres -p 54329:5432 postgres:15-alpine`, { stdio: 'ignore' });
+  execSync(`docker run -d --rm --name ${containerName} -e POSTGRES_PASSWORD=postgres -p 54329:5432 pgvector/pgvector:pg15`, { stdio: 'ignore' });
 
   await waitForDb(databaseUrl);
 

@@ -2,6 +2,10 @@
 
 Supabase + n8n workflows for MPOS-Basketball MVP.
 
+### Actor to person refactor
+
+Older revisions of the schema used an `actor` table to store players and coaches. The current design consolidates everyone in a `person` table with related roles stored in `person_role` rows.
+
 ### Person table
 
 All participants live in a single `person` table. Player and coach details, such
@@ -17,32 +21,24 @@ as jersey numbers or positions, are stored in the related `person_role` table.
 
 ### Apply database migrations
 
-<!-- renamed actor table and updated references -->
-   ```bash
-   supabase db remote set "$SUPABASE_DB_URL"
-   ```
+
+Link the Supabase CLI to your database then apply the migrations. This pulls in
+`009_create_attendance.sql`, which creates the `attendance` table used by the
+practice planner:
 
 ```bash
 supabase db remote set "$SUPABASE_DB_URL"
-```
-
-Apply the migrations with the Supabase CLI. This pulls in the newest migration that creates the
-`attendance` table used by the practice planner:
-
-```bash
 supabase db push
 ```
 
 ### Load seed data
 
-Example rows are stored in `./supabase/seed`. After the migrations run you can load all SQL files in that folder:
+Example rows are stored in `./supabase/seed`. After running `supabase db push` you can load all SQL files in that folder. `person_rows.sql` seeds players and coaches and other files populate related tables:
 
 ```bash
 for f in supabase/seed/*.sql; do
   psql "$SUPABASE_DB_URL" -f "$f"
 done
-# make sure to load the new attendance rows
-psql "$SUPABASE_DB_URL" -f supabase/seed/attendance_rows.sql
 ```
 
 To import the CSV files as well:
@@ -64,7 +60,7 @@ n8n import:workflow --input workflows/mpos-basketball.json
 
 The practice-planner workflows now read from the `attendance` table. Only players
 marked `present` are included when generating a session plan. Any names that do
-not match existing players are stored in the `flagged_entities` table for later
+not match existing players are logged in the `flagged_entities` table for later
 review.
 
 Example code nodes used in the workflow:
@@ -136,10 +132,45 @@ python tools/schema_diff.py \
 <!-- set up jest with package.json -->
 ## Install dependencies
 
-Run `npm install` to install the dev dependencies for running tests.
+Run `npm install` to install the dev dependencies for running tests. This fetches Jest and `ts-jest` along with the other required packages.
+Packages that include custom n8n nodes (under `packages/`) also require `npm install` from inside each package directory before executing tests.
 
-Run tests with `npm test`.
+Run tests with `npm test` and generate coverage reports using `npm run coverage`.
+The workflow integration test at `tests/workflowLoad.test.ts` can be executed on
+its own with:
+
+```bash
+npm test tests/workflowLoad.test.ts
+```
+
+## Testing
+
+The main Jest tests live in the top-level `tests` directory. Some packages under
+`packages/` contain their own `__tests__` folders for vertical-specific logic.
+
+Run the test suite locally with:
+
+```bash
+npm install
+npm test
+npm run coverage
+```
+
+GitHub Actions runs these commands on every pull request and reports the CI
+status directly on the PR page.
 
 ## License
 
-This project is licensed under the [MIT License](LICENSE).
+
+## Testing
+
+This repository includes Jest tests that run the Supabase migrations and execute n8n workflows.
+The helper in `tests/db.ts` launches a temporary Postgres container via Docker and applies all
+migrations automatically. Ensure Docker, the Supabase CLI and the `n8n` CLI are installed locally
+before running:
+
+```bash
+npm test
+```
+
+Tables are truncated between runs.

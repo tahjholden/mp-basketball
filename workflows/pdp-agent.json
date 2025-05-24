@@ -187,6 +187,49 @@
     },
     {
       "parameters": {
+        "operation": "getAll",
+        "tableId": "player",
+        "returnAll": true,
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "={{$json.player_id}}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        880,
+        -220
+      ],
+      "id": "6c7b38d1-8fe7-4ee9-9d9c-05b97970cfa3",
+      "name": "Fetch_Player_Name",
+      "credentials": {
+        "supabaseApi": {
+          "id": "snX7zXf3hb1iETnD",
+          "name": "Supabase <-> N8N MPBos"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const rows = $input.all();\nif (rows.length !== 1) {\n  throw new Error(`Expected 1 player record for ${$json.player_id}, found ${rows.length}`);\n}\nconst playerName = rows[0].json.display_name;\nconst agg = $items(\"Aggregate_Observations_Skills_Tags\", 0, $itemIndex)[0].json;\nreturn [{ json: { ...agg, player_name: playerName } }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        880,
+        -160
+      ],
+      "id": "f1f437d3-3e00-4b0d-b116-d9d483d3405c",
+      "name": "Validate_Player_Name"
+    },
+    {
+      "parameters": {
         "modelId": {
           "__rl": true,
           "value": "chatgpt-4o-latest",
@@ -200,7 +243,7 @@
               "role": "system"
             },
             {
-              "content": "=Create a comprehensive Player Development Plan (PDP) for {{player_name}} based on the following data.\n\nObservations:\n{{joined_observations}}\n\nSkill Tags:\n{{joined_tags}}\n\nConstraint Tags:\n{{joined_constraints}}\n\nInstructions:\n- Structure the PDP with these sections:\n    1. Player System Snapshot\n    2. Movement System Characteristics\n    3. Behavioral Attractors\n    4. Rate Limiters (with constraint tags and coach cues)\n    5. Constraint-Led Interventions (detail intervention, expected outcome, and link to tags)\n    6. Long-term System Targets (tied to skills and constraints)\n    7. Key Design Rules (decision frameworks and priorities)\n\n- Use clear, precise, and technical language suitable for directors and experienced coaches.\n- Reference tags and constraints directly.\n- Be specific and robust—assume this PDP will inform all downstream, more concise versions.\n- Output as Markdown.\n\nGenerate only the full PDP, no summary or meta comments."
+              "content": "=Create a comprehensive Player Development Plan (PDP) for {{player_name}} based on the following data.\n\nObservations:\n{{joined_observations}}\n\nSkill Tags:\n{{joined_tags}}\n\nConstraint Tags:\n{{joined_constraints}}\n\nInstructions:\n- Structure the PDP with these sections:\n    1. Player System Snapshot\n    2. Movement System Characteristics\n    3. Behavioral Attractors\n    4. Rate Limiters (with constraint tags and coach cues)\n    5. Constraint-Led Interventions (detail intervention, expected outcome, and link to tags)\n    6. Long-term System Targets (tied to skills and constraints)\n    7. Key Design Rules (decision frameworks and priorities)\n\n- Use clear, precise, and technical language suitable for directors and experienced coaches.\n- Reference tags and constraints directly.\n- Be specific and robust\u2014assume this PDP will inform all downstream, more concise versions.\n- Output as Markdown.\n\nGenerate only the full PDP, no summary or meta comments."
             }
           ]
         },
@@ -239,6 +282,19 @@
       ],
       "id": "c70b35f5-f80f-44a7-a58c-6a50463df2ad",
       "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "jsCode": "const items = $input.all();\nconst agg = $items(\"Aggregate_Observations_Skills_Tags\");\nfor (let i = 0; i < items.length; i++) {\n  const content = items[i].json?.message?.content || '';\n  const empty = !content.trim();\n  const truncated = items[i].json?.finish_reason === 'length' || content.trim().endsWith('...');\n  if (empty || truncated) {\n    items[i].json.truncated = true;\n    const obsItem = agg[i];\n    if (obsItem && obsItem.json.joined_observations) {\n      const original = obsItem.json.joined_observations;\n      const shortened = original.slice(0, Math.floor(original.length * 0.75));\n      items[i].json.shorter_observations = shortened;\n    }\n    console.warn('OpenAI response truncated or empty; consider retrying.');\n  }\n}\nreturn items;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1070,
+        -100
+      ],
+      "id": "8e02047f-dfe6-409c-ac95-a43ee98d13b6",
+      "name": "Code_CheckOpenAIOutput"
     }
   ],
   "pinData": {
@@ -284,6 +340,28 @@
       "main": [
         [
           {
+            "node": "Fetch_Player_Name",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch_Player_Name": {
+      "main": [
+        [
+          {
+            "node": "Validate_Player_Name",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validate_Player_Name": {
+      "main": [
+        [
+          {
             "node": "OpenAI",
             "type": "main",
             "index": 0
@@ -317,7 +395,7 @@
       "main": [
         [
           {
-            "node": "Insert_New_PDP",
+            "node": "Code_CheckOpenAIOutput",
             "type": "main",
             "index": 0
           }
@@ -329,6 +407,17 @@
         [
           {
             "node": "AgentEvents_Trigger",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code_CheckOpenAIOutput": {
+      "main": [
+        [
+          {
+            "node": "Insert_New_PDP",
             "type": "main",
             "index": 0
           }

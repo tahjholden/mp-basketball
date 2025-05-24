@@ -6,7 +6,7 @@
 --------------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS mood_log (
   uid         TEXT PRIMARY KEY,
-  person_id   TEXT NOT NULL REFERENCES actor(uid) ON DELETE CASCADE,
+  person_id   TEXT NOT NULL REFERENCES person(uid) ON DELETE CASCADE,
   mood        TEXT NOT NULL,
   note        TEXT,
   timestamp   TIMESTAMPTZ NOT NULL DEFAULT NOW(),
@@ -20,7 +20,7 @@ CREATE INDEX IF NOT EXISTS idx_mood_log_timestamp ON mood_log(timestamp);
 --------------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS habit (
   uid         TEXT PRIMARY KEY,
-  person_id   TEXT NOT NULL REFERENCES actor(uid) ON DELETE CASCADE,
+  person_id   TEXT NOT NULL REFERENCES person(uid) ON DELETE CASCADE,
   name        TEXT NOT NULL,
   description TEXT,
   created_at  TIMESTAMPTZ NOT NULL DEFAULT NOW(),
@@ -46,7 +46,7 @@ CREATE INDEX IF NOT EXISTS idx_habit_event_timestamp ON habit_event(timestamp);
 --------------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS goal (
   uid          TEXT PRIMARY KEY,
-  person_id    TEXT NOT NULL REFERENCES actor(uid) ON DELETE CASCADE,
+  person_id    TEXT NOT NULL REFERENCES person(uid) ON DELETE CASCADE,
   title        TEXT NOT NULL,
   details      TEXT,
   status       TEXT,
@@ -63,7 +63,7 @@ CREATE INDEX IF NOT EXISTS idx_goal_person ON goal(person_id);
 --------------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS project (
   uid          TEXT PRIMARY KEY,
-  owner_id     TEXT REFERENCES actor(uid) ON DELETE SET NULL,
+  owner_id     TEXT REFERENCES person(uid) ON DELETE SET NULL,
   title        TEXT NOT NULL,
   description  TEXT,
   status       TEXT,
@@ -82,7 +82,7 @@ CREATE INDEX IF NOT EXISTS idx_project_owner ON project(owner_id);
 CREATE TABLE IF NOT EXISTS task (
   uid          TEXT PRIMARY KEY,
   project_id   TEXT REFERENCES project(uid) ON DELETE CASCADE,
-  assignee_id  TEXT REFERENCES actor(uid) ON DELETE SET NULL,
+  assignee_id  TEXT REFERENCES person(uid) ON DELETE SET NULL,
   title        TEXT NOT NULL,
   details      TEXT,
   status       TEXT,
