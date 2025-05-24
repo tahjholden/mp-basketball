@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     services:
       postgres:
-        image: postgres:15-alpine
+        image: pgvector/pgvector:pg15  # Use pgvector on Postgres 15
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
