@@ -254,7 +254,6 @@
               "keyName": "id",
               "condition": "eq",
               "keyValue": "={{$json[\"session_id\"]}}"
-
             }
           ]
         }
@@ -307,7 +306,6 @@
     {
       "parameters": {
         "jsCode": "const expected = $items(\"FetchExpected\")[0].json.player_ids;\nconst actual = $items(\"FetchActual\").map(i => i.json.player_id);\nconst present = expected.filter(id => actual.includes(id));\nconst missing = expected.filter(id => !actual.includes(id));\nconst unexpected = actual.filter(id => !expected.includes(id));\nreturn [{json: {present, missing, unexpected}}];"
-
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -317,7 +315,6 @@
       ],
       "id": "353a6503-afbd-44d1-bb0a-94864d50c5e7",
       "name": "CompareAttendance"
-
     }
   ],
   "pinData": {},
@@ -454,6 +451,28 @@
         [
           {
             "node": "FetchActual",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "FetchActual": {
+      "main": [
+        [
+          {
+            "node": "CompareAttendance",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CompareAttendance": {
+      "main": [
+        [
+          {
+            "node": "Code_SessionPlanContext",
             "type": "main",
             "index": 0
           }
