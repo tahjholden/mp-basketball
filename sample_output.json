@@ -1,0 +1,26 @@
+[
+  {
+    "category": "player",
+    "raw_observation_id": null,
+    "flagged_name": "Ben",
+    "observation_text": "Cole was excellent... Ben, JP, Lennox were absent...",
+    "flagged_at": "2024-05-23T00:00:00.000Z",
+    "attempted_match": null,
+    "resolved_entity_id": null,
+    "resolution_status": "pending",
+    "resolved_by": null,
+    "resolved_at": null
+  },
+  {
+    "category": "player",
+    "raw_observation_id": null,
+    "flagged_name": "JP",
+    "observation_text": "Cole was excellent... Ben, JP, Lennox were absent...",
+    "flagged_at": "2024-05-23T00:00:00.000Z",
+    "attempted_match": null,
+    "resolved_entity_id": null,
+    "resolution_status": "pending",
+    "resolved_by": null,
+    "resolved_at": null
+  }
+]
