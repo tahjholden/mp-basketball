@@ -282,6 +282,19 @@
       ],
       "id": "c70b35f5-f80f-44a7-a58c-6a50463df2ad",
       "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "jsCode": "const items = $input.all();\nconst agg = $items(\"Aggregate_Observations_Skills_Tags\");\nfor (let i = 0; i < items.length; i++) {\n  const content = items[i].json?.message?.content || '';\n  const empty = !content.trim();\n  const truncated = items[i].json?.finish_reason === 'length' || content.trim().endsWith('...');\n  if (empty || truncated) {\n    items[i].json.truncated = true;\n    const obsItem = agg[i];\n    if (obsItem && obsItem.json.joined_observations) {\n      const original = obsItem.json.joined_observations;\n      const shortened = original.slice(0, Math.floor(original.length * 0.75));\n      items[i].json.shorter_observations = shortened;\n    }\n    console.warn('OpenAI response truncated or empty; consider retrying.');\n  }\n}\nreturn items;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1070,
+        -100
+      ],
+      "id": "8e02047f-dfe6-409c-ac95-a43ee98d13b6",
+      "name": "Code_CheckOpenAIOutput"
     }
   ],
   "pinData": {
@@ -382,7 +395,7 @@
       "main": [
         [
           {
-            "node": "Insert_New_PDP",
+            "node": "Code_CheckOpenAIOutput",
             "type": "main",
             "index": 0
           }
@@ -400,11 +413,11 @@
         ]
       ]
     },
-    "Truncate_LLM_Inputs": {
+    "Code_CheckOpenAIOutput": {
       "main": [
         [
           {
-            "node": "OpenAI",
+            "node": "Insert_New_PDP",
             "type": "main",
             "index": 0
           }

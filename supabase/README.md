@@ -40,3 +40,14 @@ actor: false
 ```
 
 Keeping this file in sync with the migrations allows external tools or policies to automatically determine which tables require admin-level access.
+
+## `table_metadata` table
+
+Migration `010_create_table_metadata.sql` adds a table named `table_metadata` with columns `table_name` and `is_admin`. The initial migration populates it using the entries from `admin_tables.yml` so both sources stay aligned.
+
+Whenever you create a new table, update both places:
+
+1. Add the table to `admin_tables.yml`.
+2. Insert a row into `table_metadata` in a new migration.
+
+Keeping the file and table synchronized ensures tools can query this metadata reliably.
