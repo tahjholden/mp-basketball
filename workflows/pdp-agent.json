@@ -187,6 +187,49 @@
     },
     {
       "parameters": {
+        "operation": "getAll",
+        "tableId": "player",
+        "returnAll": true,
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "={{$json.player_id}}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        880,
+        -220
+      ],
+      "id": "6c7b38d1-8fe7-4ee9-9d9c-05b97970cfa3",
+      "name": "Fetch_Player_Name",
+      "credentials": {
+        "supabaseApi": {
+          "id": "snX7zXf3hb1iETnD",
+          "name": "Supabase <-> N8N MPBos"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const rows = $input.all();\nif (rows.length !== 1) {\n  throw new Error(`Expected 1 player record for ${$json.player_id}, found ${rows.length}`);\n}\nconst playerName = rows[0].json.display_name;\nconst agg = $items(\"Aggregate_Observations_Skills_Tags\", 0, $itemIndex)[0].json;\nreturn [{ json: { ...agg, player_name: playerName } }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        880,
+        -160
+      ],
+      "id": "f1f437d3-3e00-4b0d-b116-d9d483d3405c",
+      "name": "Validate_Player_Name"
+    },
+    {
+      "parameters": {
         "modelId": {
           "__rl": true,
           "value": "chatgpt-4o-latest",
@@ -281,6 +324,28 @@
       ]
     },
     "Aggregate_Observations_Skills_Tags": {
+      "main": [
+        [
+          {
+            "node": "Fetch_Player_Name",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch_Player_Name": {
+      "main": [
+        [
+          {
+            "node": "Validate_Player_Name",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validate_Player_Name": {
       "main": [
         [
           {
