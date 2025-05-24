@@ -37,10 +37,10 @@ CREATE INDEX IF NOT EXISTS idx_profile_actor ON profile(actor_uid);
 --------------------------------------------------------------------------------
 -- JOURNAL_ENTRY : personal notes and reflections
 --------------------------------------------------------------------------------
-CREATE TABLE IF NOT EXISTS journal_entry (
-  uid         UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
--- decide and update observation table reference
-  person_id   UUID NOT NULL REFERENCES person(uid) ON DELETE CASCADE,
+CREATE TABLE IF NOT EXISTS observation (
+  uid         TEXT PRIMARY KEY,
+  person_id   TEXT NOT NULL REFERENCES actor(uid) ON DELETE CASCADE,
+
   obs_type    TEXT NOT NULL CHECK (obs_type IN ('DevNote','CoachReflection','PlayerReflection')),
   payload     JSONB NOT NULL,
   timestamp   TIMESTAMPTZ NOT NULL,
@@ -513,13 +513,12 @@ CREATE UNIQUE INDEX IF NOT EXISTS idx_player_exposure_triplet ON player_exposure
 --------------------------------------------------------------------------------
 CREATE OR REPLACE FUNCTION update_pdp(obs_uid UUID) RETURNS VOID LANGUAGE plpgsql AS $$
 DECLARE
--- decide and update observation table reference
-  v_person_id UUID;
+  v_person_id TEXT;
 BEGIN
   SELECT person_id INTO v_person_id FROM observation WHERE uid = obs_uid;
   UPDATE profile
      SET attributes_json = jsonb_set(attributes_json, '{last_observation}', to_jsonb(obs_uid), true)
-   WHERE person_uid = v_person_id;
+   WHERE actor_uid = v_person_id;
 END;
 $$;
 

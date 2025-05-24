@@ -2,6 +2,10 @@
 
 Supabase + n8n workflows for MPOS-Basketball MVP.
 
+### Actor to person refactor
+
+Older revisions of the schema used an `actor` table to store players and coaches. The current design consolidates everyone in a `person` table with related roles stored in `person_role` rows.
+
 ### Person table
 
 All participants live in a single `person` table. Player and coach details, such
@@ -29,14 +33,12 @@ supabase db push
 
 ### Load seed data
 
-Example rows are stored in `./supabase/seed`. After the migrations run you can load all SQL files in that folder:
+Example rows are stored in `./supabase/seed`. After running `supabase db push` you can load all SQL files in that folder. `person_rows.sql` seeds players and coaches and other files populate related tables:
 
 ```bash
 for f in supabase/seed/*.sql; do
   psql "$SUPABASE_DB_URL" -f "$f"
 done
-# make sure to load the new attendance rows
-psql "$SUPABASE_DB_URL" -f supabase/seed/attendance_rows.sql
 ```
 
 To import the CSV files as well:
@@ -130,7 +132,7 @@ python tools/schema_diff.py \
 <!-- set up jest with package.json -->
 ## Install dependencies
 
-Run `npm install` to install the dev dependencies for running tests.
+Run `npm install` to install the dev dependencies for running tests. This fetches Jest and `ts-jest` along with the other required packages.
 Packages that include custom n8n nodes (under `packages/`) also require `npm install` from inside each package directory before executing tests.
 
 Run tests with `npm test` and generate coverage reports using `npm run coverage`.
