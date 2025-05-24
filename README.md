@@ -134,6 +134,12 @@ Run `npm install` to install the dev dependencies for running tests.
 Packages that include custom n8n nodes (under `packages/`) also require `npm install` from inside each package directory before executing tests.
 
 Run tests with `npm test` and generate coverage reports using `npm run coverage`.
+The workflow integration test at `tests/workflowLoad.test.ts` can be executed on
+its own with:
+
+```bash
+npm test tests/workflowLoad.test.ts
+```
 
 ## Testing
 
@@ -153,4 +159,14 @@ status directly on the PR page.
 
 ## License
 
-This project is licensed under the [MIT License](LICENSE).
+
+## Testing
+
+This repository includes Jest tests that run the Supabase migrations and execute n8n workflows.
+Set `SUPABASE_DB_URL` to a test database connection string before running:
+
+```bash
+npm test
+```
+
+The tests expect the `n8n` CLI to be available on your PATH and will truncate tables between runs.
