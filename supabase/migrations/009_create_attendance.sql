@@ -1,4 +1,4 @@
--- 008_create_attendance.sql
+-- 009_create_attendance.sql
 -- Create attendance table to track player presence per session
 
 CREATE TABLE IF NOT EXISTS attendance (
