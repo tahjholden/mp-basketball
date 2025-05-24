@@ -5,6 +5,11 @@
   "scripts": {
     "test": "jest"
   },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "type": "commonjs",
+
   "devDependencies": {
     "jest": "^29.6.1"
   },
