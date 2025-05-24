@@ -1,4 +1,4 @@
--- 006_enable_rls.sql
+-- 007_enable_rls.sql
 -- Enable row level security for core tables and add org-based policies.
 
 -- PROFILE
