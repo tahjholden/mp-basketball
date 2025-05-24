@@ -74,3 +74,14 @@ python tools/vertical_mapper/vertical_mapper.py \
 ```
 
 
+
+## Testing
+
+This repository includes Jest tests that run the Supabase migrations and execute n8n workflows.
+Set `SUPABASE_DB_URL` to a test database connection string before running:
+
+```bash
+npm test
+```
+
+The tests expect the `n8n` CLI to be available on your PATH and will truncate tables between runs.
