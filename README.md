@@ -134,6 +134,12 @@ Run `npm install` to install the dev dependencies for running tests.
 Packages that include custom n8n nodes (under `packages/`) also require `npm install` from inside each package directory before executing tests.
 
 Run tests with `npm test` and generate coverage reports using `npm run coverage`.
+The workflow integration test at `tests/workflowLoad.test.ts` can be executed on
+its own with:
+
+```bash
+npm test tests/workflowLoad.test.ts
+```
 
 ## Testing
 
