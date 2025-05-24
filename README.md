@@ -140,6 +140,18 @@ Run `npm install` to install the dev dependencies for running tests.
 
 Run tests with `npm test`.
 
+## Testing
+
+Run the test suite locally with:
+
+```bash
+npm install
+npm test
+# npm run coverage   # if implemented
+```
+
+GitHub Actions runs the same commands on every pull request.
+
 ## License
 
 This project is licensed under the [MIT License](LICENSE).
