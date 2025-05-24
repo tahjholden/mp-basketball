@@ -45,7 +45,19 @@ CREATE INDEX IF NOT EXISTS idx_observation_logs_observation ON observation_logs(
 --------------------------------------------------------------------------------
 -- journal_entry table updates
 --------------------------------------------------------------------------------
--- rename actor table and update references
+DO $$
+BEGIN
+  IF EXISTS (
+       SELECT 1 FROM information_schema.columns
+        WHERE table_name='observation' AND column_name='actor_uid'
+     ) AND NOT EXISTS (
+       SELECT 1 FROM information_schema.columns
+        WHERE table_name='observation' AND column_name='person_id'
+     ) THEN
+    ALTER TABLE observation RENAME COLUMN actor_uid TO person_id;
+  END IF;
+END$$;
+
 ALTER TABLE observation
 -- decide and update observation table reference
   ADD COLUMN IF NOT EXISTS session_uid TEXT REFERENCES intervention(uid),
