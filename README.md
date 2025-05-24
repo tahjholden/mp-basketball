@@ -18,7 +18,7 @@ actors (players or coaches) such as jersey numbers and roles.
 
 ### Apply database migrations
 
-codex/rename-actor-table-and-update-references
+<!-- renamed actor table and updated references -->
    ```bash
    supabase db remote set "$SUPABASE_DB_URL"
    ```
@@ -100,7 +100,7 @@ The same schema and workflows can be reused with other OS flavours such as Perso
 - n8n stores service credentials in its own database or `.n8n` directory. Configure them via the n8n UI after importing the workflow.
 
 
-codex/add-script-to-parametrize-workflow
+<!-- add script to parametrize workflow -->
 ## Parametrizing a workflow
 
 Use `scripts/parametrize_workflow.js` to swap Supabase details in an exported n8n workflow.
@@ -134,7 +134,7 @@ python tools/schema_diff.py \
   --html diff.html
 ```
 
-codex/set-up-jest-with-package.json
+<!-- set up jest with package.json -->
 ## Install dependencies
 
 Run `npm install` to install the dev dependencies for running tests.
