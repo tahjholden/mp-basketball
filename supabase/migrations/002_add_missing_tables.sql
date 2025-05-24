@@ -40,6 +40,19 @@ CREATE TABLE IF NOT EXISTS observation_logs (
 --------------------------------------------------------------------------------
 -- observation table updates
 --------------------------------------------------------------------------------
+DO $$
+BEGIN
+  IF EXISTS (
+       SELECT 1 FROM information_schema.columns
+        WHERE table_name='observation' AND column_name='actor_uid'
+     ) AND NOT EXISTS (
+       SELECT 1 FROM information_schema.columns
+        WHERE table_name='observation' AND column_name='person_id'
+     ) THEN
+    ALTER TABLE observation RENAME COLUMN actor_uid TO person_id;
+  END IF;
+END$$;
+
 ALTER TABLE observation
   ADD COLUMN IF NOT EXISTS person_id   TEXT REFERENCES actor(uid),
   ADD COLUMN IF NOT EXISTS session_uid TEXT REFERENCES intervention(uid),
