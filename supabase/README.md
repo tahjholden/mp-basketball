@@ -38,3 +38,16 @@ SET request.jwt.claims = '{"org_uid": "ORG-DEFAULT"}';
 ```
 
 Replace `ORG-DEFAULT` with the organization uid associated with the session.
+
+In the Supabase dashboard you can populate this claim automatically by adding a
+JWT template under **Authentication → Settings → JWT**:
+
+```json
+{
+  "org_uid": "{{ .user.app_metadata.org_uid }}"
+}
+```
+
+Any API requests made with a logged in user will then include `org_uid` in
+`request.jwt.claims`, allowing the policies in these migrations to enforce
+organization boundaries.
