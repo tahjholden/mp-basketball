@@ -163,10 +163,12 @@ status directly on the PR page.
 ## Testing
 
 This repository includes Jest tests that run the Supabase migrations and execute n8n workflows.
-Set `SUPABASE_DB_URL` to a test database connection string before running:
+The helper in `tests/db.ts` launches a temporary Postgres container via Docker and applies all
+migrations automatically. Ensure Docker, the Supabase CLI and the `n8n` CLI are installed locally
+before running:
 
 ```bash
 npm test
 ```
 
-The tests expect the `n8n` CLI to be available on your PATH and will truncate tables between runs.
+Tables are truncated between runs.
