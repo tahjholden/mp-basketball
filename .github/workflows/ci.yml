@@ -1,11 +1,13 @@
-name: CI
+name: Node.js CI
 
 on:
   push:
+    branches: [ main ]
   pull_request:
+    branches: [ main ]
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
     services:
       postgres:
@@ -22,11 +24,8 @@ jobs:
       SUPABASE_DB_URL: postgres://postgres:postgres@localhost:5432/postgres
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 20.15.0
       - run: npm install
-      - run: npm install
-        working-directory: packages/n8n-nodes-observation-intake
       - run: npm test
-      - run: npm run coverage
