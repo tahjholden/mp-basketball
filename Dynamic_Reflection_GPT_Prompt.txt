@@ -1,0 +1,22 @@
+
+# GPT Prompt: Dynamic Player Reflection Generator
+
+Given the following inputs:
+- Player UID
+- PDP Fields (Development Focus, Constraint Tags)
+- Recent Session Summary (drill friction, coach cues)
+- Recent Reflection Patterns (if available)
+
+Generate a 3–5 question reflection set that:
+1. Aligns with the player's current development focus and level.
+2. Surfaces emotional friction through indirect behavioral language.
+3. Encourages metacognition and internal pattern recognition.
+
+Output Format (Markdown):
+- Q1: ...
+- Q2: ...
+- Q3: ...
+- Q4: ...
+- Q5: ...
+
+Use varied sentence structures across sessions, but maintain alignment to developmental lane.

@@ -1,0 +1,102 @@
+{
+  "name": "Signal Mirror OS \u2013 Weekly Digest",
+  "flow": [
+    {
+      "id": 1,
+      "module": "tools:Schedule",
+      "parameters": {
+        "interval": "1w",
+        "days": [
+          "Sunday"
+        ],
+        "time": "21:00"
+      },
+      "metadata": {
+        "designer": {
+          "x": 0,
+          "y": 0
+        }
+      }
+    },
+    {
+      "id": 2,
+      "module": "airtable:SearchRecords",
+      "parameters": {
+        "base": "appNjKVuiw5ygyHHX",
+        "table": "tblaMzmASS6NLMtGj",
+        "formula": "IS_AFTER({Created Time}, DATEADD(NOW(), -7, 'days'))"
+      },
+      "metadata": {
+        "designer": {
+          "x": 250,
+          "y": 0
+        }
+      }
+    },
+    {
+      "id": 3,
+      "module": "tools:TextAggregator",
+      "parameters": {
+        "text": "DAY {{index}}:\nTheme: {{Theme}}\nFriction: {{Friction}}\nInsight: {{Insight}}\nPrompt: {{Prompt}}\nNext Move: {{Next Move}}\n\n"
+      },
+      "metadata": {
+        "designer": {
+          "x": 500,
+          "y": 0
+        }
+      }
+    },
+    {
+      "id": 4,
+      "module": "openai-gpt-3:CreateCompletion",
+      "parameters": {
+        "model": "gpt-4",
+        "temperature": 0.6,
+        "max_tokens": 800,
+        "select": "chat",
+        "messages": [
+          {
+            "role": "system",
+            "content": "You are a weekly reflection summarizer. Based on the following entries, return:\n- Weekly Theme\n- Most consistent Friction\n- Hidden Pattern (across entries)\n- Weekly Reflection Prompt\n- System Suggestion\n\nBe concise, calm, and precise."
+          },
+          {
+            "role": "user",
+            "content": "{{3}}"
+          }
+        ]
+      },
+      "metadata": {
+        "designer": {
+          "x": 750,
+          "y": 0
+        }
+      }
+    },
+    {
+      "id": 5,
+      "module": "airtable:CreateRecord",
+      "parameters": {
+        "base": "appNjKVuiw5ygyHHX",
+        "table": "tblWeeklyDigestID",
+        "record": {
+          "Week Start": "{{formatDate(addDays(now; -7); 'YYYY-MM-DD')}}",
+          "Week End": "{{formatDate(now; 'YYYY-MM-DD')}}",
+          "Summary": "{{4.result}}"
+        }
+      },
+      "metadata": {
+        "designer": {
+          "x": 1000,
+          "y": 0
+        }
+      }
+    }
+  ],
+  "metadata": {
+    "instant": false,
+    "version": 1,
+    "scenario": {
+      "autoCommit": true
+    }
+  }
+}

@@ -28,3 +28,27 @@ After the schema is in place, execute the SQL files from the `seed` folder:
 psql "$SUPABASE_DB_URL" -f seed/<file>.sql
 ```
 
+
+## RLS policies and JWT claims
+
+Row level security policies rely on the `org_uid` value from `request.jwt.claims`. When you query the database through Supabase APIs this is handled automatically. If you run SQL manually you can emulate the claims with:
+
+```sql
+SET request.jwt.claims = '{"org_uid": "ORG-DEFAULT"}';
+```
+
+Replace `ORG-DEFAULT` with the organization uid associated with the session.
+
+codex/add-row-level-security-and-policy-statements
+In the Supabase dashboard you can populate this claim automatically by adding a
+JWT template under **Authentication → Settings → JWT**:
+
+```json
+{
+  "org_uid": "{{ .user.app_metadata.org_uid }}"
+}
+```
+
+Any API requests made with a logged in user will then include `org_uid` in
+`request.jwt.claims`, allowing the policies in these migrations to enforce
+organization boundaries.

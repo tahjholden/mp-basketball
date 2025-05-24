@@ -1,25 +1,14 @@
 import argparse
 from pathlib import Path
 from typing import Dict, Any
+import yaml
 
 
 def load_mapping(path: Path) -> Dict[str, Any]:
-    """Load a very small subset of YAML used for the mapping files."""
-    mapping: Dict[str, Any] = {}
-    current_section: Dict[str, str] | None = None
+    """Load the YAML mapping file using PyYAML."""
     with open(path, "r", encoding="utf-8") as f:
-        for line in f:
-            stripped = line.strip()
-            if not stripped or stripped.startswith("#"):
-                continue
-            if not line.startswith(" ") and stripped.endswith(":"):
-                section_name = stripped[:-1]
-                mapping[section_name] = {}
-                current_section = mapping[section_name]
-            elif current_section is not None and ":" in stripped:
-                key, value = stripped.split(":", 1)
-                current_section[key.strip()] = value.strip()
-    return mapping
+        data = yaml.safe_load(f) or {}
+    return data
 
 
 def apply_replacements(text: str, replacements: Dict[str, str]) -> str:
