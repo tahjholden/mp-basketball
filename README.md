@@ -74,3 +74,8 @@ python tools/vertical_mapper/vertical_mapper.py \
 ```
 
 
+## Install dependencies
+
+Run `npm install` to install the dev dependencies for running tests.
+
+Run tests with `npm test`.

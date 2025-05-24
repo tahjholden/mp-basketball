@@ -1,0 +1,16 @@
+{
+  "name": "mp-basketball",
+  "version": "1.0.0",
+  "description": "Supabase + n8n workflows for MPOS-Basketball MVP.",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "jest": "^29.6.1"
+  }
+}
