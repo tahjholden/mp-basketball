@@ -1,19 +1,15 @@
 {
-  "name": "mp-basketball",
+  "name": "mp-basketball-tests",
   "version": "1.0.0",
-  "description": "Supabase + n8n workflows for MPOS-Basketball MVP.",
-  "main": "index.js",
+  "description": "Tests for mp-basketball supabase migrations and workflows",
   "scripts": {
-    "test": "jest",
-    "coverage": "jest --coverage"
+    "test": "jest"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "commonjs",
   "devDependencies": {
-    "jest": "^29.6.1",
-    "ts-jest": "^29.1.1",
-    "typescript": "^4.9.0"
+    "jest": "^29.6.1"
+  },
+  "dependencies": {
+    "pg": "^8.11.3",
+    "@supabase/supabase-js": "^2.39.0"
   }
 }
