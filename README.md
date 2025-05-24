@@ -19,7 +19,7 @@ as jersey numbers or positions, are stored in the related `person_role` table.
 
 
 Link the Supabase CLI to your database then apply the migrations. This pulls in
-`007_create_attendance.sql`, which creates the `attendance` table used by the
+`009_create_attendance.sql`, which creates the `attendance` table used by the
 practice planner:
 
 ```bash

@@ -1,4 +1,4 @@
--- 009_enforce_rls_remaining.sql
+-- 008_enforce_rls_remaining.sql
 -- Add org_uid columns and RLS policies for tables missing them.
 
 -- TEAM
