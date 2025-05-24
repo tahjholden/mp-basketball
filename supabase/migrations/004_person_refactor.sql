@@ -42,16 +42,25 @@ BEGIN
 END;
 $$;
 
+-- Ensure quick lookups for conflict detection in expand_exposure
+CREATE UNIQUE INDEX IF NOT EXISTS idx_player_exposure_triplet
+  ON player_exposure(session_drill_uid, person_uid, tag_uid);
+
 CREATE OR REPLACE FUNCTION expand_exposure() RETURNS TRIGGER LANGUAGE plpgsql AS $$
 DECLARE
   rec RECORD;
 BEGIN
+  -- Only expand exposure for players associated with the same team as
+  -- the session. Joining against all players results in unnecessary
+  -- work when the person table grows large.
   FOR rec IN
       SELECT dt.tag_uid, pr.person_uid
         FROM drill_tag dt
-        CROSS JOIN person_role pr
-        WHERE dt.drill_uid = NEW.drill_uid
-          AND pr.role = 'Player'
+        JOIN session s ON s.id = NEW.intervention_uid
+        JOIN player_team pt ON pt.team_id = s.team_id
+        JOIN person_role pr ON pr.person_uid = pt.player_id
+       WHERE dt.drill_uid = NEW.drill_uid
+         AND pr.role = 'Player'
   LOOP
     INSERT INTO player_exposure(uid, session_drill_uid, person_uid, tag_uid, count)
     VALUES (
