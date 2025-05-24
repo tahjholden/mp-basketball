@@ -39,8 +39,16 @@ SET request.jwt.claims = '{"org_uid": "ORG-DEFAULT"}';
 
 Replace `ORG-DEFAULT` with the organization uid associated with the session.
 
-## Admin table metadata
+codex/add-row-level-security-and-policy-statements
+In the Supabase dashboard you can populate this claim automatically by adding a
+JWT template under **Authentication → Settings → JWT**:
 
-The `admin_tables.yml` file tracks which tables are restricted to admin users.
-Whenever you add a new table via a migration, update this YAML file with an entry for the table name.
-Set `true` for `admin_only` tables and `false` for regular tables.
+```json
+{
+  "org_uid": "{{ .user.app_metadata.org_uid }}"
+}
+```
+
+Any API requests made with a logged in user will then include `org_uid` in
+`request.jwt.claims`, allowing the policies in these migrations to enforce
+organization boundaries.
