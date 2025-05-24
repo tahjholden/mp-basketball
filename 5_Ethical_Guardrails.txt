@@ -1,0 +1,25 @@
+
+MPB SYSTEM – ETHICAL GUARDRAILS
+
+Core Principle: System builds freedom, not compliance.
+
+Structural Enforcements:
+1. All PDP changes must show Source UID
+2. Manual overrides log reasoning
+3. Level comparisons hidden in shared views
+4. All player reflections must be linked to real sessions
+5. Player data export available on request
+6. Session summaries flagged if reflection gaps exceed 2
+7. Override frequency tracked per coach
+
+Visible Cues:
+- “You are more than your level.”
+- “This prompt is based on how you showed up today.”
+- “Your growth is defined by friction, not perfection.”
+
+Coach Agreement Excerpt:
+- “I will not use system levels to restrict access.”
+- “I will engage player reflections seriously and regularly.”
+- “I understand automation augments coaching, not replaces it.”
+
+Goal: Ethics embedded in workflow, not policies.

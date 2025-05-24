@@ -1,0 +1,3 @@
+id,name,primary_action,coverage,scoring_rule,skill_tags,structure_type,created_at
+ef771d77-6883-48f0-8de3-582e05dffa07,BDT Tune Train Test Shooting Block,Catch-and-Shoot/Drive,Wing/Top/Corner,Point if correct cue and constraint,"[""Shooting"",""Rhythm""]",Half Court,2025-05-19 18:00:57
+c1319211-bb2b-4cba-80f2-17393edfae59,Conquer the Court 1v0 Finishing,Finishing,Multiple Spots,First to 3 clean reps,"[""Finishing"",""Decision""]",Shared Basket,2025-05-19 18:00:57

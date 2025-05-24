@@ -1,0 +1,3 @@
+UID,Task Name,Linked Project,Status,Assignee,Start Date,Deadline,Duration (days),Reflection Notes
+Formula,Single line text,Linked,Single select,Single line text,Date,Date,Formula,Long text
+TASK-{RECORD_ID()},,Project_Manager,,,,,"DATETIME_DIFF({Deadline}, {Start Date}, 'days')",

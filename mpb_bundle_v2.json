@@ -1,0 +1,69 @@
+{
+  "workflows": [
+    {
+      "id": "d58c9cde-17fc-49f7-991b-e97c0bfbbf8f",
+      "name": "Knowledge-Base Ingest",
+      "nodes": [
+        {
+          "id": "4eeec8a7-888c-4072-93b4-707a9c08b746",
+          "name": "Manual Trigger",
+          "type": "n8n-nodes-base.manualTrigger",
+          "typeVersion": 1,
+          "position": [
+            0,
+            0
+          ],
+          "parameters": {}
+        }
+      ],
+      "connections": {},
+      "active": false,
+      "settings": {},
+      "tags": []
+    },
+    {
+      "id": "27c030d3-61bc-4597-aaaa-0260248854f2",
+      "name": "PDP Generator",
+      "nodes": [
+        {
+          "id": "9f71cbfb-bf40-41c1-a639-e714ae62322c",
+          "name": "Manual Trigger",
+          "type": "n8n-nodes-base.manualTrigger",
+          "typeVersion": 1,
+          "position": [
+            0,
+            0
+          ],
+          "parameters": {}
+        }
+      ],
+      "connections": {},
+      "active": false,
+      "settings": {},
+      "tags": []
+    },
+    {
+      "id": "8ef5dd3e-487a-447c-ace1-dc5b5a344914",
+      "name": "Practice Planner",
+      "nodes": [
+        {
+          "id": "1f10971e-f388-4439-8c70-132395e2d916",
+          "name": "Manual Trigger",
+          "type": "n8n-nodes-base.manualTrigger",
+          "typeVersion": 1,
+          "position": [
+            0,
+            0
+          ],
+          "parameters": {}
+        }
+      ],
+      "connections": {},
+      "active": false,
+      "settings": {},
+      "tags": []
+    }
+  ],
+  "settings": {},
+  "tags": []
+}
