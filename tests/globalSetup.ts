@@ -1,12 +1,12 @@
-const { Client } = require('pg');
-const { startDB } = require('./db');
+import { Client } from 'pg';
+import { startDB } from './db';
 
-module.exports = async () => {
+export default async () => {
   const dbUrl = await startDB();
   process.env.SUPABASE_DB_URL = dbUrl;
 
   const client = new Client({ connectionString: dbUrl });
   await client.connect();
 
-  global.__DB_CLIENT__ = client;
+  (global as any).__DB_CLIENT__ = client;
 };
