@@ -4,7 +4,7 @@
 CREATE TABLE IF NOT EXISTS attendance (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   session_id TEXT REFERENCES session(id),
-  player_id TEXT REFERENCES player(id),
+  player_id TEXT REFERENCES person(uid),
   status TEXT CHECK (status IN ('present','absent','late')),
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
