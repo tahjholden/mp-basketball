@@ -1,0 +1,25 @@
+
+MPB SYSTEM – REFLECTION ENTRY FLOW
+
+System: Fillout + n8n + Airtable + GPT
+
+1. Player receives unique reflection form link
+2. Fillout form auto-injects:
+   - Player UID
+   - Session ID (optional)
+3. On open:
+   - n8n queries PDP + Last Reflection + Coach Cues + Drill Friction
+   - Sends to GPT → generates 3–5 dynamic prompts
+4. Fillout form displays these prompts
+5. Player submits answers
+6. Reflection logs to Airtable (tagged with session, UID, timestamp)
+
+Form Fields:
+- UID
+- Player Name (lookup)
+- Session ID (optional)
+- Dynamic Prompts
+- Player Responses
+- Timestamp
+
+Optional: Add preview block for player to see “Your current focus” from PDP.

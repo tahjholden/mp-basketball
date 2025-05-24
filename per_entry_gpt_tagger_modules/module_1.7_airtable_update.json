@@ -1,0 +1,25 @@
+{
+  "id": 1003,
+  "module": "airtable:ActionUpdateRecord",
+  "version": 3,
+  "parameters": {
+    "__IMTCONN__": 3233958
+  },
+  "mapper": {
+    "id": "{{1.id}}",
+    "base": "appNjKVuiw5ygyHHX",
+    "table": "tblhSOJbWxIWAV3iq",
+    "record": {
+      "fld0iFbccLyruokHb": "{{1002.result}}",
+      "fld3HPcf91Hie5jXM": true
+    },
+    "typecast": false,
+    "useColumnId": false
+  },
+  "metadata": {
+    "designer": {
+      "x": 900,
+      "y": 300
+    }
+  }
+}

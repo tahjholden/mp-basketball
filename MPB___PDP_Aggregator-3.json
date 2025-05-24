@@ -1,0 +1,207 @@
+{
+  "name": "MPB - PDP Aggregator",
+  "nodes": [
+    {
+      "parameters": {
+        "operation": "getAll",
+        "tableId": "observation",
+        "returnAll": true
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        440,
+        -100
+      ],
+      "id": "2d13bab7-744e-4c23-bedd-0dc1ccdbbdfd",
+      "name": "FetchObservations",
+      "credentials": {
+        "supabaseApi": {
+          "id": "snX7zXf3hb1iETnD",
+          "name": "Supabase <-> N8N MPBos"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Get all observations (fetched as .json array)\nconst obs = $input.all().map(i => i.json);\n\n// Group by player_id\nconst playerGroups = {};\nobs.forEach(item => {\n  const pid = item.player_id;\n  if (!playerGroups[pid]) playerGroups[pid] = [];\n  playerGroups[pid].push(item);\n});\n\nconst summaries = [];\n\nfor (const player_id in playerGroups) {\n  const allSkills = [];\n  const allConstraints = [];\n  playerGroups[player_id].forEach(obs => {\n    if (Array.isArray(obs.tagged_skills)) allSkills.push(...obs.tagged_skills);\n    if (Array.isArray(obs.tagged_constraints)) allConstraints.push(...obs.tagged_constraints);\n  });\n\n  // Count occurrences\n  const countTags = arr =>\n    arr.reduce((acc, tag) => {\n      acc[tag] = (acc[tag] || 0) + 1;\n      return acc;\n    }, {});\n\n  const skillsSummary = countTags(allSkills);\n  const constraintsSummary = countTags(allConstraints);\n\n  summaries.push({\n    json: {\n      player_id,\n      skills_summary: skillsSummary,\n      constraints_summary: constraintsSummary,\n      last_updated: new Date().toISOString()\n    }\n  });\n}\n\nreturn summaries;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        660,
+        -100
+      ],
+      "id": "755ade3d-2dfb-4426-a0aa-a8ee7437b1f4",
+      "name": "Code_AggregatePDPs"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://htvyruodlvdbpfsnmuhz.supabase.co/rest/v1/pdp",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh0dnlydW9kbHZkYnBmc25tdWh6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDcxNzg1MTQsImV4cCI6MjA2Mjc1NDUxNH0.0E_lA1rY5DsTHGwJGcyafpO0Wd61R9RvcAx01ky6gHg"
+            },
+            {
+              "name": "Authorization",
+              "value": "=Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh0dnlydW9kbHZkYnBmc25tdWh6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDcxNzg1MTQsImV4cCI6MjA2Mjc1NDUxNH0.0E_lA1rY5DsTHGwJGcyafpO0Wd61R9RvcAx01ky6gHg"
+            },
+            {
+              "name": "Prefer",
+              "value": "resolution=merge-duplicates"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ $items(\"Code_AggregatePDPs\").map(item => item.json) }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        880,
+        -100
+      ],
+      "id": "d4df1e27-b217-4c3c-be19-bc6481c004a4",
+      "name": "UpsertPDP"
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "tableId": "agent_events",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "event_type",
+              "condition": "eq",
+              "keyValue": "update_pdp"
+            },
+            {
+              "keyName": "status",
+              "condition": "eq",
+              "keyValue": "pending"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        220,
+        -100
+      ],
+      "id": "cb181f2a-a6e0-4188-8a40-d82bd7732d04",
+      "name": "Supabase",
+      "credentials": {
+        "supabaseApi": {
+          "id": "snX7zXf3hb1iETnD",
+          "name": "Supabase <-> N8N MPBos"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "agent_events",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "={{$json[\"id\"]}}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "status",
+              "fieldValue": "handled"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1100,
+        -100
+      ],
+      "id": "ac594401-6a2d-44b4-a132-cee83bd78297",
+      "name": "Supabase1",
+      "credentials": {
+        "supabaseApi": {
+          "id": "snX7zXf3hb1iETnD",
+          "name": "Supabase <-> N8N MPBos"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "FetchObservations": {
+      "main": [
+        [
+          {
+            "node": "Code_AggregatePDPs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code_AggregatePDPs": {
+      "main": [
+        [
+          {
+            "node": "UpsertPDP",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Supabase": {
+      "main": [
+        [
+          {
+            "node": "FetchObservations",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "UpsertPDP": {
+      "main": [
+        [
+          {
+            "node": "Supabase1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "cabe7a81-016a-475b-a030-38bf2bdc67fa",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "0abe8dd3af7b84dd650128b454cc932a6aae1d69499f17eccb6a7dec666a07a5"
+  },
+  "id": "ZQGTbxHU5ImEZuu5",
+  "tags": []
+}

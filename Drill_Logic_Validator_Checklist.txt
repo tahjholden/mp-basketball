@@ -1,0 +1,30 @@
+
+MPB SYSTEM – CUE + DRILL LOGIC VALIDATOR CHECKLIST
+
+This checklist must be applied to each drill block before it is approved for practice.
+
+1. PHASE VALIDATION
+☐ What is the intended Flow Phase of this block? (Refine / Adapt / Challenge / Compete)
+☐ Does the drill's timing and intensity match that phase?
+☐ Is the player decision tempo in sync with phase demands?
+
+2. CUE VALIDATION
+☐ Are the cues in this drill phase-legal?
+☐ Is any cue imported from a slower scaffold (e.g. Refine) into a higher-speed block?
+☐ Do cues support perception-action continuity, or interrupt it?
+
+3. CONSTRAINT LOGIC
+☐ Is the constraint matched to the correct game-phase intent?
+☐ Does it amplify—not limit—the decision window?
+☐ Is the constraint externally observable (not just internal or emotional)?
+
+4. PLAYER FIT
+☐ Is this block tagged to players whose constraints align with its tempo?
+☐ Will this cue increase clarity, or introduce friction?
+☐ Does it encourage transfer, not just repetition?
+
+5. ADAPTABILITY CHECK
+☐ Is there a reset layer if the constraint fails? (Flip, freeze, feedback)
+☐ Can the drill be modified in-session without breaking its logic?
+
+If any answer is “no” → redesign or relocate the cue or constraint.

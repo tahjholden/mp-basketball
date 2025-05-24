@@ -1,0 +1,118 @@
+{
+  "name": "Per Entry GPT Tagger",
+  "nodes": [
+    {
+      "parameters": {
+        "operation": "list",
+        "application": "airtable",
+        "table": "Thought Log",
+        "baseId": "appNjKVuiw5ygyHHX",
+        "filterByFormula": "{Parsed?}=FALSE()",
+        "returnAll": true
+      },
+      "id": "1",
+      "name": "Get Unparsed Entries",
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 1,
+      "position": [
+        200,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "requestMethod": "POST",
+        "url": "https://api.openai.com/v1/chat/completions",
+        "jsonParameters": true,
+        "options": {},
+        "bodyParametersJson": "{\"model\": \"gpt-4\", \"messages\": [{\"role\": \"system\", \"content\": \"You are a tagger for reflection logs. Your job is to assign up to 3 tags from a fixed list that best capture the emotional, behavioral, or thematic essence of this entry. Only return matching tags. If none fit, return an empty array.\\n\\nValid Tags: burnout, clarity, connection, control, fatherhood, freedom, grief, legacy, loop, resistance, shift, shipping, perfectionism, system readiness, balance, execution loop, perfection, action, confidence, handoff, doubt, identity, fear, builder, presence, adjusting, awareness\"}, {\"role\": \"user\", \"content\": \"Entry: {{$json[\\\"fields\\\"][\\\"Entry Content\\\"]}}\"}], \"temperature\": 0.3, \"max_tokens\": 100}",
+        "headerParametersJson": "{\"Authorization\": \"Bearer YOUR_OPENAI_API_KEY\", \"Content-Type\": \"application/json\"}"
+      },
+      "id": "2",
+      "name": "GPT Tagger",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [
+        500,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "functionCode": "const tags = JSON.parse(items[0].json.body.replace(/```json|```/g, ''));\nreturn [{ json: { tags } }];"
+      },
+      "id": "3",
+      "name": "Clean & Parse JSON",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [
+        800,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "application": "airtable",
+        "baseId": "appNjKVuiw5ygyHHX",
+        "table": "Thought Log",
+        "id": "={{$json[\"id\"]}}",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "Tags",
+              "fieldValue": "={{$json[\"tags\"]}}"
+            },
+            {
+              "fieldId": "Parsed?",
+              "fieldValue": "true"
+            }
+          ]
+        }
+      },
+      "id": "4",
+      "name": "Update Airtable Record",
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 1,
+      "position": [
+        1100,
+        300
+      ]
+    }
+  ],
+  "connections": {
+    "Get Unparsed Entries": {
+      "main": [
+        [
+          {
+            "node": "GPT Tagger",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GPT Tagger": {
+      "main": [
+        [
+          {
+            "node": "Clean & Parse JSON",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Clean & Parse JSON": {
+      "main": [
+        [
+          {
+            "node": "Update Airtable Record",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  }
+}
