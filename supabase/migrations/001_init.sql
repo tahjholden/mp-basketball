@@ -10,7 +10,7 @@ CREATE EXTENSION IF NOT EXISTS vector;
 -- PERSON : users, family, mentors, groups
 --------------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS person (
-  uid           TEXT PRIMARY KEY,
+  uid           UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   first_name    TEXT,
   last_name     TEXT,
   display_name  TEXT NOT NULL,
@@ -23,14 +23,14 @@ CREATE TABLE IF NOT EXISTS person (
 
 
 CREATE TABLE IF NOT EXISTS person (
-  uid TEXT PRIMARY KEY REFERENCES actor(uid) ON DELETE CASCADE
+  uid UUID PRIMARY KEY REFERENCES actor(uid) ON DELETE CASCADE
 );
 
 -- PROFILE : holds PDP / attributes per actor
 --------------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS profile (
-  id               TEXT PRIMARY KEY,         -- keeps column name "id" as in your UI
-  person_uid       TEXT NOT NULL REFERENCES person(uid) ON DELETE CASCADE,
+  id               UUID PRIMARY KEY DEFAULT uuid_generate_v4(),         -- keeps column name "id" as in your UI
+  person_uid       UUID NOT NULL REFERENCES person(uid) ON DELETE CASCADE,
   attributes_json  JSONB NOT NULL DEFAULT '{}',
   created_at       TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
@@ -39,15 +39,15 @@ CREATE TABLE IF NOT EXISTS profile (
 -- JOURNAL_ENTRY : personal notes and reflections
 --------------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS journal_entry (
-  uid         TEXT PRIMARY KEY,
+  uid         UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
 codex/decide-and-update-observation-table-reference
-  person_id   TEXT NOT NULL REFERENCES actor(uid) ON DELETE CASCADE,
+  person_id   UUID NOT NULL REFERENCES actor(uid) ON DELETE CASCADE,
   obs_type    TEXT NOT NULL CHECK (obs_type IN ('DevNote','CoachReflection','PlayerReflection')),
   payload     JSONB NOT NULL,
   timestamp   TIMESTAMPTZ NOT NULL,
-  session_uid TEXT REFERENCES intervention(uid),
+  session_uid UUID REFERENCES intervention(uid),
   tagged_skills JSONB DEFAULT '[]'::jsonb,
-  predicted_tag_uid TEXT,     -- filled by GPT tagger later
+  predicted_tag_uid UUID,     -- filled by GPT tagger later
   org_uid     TEXT DEFAULT 'ORG-DEFAULT'
 );
 
@@ -55,7 +55,7 @@ codex/decide-and-update-observation-table-reference
 -- INTERVENTION : practice session, game, etc.
 --------------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS intervention (
-  uid                TEXT PRIMARY KEY,
+  uid                UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   intervention_type  TEXT NOT NULL,
   description        TEXT,
   created_at         TIMESTAMPTZ NOT NULL DEFAULT NOW(),
@@ -66,8 +66,8 @@ CREATE TABLE IF NOT EXISTS intervention (
 -- METRIC : generic metrics per person
 --------------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS metric (
-  uid          TEXT PRIMARY KEY,
-  person_uid   TEXT NOT NULL REFERENCES person(uid) ON DELETE CASCADE,
+  uid          UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  person_uid   UUID NOT NULL REFERENCES person(uid) ON DELETE CASCADE,
   metric_type  TEXT NOT NULL,
   value        JSONB NOT NULL,
   timestamp    TIMESTAMPTZ NOT NULL DEFAULT NOW(),
@@ -78,10 +78,10 @@ CREATE TABLE IF NOT EXISTS metric (
 -- LINK : generic parent‑child relation
 --------------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS link (
-  uid            TEXT PRIMARY KEY,
-  parent_uid     TEXT NOT NULL,
+  uid            UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  parent_uid     UUID NOT NULL,
   relation_type  TEXT NOT NULL,
-  child_uid      TEXT NOT NULL,
+  child_uid      UUID NOT NULL,
   created_at     TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   org_uid        TEXT DEFAULT 'ORG-DEFAULT'
 );
@@ -90,7 +90,7 @@ CREATE TABLE IF NOT EXISTS link (
 -- TAG : skills / constraints (optional embeddings)
 --------------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS tag (
-  uid         TEXT PRIMARY KEY,
+  uid         UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   category    TEXT NOT NULL,
   name        TEXT NOT NULL,
   embeddings  VECTOR(1536),
@@ -101,8 +101,8 @@ CREATE TABLE IF NOT EXISTS tag (
 -- ROUTINE : canonical routine definitions
 --------------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS routine (
-  uid              TEXT PRIMARY KEY,
-  source_uid       TEXT,
+  uid              UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  source_uid       UUID,
   name             TEXT NOT NULL,
   description      TEXT,
   participants_off      INT,
@@ -116,8 +116,8 @@ CREATE TABLE IF NOT EXISTS routine (
 -- ROUTINE_TAG : many‑to‑many routine ↔ tag
 --------------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS routine_tag (
-  routine_uid    TEXT NOT NULL REFERENCES routine(uid) ON DELETE CASCADE,
-  tag_uid      TEXT NOT NULL REFERENCES tag(uid)   ON DELETE CASCADE,
+  routine_uid    UUID NOT NULL REFERENCES routine(uid) ON DELETE CASCADE,
+  tag_uid      UUID NOT NULL REFERENCES tag(uid)   ON DELETE CASCADE,
   weight       NUMERIC NOT NULL DEFAULT 1,
   context_json JSONB DEFAULT '{}',
   PRIMARY KEY (routine_uid, tag_uid)
@@ -127,9 +127,9 @@ CREATE TABLE IF NOT EXISTS routine_tag (
 -- ROUTINE_INSTANCE : routines scheduled inside an intervention
 --------------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS routine_instance (
-  uid            TEXT PRIMARY KEY,
-  intervention_uid TEXT NOT NULL REFERENCES intervention(uid) ON DELETE CASCADE,
-  routine_uid      TEXT NOT NULL REFERENCES routine(uid)        ON DELETE CASCADE,
+  uid            UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  intervention_uid UUID NOT NULL REFERENCES intervention(uid) ON DELETE CASCADE,
+  routine_uid      UUID NOT NULL REFERENCES routine(uid)        ON DELETE CASCADE,
   seq_order      INT  NOT NULL,
   org_uid        TEXT DEFAULT 'ORG-DEFAULT'
 );
@@ -139,12 +139,12 @@ codex/rename-player_exposure-and-adjust-foreign-keys
 -- PERSON_EXPOSURE : tag exposures accumulated per actor per session_drill
 --------------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS person_exposure (
-  uid               TEXT PRIMARY KEY,
+  uid               UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
 codex/rename-actor-table-and-update-references
-  session_drill_uid TEXT NOT NULL REFERENCES session_drill(uid) ON DELETE CASCADE,
+  session_drill_uid UUID NOT NULL REFERENCES session_drill(uid) ON DELETE CASCADE,
 codex/rename-player_exposure-and-adjust-foreign-keys
-  person_uid        TEXT NOT NULL REFERENCES actor(uid)         ON DELETE CASCADE,
-  tag_uid           TEXT NOT NULL REFERENCES tag(uid)           ON DELETE CASCADE,
+  person_uid        UUID NOT NULL REFERENCES actor(uid)         ON DELETE CASCADE,
+  tag_uid           UUID NOT NULL REFERENCES tag(uid)           ON DELETE CASCADE,
   count             INT  NOT NULL DEFAULT 1
 );
 
@@ -152,18 +152,18 @@ codex/rename-player_exposure-and-adjust-foreign-keys
 -- TAG_RELATION : hierarchical or exclusive tag links
 --------------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS tag_relation (
-  uid             TEXT PRIMARY KEY,
-  tag_id_parent   TEXT NOT NULL REFERENCES tag(uid) ON DELETE CASCADE,
+  uid             UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  tag_id_parent   UUID NOT NULL REFERENCES tag(uid) ON DELETE CASCADE,
   relation_type   TEXT NOT NULL,
-  tag_id_child    TEXT NOT NULL REFERENCES tag(uid) ON DELETE CASCADE
+  tag_id_child    UUID NOT NULL REFERENCES tag(uid) ON DELETE CASCADE
 );
 
 --------------------------------------------------------------------------------
 -- Indexes for common foreign key joins
 --------------------------------------------------------------------------------
-CREATE INDEX IF NOT EXISTS idx_profile_actor ON profile(actor_uid);
-CREATE INDEX IF NOT EXISTS idx_observation_actor ON observation(actor_uid);
-CREATE INDEX IF NOT EXISTS idx_metric_actor ON metric(actor_uid);
+CREATE INDEX IF NOT EXISTS idx_profile_actor ON profile(person_uid);
+CREATE INDEX IF NOT EXISTS idx_observation_actor ON observation(person_id);
+CREATE INDEX IF NOT EXISTS idx_metric_actor ON metric(person_uid);
 CREATE INDEX IF NOT EXISTS idx_link_parent ON link(parent_uid);
 CREATE INDEX IF NOT EXISTS idx_link_child ON link(child_uid);
 CREATE INDEX IF NOT EXISTS idx_routine_tag_routine ON routine_tag(routine_uid);
@@ -179,15 +179,15 @@ CREATE INDEX IF NOT EXISTS idx_tag_relation_child ON tag_relation(tag_id_child);
 --------------------------------------------------------------------------------
 -- UDF : update_pdp(obs_uid) – writes last_observation into profile
 --------------------------------------------------------------------------------
-CREATE OR REPLACE FUNCTION update_pdp(obs_uid TEXT) RETURNS VOID LANGUAGE plpgsql AS $$
+CREATE OR REPLACE FUNCTION update_pdp(obs_uid UUID) RETURNS VOID LANGUAGE plpgsql AS $$
 DECLARE
 codex/decide-and-update-observation-table-reference
-  v_person_id TEXT;
+  v_person_id UUID;
 BEGIN
   SELECT person_id INTO v_person_id FROM observation WHERE uid = obs_uid;
   UPDATE profile
      SET attributes_json = jsonb_set(attributes_json, '{last_observation}', to_jsonb(obs_uid), true)
-   WHERE actor_uid = v_person_id;
+   WHERE person_uid = v_person_id;
 END;
 $$;
 
@@ -220,7 +220,7 @@ codex/rename-player_exposure-and-adjust-foreign-keys
 codex/rename-player_exposure-and-adjust-foreign-keys
     INSERT INTO person_exposure(uid, session_drill_uid, person_uid, tag_uid, count)
     VALUES (
-      uuid_generate_v4()::text,
+      uuid_generate_v4(),
       NEW.uid,
       rec.person_uid,
       rec.tag_uid,
