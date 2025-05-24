@@ -163,13 +163,13 @@ CREATE TABLE IF NOT EXISTS tag_relation (
 --------------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS flagged_name (
   uid UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-  raw_observation_id TEXT REFERENCES observation(id) ON DELETE CASCADE,
+  raw_observation_id UUID REFERENCES observation(uid) ON DELETE CASCADE,
   flagged_name       TEXT NOT NULL,
   category           TEXT,
   observation_text   TEXT,
   flagged_at         TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   attempted_match_at TIMESTAMPTZ,
-  matched_person_uid TEXT REFERENCES person(uid),
+  matched_person_uid UUID REFERENCES person(uid),
   resolved_at        TIMESTAMPTZ,
   created_at         TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   org_uid            TEXT DEFAULT 'ORG-DEFAULT'
