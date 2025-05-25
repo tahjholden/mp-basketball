@@ -5,7 +5,16 @@
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true
+    "forceConsistentCasingInFileNames": true,
+    "baseUrl": ".",
+    "paths": {
+      "@n8n/workflow": [
+        "packages/n8n-nodes-observation-intake/src/types/@n8n/workflow"
+      ],
+      "@n8n/core": [
+        "packages/n8n-nodes-observation-intake/src/types/@n8n/core"
+      ]
+    }
   },
   "include": ["tests/**/*.ts", "src/**/*.ts"]
 }
