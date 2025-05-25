@@ -2,7 +2,7 @@
 
 ## Overview
 
-These agents rely on the overarching [Human OS Architecture](docs/Human_OS_Architecture.md).
+These agents rely on the overarching [Human OS Architecture](Human_OS_Architecture.md).
 
 **Dev Agent** handles development tasks like mapping data and preparing new verticals. It runs the initial vertical mapping and sets up configuration files.
 
