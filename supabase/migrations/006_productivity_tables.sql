@@ -1,4 +1,4 @@
--- 005_productivity_tables.sql
+-- 006_productivity_tables.sql
 -- Productivity tracking tables for mood, habits, goals, projects and tasks
 
 --------------------------------------------------------------------------------
