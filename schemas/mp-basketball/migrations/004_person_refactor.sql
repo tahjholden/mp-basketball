@@ -57,8 +57,8 @@ BEGIN
       SELECT dt.tag_uid, pr.person_uid
         FROM drill_tag dt
         JOIN session s ON s.id = NEW.intervention_uid
-        JOIN player_team pt ON pt.team_id = s.team_id
-        JOIN person_role pr ON pr.person_uid = pt.player_id
+        JOIN person_team pt ON pt.team_id = s.team_id
+        JOIN person_role pr ON pr.person_uid = pt.person_uid
        WHERE dt.drill_uid = NEW.drill_uid
          AND pr.role = 'Player'
   LOOP

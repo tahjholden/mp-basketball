@@ -24,10 +24,8 @@ session: false
 mpb_docs: false
 agent_events: true
 pdp: false
-player_team: false
-player_pod: false
-coach_team: false
-coach_pod: false
+person_team: false
+person_pod: false
 mood_log: false
 habit: false
 habit_event: false

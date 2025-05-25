@@ -49,35 +49,19 @@ DROP POLICY IF EXISTS pdp_select_org ON pdp;
 CREATE POLICY pdp_select_org ON pdp
   FOR SELECT USING (org_uid = current_setting('request.jwt.claims', true)::jsonb->>'org_uid');
 
--- PLAYER_TEAM
-ALTER TABLE player_team ADD COLUMN IF NOT EXISTS org_uid TEXT DEFAULT 'ORG-DEFAULT';
-ALTER TABLE player_team ENABLE ROW LEVEL SECURITY;
-ALTER TABLE player_team FORCE ROW LEVEL SECURITY;
-DROP POLICY IF EXISTS player_team_select_org ON player_team;
-CREATE POLICY player_team_select_org ON player_team
+-- PERSON_TEAM
+ALTER TABLE person_team ADD COLUMN IF NOT EXISTS org_uid TEXT DEFAULT 'ORG-DEFAULT';
+ALTER TABLE person_team ENABLE ROW LEVEL SECURITY;
+ALTER TABLE person_team FORCE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS person_team_select_org ON person_team;
+CREATE POLICY person_team_select_org ON person_team
   FOR SELECT USING (org_uid = current_setting('request.jwt.claims', true)::jsonb->>'org_uid');
 
--- PLAYER_POD
-ALTER TABLE player_pod ADD COLUMN IF NOT EXISTS org_uid TEXT DEFAULT 'ORG-DEFAULT';
-ALTER TABLE player_pod ENABLE ROW LEVEL SECURITY;
-ALTER TABLE player_pod FORCE ROW LEVEL SECURITY;
-DROP POLICY IF EXISTS player_pod_select_org ON player_pod;
-CREATE POLICY player_pod_select_org ON player_pod
-  FOR SELECT USING (org_uid = current_setting('request.jwt.claims', true)::jsonb->>'org_uid');
-
--- COACH_TEAM
-ALTER TABLE coach_team ADD COLUMN IF NOT EXISTS org_uid TEXT DEFAULT 'ORG-DEFAULT';
-ALTER TABLE coach_team ENABLE ROW LEVEL SECURITY;
-ALTER TABLE coach_team FORCE ROW LEVEL SECURITY;
-DROP POLICY IF EXISTS coach_team_select_org ON coach_team;
-CREATE POLICY coach_team_select_org ON coach_team
-  FOR SELECT USING (org_uid = current_setting('request.jwt.claims', true)::jsonb->>'org_uid');
-
--- COACH_POD
-ALTER TABLE coach_pod ADD COLUMN IF NOT EXISTS org_uid TEXT DEFAULT 'ORG-DEFAULT';
-ALTER TABLE coach_pod ENABLE ROW LEVEL SECURITY;
-ALTER TABLE coach_pod FORCE ROW LEVEL SECURITY;
-DROP POLICY IF EXISTS coach_pod_select_org ON coach_pod;
-CREATE POLICY coach_pod_select_org ON coach_pod
+-- PERSON_POD
+ALTER TABLE person_pod ADD COLUMN IF NOT EXISTS org_uid TEXT DEFAULT 'ORG-DEFAULT';
+ALTER TABLE person_pod ENABLE ROW LEVEL SECURITY;
+ALTER TABLE person_pod FORCE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS person_pod_select_org ON person_pod;
+CREATE POLICY person_pod_select_org ON person_pod
   FOR SELECT USING (org_uid = current_setting('request.jwt.claims', true)::jsonb->>'org_uid');
 

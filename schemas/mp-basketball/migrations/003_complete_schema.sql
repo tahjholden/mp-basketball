@@ -126,28 +126,16 @@ CREATE INDEX IF NOT EXISTS idx_pdp_player ON pdp(player_id);
 --------------------------------------------------------------------------------
 -- JOIN TABLES
 --------------------------------------------------------------------------------
-CREATE TABLE IF NOT EXISTS player_team (
-  player_id TEXT,
-  team_id   TEXT,
-  PRIMARY KEY (player_id, team_id)
+CREATE TABLE IF NOT EXISTS person_team (
+  person_uid TEXT NOT NULL REFERENCES person(uid) ON DELETE CASCADE,
+  team_id    TEXT NOT NULL REFERENCES team(id),
+  PRIMARY KEY (person_uid, team_id)
 );
 
-CREATE TABLE IF NOT EXISTS player_pod (
-  player_id TEXT,
-  pod_id    TEXT,
-  PRIMARY KEY (player_id, pod_id)
-);
-
-CREATE TABLE IF NOT EXISTS coach_team (
-  coach_id TEXT,
-  team_id  TEXT,
-  PRIMARY KEY (coach_id, team_id)
-);
-
-CREATE TABLE IF NOT EXISTS coach_pod (
-  coach_id TEXT,
-  pod_id   TEXT,
-  PRIMARY KEY (coach_id, pod_id)
+CREATE TABLE IF NOT EXISTS person_pod (
+  person_uid TEXT NOT NULL REFERENCES person(uid) ON DELETE CASCADE,
+  pod_id     TEXT NOT NULL REFERENCES pod(id),
+  PRIMARY KEY (person_uid, pod_id)
 );
 
 --------------------------------------------------------------------------------
@@ -164,12 +152,8 @@ CREATE INDEX IF NOT EXISTS idx_agent_events_team ON agent_events(team_id);
 CREATE INDEX IF NOT EXISTS idx_agent_events_agent ON agent_events(agent_id);
 CREATE INDEX IF NOT EXISTS idx_pdp_player ON pdp(player_id);
 CREATE INDEX IF NOT EXISTS idx_pdp_previous_version ON pdp(previous_version_id);
-CREATE INDEX IF NOT EXISTS idx_player_team_player ON player_team(player_id);
-CREATE INDEX IF NOT EXISTS idx_player_team_team ON player_team(team_id);
-CREATE INDEX IF NOT EXISTS idx_player_pod_player ON player_pod(player_id);
-CREATE INDEX IF NOT EXISTS idx_player_pod_pod ON player_pod(pod_id);
-CREATE INDEX IF NOT EXISTS idx_coach_team_coach ON coach_team(coach_id);
-CREATE INDEX IF NOT EXISTS idx_coach_team_team ON coach_team(team_id);
-CREATE INDEX IF NOT EXISTS idx_coach_pod_coach ON coach_pod(coach_id);
-CREATE INDEX IF NOT EXISTS idx_coach_pod_pod ON coach_pod(pod_id);
+CREATE INDEX IF NOT EXISTS idx_person_team_person ON person_team(person_uid);
+CREATE INDEX IF NOT EXISTS idx_person_team_team ON person_team(team_id);
+CREATE INDEX IF NOT EXISTS idx_person_pod_person ON person_pod(person_uid);
+CREATE INDEX IF NOT EXISTS idx_person_pod_pod ON person_pod(pod_id);
 
