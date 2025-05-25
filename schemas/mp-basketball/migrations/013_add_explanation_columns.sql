@@ -1,0 +1,38 @@
+-- 013_add_explanation_columns.sql
+-- Add explanation columns to tables for Human OS audit transparency
+
+ALTER TABLE agent_events ADD COLUMN IF NOT EXISTS explanation TEXT;
+ALTER TABLE attendance ADD COLUMN IF NOT EXISTS explanation TEXT;
+ALTER TABLE coach_pod ADD COLUMN IF NOT EXISTS explanation TEXT;
+ALTER TABLE coach_team ADD COLUMN IF NOT EXISTS explanation TEXT;
+ALTER TABLE flagged_entities ADD COLUMN IF NOT EXISTS explanation TEXT;
+ALTER TABLE flagged_name ADD COLUMN IF NOT EXISTS explanation TEXT;
+ALTER TABLE goal ADD COLUMN IF NOT EXISTS explanation TEXT;
+ALTER TABLE habit ADD COLUMN IF NOT EXISTS explanation TEXT;
+ALTER TABLE habit_event ADD COLUMN IF NOT EXISTS explanation TEXT;
+ALTER TABLE intervention ADD COLUMN IF NOT EXISTS explanation TEXT;
+ALTER TABLE journal_entry_logs ADD COLUMN IF NOT EXISTS explanation TEXT;
+ALTER TABLE link ADD COLUMN IF NOT EXISTS explanation TEXT;
+ALTER TABLE metric ADD COLUMN IF NOT EXISTS explanation TEXT;
+ALTER TABLE mood_log ADD COLUMN IF NOT EXISTS explanation TEXT;
+ALTER TABLE mpb_docs ADD COLUMN IF NOT EXISTS explanation TEXT;
+ALTER TABLE observation ADD COLUMN IF NOT EXISTS explanation TEXT;
+ALTER TABLE pdp ADD COLUMN IF NOT EXISTS explanation TEXT;
+ALTER TABLE person ADD COLUMN IF NOT EXISTS explanation TEXT;
+ALTER TABLE person_exposure ADD COLUMN IF NOT EXISTS explanation TEXT;
+ALTER TABLE person_role ADD COLUMN IF NOT EXISTS explanation TEXT;
+ALTER TABLE player_pod ADD COLUMN IF NOT EXISTS explanation TEXT;
+ALTER TABLE player_team ADD COLUMN IF NOT EXISTS explanation TEXT;
+ALTER TABLE pod ADD COLUMN IF NOT EXISTS explanation TEXT;
+ALTER TABLE profile ADD COLUMN IF NOT EXISTS explanation TEXT;
+ALTER TABLE project ADD COLUMN IF NOT EXISTS explanation TEXT;
+ALTER TABLE routine ADD COLUMN IF NOT EXISTS explanation TEXT;
+ALTER TABLE routine_instance ADD COLUMN IF NOT EXISTS explanation TEXT;
+ALTER TABLE routine_tag ADD COLUMN IF NOT EXISTS explanation TEXT;
+ALTER TABLE session ADD COLUMN IF NOT EXISTS explanation TEXT;
+ALTER TABLE table_metadata ADD COLUMN IF NOT EXISTS explanation TEXT;
+ALTER TABLE tag ADD COLUMN IF NOT EXISTS explanation TEXT;
+ALTER TABLE tag_relation ADD COLUMN IF NOT EXISTS explanation TEXT;
+ALTER TABLE task ADD COLUMN IF NOT EXISTS explanation TEXT;
+ALTER TABLE team ADD COLUMN IF NOT EXISTS explanation TEXT;
+ALTER TABLE unmatched_player_name ADD COLUMN IF NOT EXISTS explanation TEXT;
