@@ -1,4 +1,5 @@
 -- 001_init.sql  (MPOS‑Basketball)
+-- RLS policies follow the org_uid defaults described in docs/Human_OS_Architecture.md
 
 --------------------------------------------------------------------------------
 -- Extensions

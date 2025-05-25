@@ -1,4 +1,5 @@
 -- 008_enable_rls.sql
+-- See docs/Human_OS_Architecture.md for default RLS patterns
 -- Enable row level security for core tables and add org-based policies.
 
 -- PROFILE

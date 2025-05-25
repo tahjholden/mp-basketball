@@ -1,4 +1,5 @@
 -- 006_productivity_tables.sql
+-- RLS policies follow the org_uid defaults described in docs/Human_OS_Architecture.md
 -- Productivity tracking tables for mood, habits, goals, projects and tasks
 
 --------------------------------------------------------------------------------

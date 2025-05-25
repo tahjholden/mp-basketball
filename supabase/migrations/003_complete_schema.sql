@@ -1,4 +1,5 @@
 -- 003_complete_schema.sql
+-- RLS policies follow the org_uid defaults described in docs/Human_OS_Architecture.md
 -- Additional tables to align database with workflow schema
 
 --------------------------------------------------------------------------------

@@ -1,4 +1,5 @@
 -- 002_add_missing_tables.sql
+-- RLS policies follow the org_uid defaults described in docs/Human_OS_Architecture.md
 
 --------------------------------------------------------------------------------
 -- flagged_entities table

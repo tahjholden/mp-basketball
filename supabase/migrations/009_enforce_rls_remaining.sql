@@ -1,4 +1,5 @@
 -- 009_enforce_rls_remaining.sql
+-- See docs/Human_OS_Architecture.md for default RLS patterns
 -- Add org_uid columns and RLS policies for tables missing them.
 
 -- TEAM

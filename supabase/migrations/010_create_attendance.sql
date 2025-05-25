@@ -1,4 +1,5 @@
 -- 010_create_attendance.sql
+-- RLS policies follow the org_uid defaults described in docs/Human_OS_Architecture.md
 -- Create attendance table to track player presence per session
 
 CREATE TABLE IF NOT EXISTS attendance (
