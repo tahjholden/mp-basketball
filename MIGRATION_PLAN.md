@@ -9,7 +9,7 @@ This document summarizes the repository restructuring and outlines the steps req
   - `workflows/pdp-agent.json`
   - `workflows/practice-planner-agent.json`
   - `workflows/session-plan-generator.json`
-  These old `MPB__*.json` files remain in the root folder but should be considered **deprecated**.
+  These old `MPB__*.json` files have been moved into a new `deprecated/` folder and should be considered **deprecated**.
 - **Supabase seed scripts** moved under `supabase/seed/`. The previous top‑level files such as `coach_rows.sql` and `player_rows.sql` now live in this folder along with a new `README.md` describing how to load them.
 - **SQL migrations** are organised under `supabase/migrations/` and have been renumbered sequentially (`001_init.sql`, `002_add_missing_tables.sql`, …). Any earlier copies outside this folder are obsolete.
 - Custom n8n node packages reside in `packages/` and the deployment helper script is in `deploy-agent/`.
@@ -17,7 +17,7 @@ This document summarizes the repository restructuring and outlines the steps req
 
 ## Deprecated Files
 
-- Legacy workflow files prefixed with `MPB__` or `POS__` in the repository root.
+- Legacy workflow files prefixed with `MPB__` or `POS__` are now stored in the `deprecated/` directory.
 - The original seed file `mpb_schema_test_seed.sql`.
 - Any migration scripts outside of `supabase/migrations/`.
 
