@@ -8,7 +8,7 @@ import pytest
 # The deploy_agent module lives inside the "deploy-agent" directory which is not
 # a valid Python package name. Add that directory to sys.path so the module can
 # be imported by filename.
-sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "deploy-agent"))
+sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "automation" / "deploy-agent"))
 import deploy_agent as da
 
 

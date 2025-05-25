@@ -35,7 +35,7 @@ def _yaml_stub():
 @pytest.fixture
 def vm(monkeypatch):
     monkeypatch.setitem(sys.modules, "yaml", _yaml_stub())
-    tools_path = Path(__file__).resolve().parents[2] / "tools"
+    tools_path = Path(__file__).resolve().parents[2] / "automation"
     monkeypatch.syspath_prepend(str(tools_path))
     module = importlib.import_module("vertical_mapper.vertical_mapper")
     return importlib.reload(module)
