@@ -29,4 +29,9 @@ jobs:
           node-version: 20.15.0
       - run: npm install
       - run: npm test
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install -r requirements.txt
+      - run: pytest -q
 
