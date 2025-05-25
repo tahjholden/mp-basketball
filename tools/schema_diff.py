@@ -70,7 +70,7 @@ def main() -> None:
     parser.add_argument(
         "--migrations-dir",
         type=Path,
-        default=Path("supabase/migrations"),
+        default=Path("schemas/mp-basketball/migrations"),
         help="Directory containing SQL migrations",
     )
     parser.add_argument(

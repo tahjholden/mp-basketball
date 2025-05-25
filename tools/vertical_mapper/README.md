@@ -11,7 +11,7 @@ It requires the [PyYAML](https://pyyaml.org/) package to parse the mapping file.
 ```
 python tools/vertical_mapper/vertical_mapper.py \
   --mapping tools/vertical_mapper/mapping_consulting.yml \
-  --sql-dir supabase/migrations \
+  --sql-dir schemas/mp-basketball/migrations \
   --workflow-dir workflows \
   --dist-dir dist/consulting
 ```

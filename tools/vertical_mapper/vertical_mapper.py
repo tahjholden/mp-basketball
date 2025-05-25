@@ -46,7 +46,7 @@ def transform_directory(sql_dir: Path, workflow_dir: Path, mapping_path: Path, d
 def main(argv: list[str] | None = None) -> None:
     parser = argparse.ArgumentParser(description="Apply vertical mapping to SQL migrations and workflow JSON files.")
     parser.add_argument("--mapping", required=True, type=Path, help="Path to YAML mapping file")
-    parser.add_argument("--sql-dir", default=Path("supabase/migrations"), type=Path, help="Directory containing SQL migration files")
+    parser.add_argument("--sql-dir", default=Path("schemas/mp-basketball/migrations"), type=Path, help="Directory containing SQL migration files")
     parser.add_argument("--workflow-dir", default=Path("workflows"), type=Path, help="Directory containing workflow JSON files")
     parser.add_argument("--dist-dir", required=True, type=Path, help="Directory to write transformed files")
     args = parser.parse_args(argv)

@@ -7,7 +7,7 @@ This directory contains a simple script to push database migrations and import n
 ```bash
 python deploy_agent.py \
   --db-url postgres://user:pass@host:5432/dbname \
-  --sql supabase/migrations/001_init.sql \
+  --sql schemas/mp-basketball/migrations/001_init.sql \
   --workflow workflows/mpos-basketball.json
 ```
 
