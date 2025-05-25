@@ -1,6 +1,6 @@
-# Supabase
+# MP-Basketball Schema
 
-This directory stores SQL files used with the Supabase CLI.
+This directory stores the MP-Basketball SQL migrations and seed files used with the Supabase CLI.
 
 - **migrations/** – schema migrations applied in sequence to build the database.
 - **seed/** – SQL scripts that populate tables with example data.

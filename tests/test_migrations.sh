@@ -8,7 +8,7 @@ if ! command -v psql >/dev/null; then
   exit 1
 fi
 
-for file in supabase/migrations/*.sql; do
+for file in schemas/mp-basketball/migrations/*.sql; do
   echo "Validating $file"
   psql "$DB_URL" -v ON_ERROR_STOP=1 <<EOSQL
 BEGIN;

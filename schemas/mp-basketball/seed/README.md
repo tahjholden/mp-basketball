@@ -18,7 +18,7 @@ supabase db remote set "$SUPABASE_DB_URL"
 Each `*.sql` file inserts rows into one of the project tables. After migrations finish you can load them with `psql`. `person_rows.sql` adds sample players and coaches using the new `person`/`person_role` layout:
 
 ```bash
-for file in supabase/seed/*.sql; do
+for file in schemas/mp-basketball/seed/*.sql; do
   psql "$SUPABASE_DB_URL" -f "$file"
 done
 ```
@@ -28,8 +28,8 @@ done
 Two CSV files are included. Import them with `psql` and the `\copy` command after the tables have been created:
 
 ```bash
-psql "$SUPABASE_DB_URL" -c "\copy agent_events FROM 'supabase/seed/agent_events_rows.csv' CSV HEADER"
-psql "$SUPABASE_DB_URL" -c "\copy person FROM 'supabase/seed/coach_rows.csv' CSV HEADER"
+psql "$SUPABASE_DB_URL" -c "\copy agent_events FROM 'schemas/mp-basketball/seed/agent_events_rows.csv' CSV HEADER"
+psql "$SUPABASE_DB_URL" -c "\copy person FROM 'schemas/mp-basketball/seed/coach_rows.csv' CSV HEADER"
 ```
 
 `agent_events_rows.csv` provides initial tasks for the workflow engine and `coach_rows.csv` adds a couple of sample coaches.

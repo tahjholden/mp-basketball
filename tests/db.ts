@@ -32,7 +32,7 @@ export async function startDB(): Promise<string> {
   const client = new Client({ connectionString: databaseUrl });
   await client.connect();
 
-  const migrationsDir = path.join(__dirname, '..', 'supabase', 'migrations');
+  const migrationsDir = path.join(__dirname, '..', 'schemas', 'mp-basketball', 'migrations');
   const files = (await fs.readdir(migrationsDir))
     .filter((f) => f.endsWith('.sql'))
     .sort();

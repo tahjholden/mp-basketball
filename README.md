@@ -34,10 +34,10 @@ supabase db push
 
 ### Load seed data
 
-Example rows are stored in `./supabase/seed`. After running `supabase db push` you can load all SQL files in that folder. `person_rows.sql` seeds players and coaches and other files populate related tables:
+Example rows are stored in `./schemas/mp-basketball/seed`. After running `supabase db push` you can load all SQL files in that folder. `person_rows.sql` seeds players and coaches and other files populate related tables:
 
 ```bash
-for f in supabase/seed/*.sql; do
+for f in schemas/mp-basketball/seed/*.sql; do
   psql "$SUPABASE_DB_URL" -f "$f"
 done
 ```
@@ -45,8 +45,8 @@ done
 To import the CSV files as well:
 
 ```bash
-psql "$SUPABASE_DB_URL" -c "\copy agent_events FROM 'supabase/seed/agent_events_rows.csv' CSV HEADER"
-psql "$SUPABASE_DB_URL" -c "\copy person FROM 'supabase/seed/coach_rows.csv' CSV HEADER"
+psql "$SUPABASE_DB_URL" -c "\copy agent_events FROM 'schemas/mp-basketball/seed/agent_events_rows.csv' CSV HEADER"
+psql "$SUPABASE_DB_URL" -c "\copy person FROM 'schemas/mp-basketball/seed/coach_rows.csv' CSV HEADER"
 ```
 
 This loads the sample rows for the new `person`/`person_role` structure and related tables.
@@ -82,7 +82,7 @@ return present.map(r => ({ json: { person_uid: r.person_uid } }))
 
 1. Fork or copy this repository under a new name.
 2. Duplicate the contents of `workflows/` and adjust the flows for your domain.
-3. Modify or add migrations in `supabase/migrations` and update any seed scripts under `supabase/seed`.
+3. Modify or add migrations in `schemas/mp-basketball/migrations` and update any seed scripts under `schemas/mp-basketball/seed`.
 4. Run the migrations and seed data as shown above and re-import your modified workflows.
 
 ## Porting to PersonalOS or ConsultingOS
