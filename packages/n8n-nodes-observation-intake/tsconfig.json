@@ -10,7 +10,8 @@
     "esModuleInterop": true,
     "baseUrl": ".",
     "paths": {
-      "@n8n/workflow": ["src/types/@n8n/workflow"]
+      "@n8n/workflow": ["src/types/@n8n/workflow"],
+      "@n8n/core": ["src/types/@n8n/core"]
     }
   },
   "include": ["src/**/*.ts", "src/types/**/*.d.ts"]
