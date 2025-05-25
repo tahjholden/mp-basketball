@@ -1,6 +1,7 @@
 # mp-basketball
 
 Supabase + n8n workflows for MPOS-Basketball MVP.
+For an overview of the Human OS architecture guiding all verticals, see [docs/Human_OS_Architecture.md](docs/Human_OS_Architecture.md).
 
 ### Actor to person refactor
 

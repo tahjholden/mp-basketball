@@ -2,6 +2,8 @@
 
 ## Overview
 
+These agents rely on the overarching [Human OS Architecture](docs/Human_OS_Architecture.md).
+
 **Dev Agent** handles development tasks like mapping data and preparing new verticals. It runs the initial vertical mapping and sets up configuration files.
 
 **Deploy Agent** takes the generated artifacts from Dev Agent and publishes them. It updates production configurations and ensures the vertical is live.
