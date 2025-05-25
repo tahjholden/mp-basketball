@@ -1,4 +1,4 @@
--- 010_create_table_metadata.sql
+-- 011_create_table_metadata.sql
 -- Track admin-only status for each table
 
 CREATE TABLE IF NOT EXISTS table_metadata (

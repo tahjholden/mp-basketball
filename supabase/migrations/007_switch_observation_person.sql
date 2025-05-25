@@ -1,4 +1,4 @@
--- 006_switch_observation_person.sql
+-- 007_switch_observation_person.sql
 -- Migrate observation table from actor_uid to person_id
 
 DO $$

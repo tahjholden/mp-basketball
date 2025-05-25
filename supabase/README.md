@@ -43,7 +43,7 @@ Keeping this file in sync with the migrations allows external tools or policies 
 
 ## `table_metadata` table
 
-Migration `010_create_table_metadata.sql` adds a table named `table_metadata` with columns `table_name` and `is_admin`. The initial migration populates it using the entries from `admin_tables.yml` so both sources stay aligned.
+Migration `011_create_table_metadata.sql` adds a table named `table_metadata` with columns `table_name` and `is_admin`. The initial migration populates it using the entries from `admin_tables.yml` so both sources stay aligned.
 
 Whenever you create a new table, update both places:
 
