@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "description": "Tests for mp-basketball supabase migrations and workflows",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "coverage": "jest --coverage"
   },
   "keywords": [],
   "author": "",
