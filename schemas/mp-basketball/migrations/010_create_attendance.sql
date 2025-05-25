@@ -4,13 +4,13 @@
 CREATE TABLE IF NOT EXISTS attendance (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   session_id TEXT REFERENCES session(id),
-  player_id TEXT REFERENCES player(id),
+  person_uid TEXT REFERENCES person(uid),
   status TEXT CHECK (status IN ('present','absent','late')),
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
 CREATE INDEX IF NOT EXISTS idx_attendance_session ON attendance(session_id);
-CREATE INDEX IF NOT EXISTS idx_attendance_player ON attendance(player_id);
+CREATE INDEX IF NOT EXISTS idx_attendance_person ON attendance(person_uid);
 
 ALTER TABLE attendance ENABLE ROW LEVEL SECURITY;
 ALTER TABLE attendance FORCE ROW LEVEL SECURITY;
