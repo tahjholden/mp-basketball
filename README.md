@@ -162,6 +162,7 @@ status directly on the PR page.
 
 ## License
 
+Distributed under the terms of the [MIT License](LICENSE).
 
 ## Testing
 
