@@ -1,0 +1,205 @@
+{
+  "name": "Tagging_Queue_Worker",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 1
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "926c3c09-c091-4c7d-b715-5e011381f7d6",
+      "name": "Schedule_Trigger_Tagging"
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "tableId": "observation",
+        "limit": 1,
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "status",
+              "condition": "eq",
+              "keyValue": "ready for tagging"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        220,
+        0
+      ],
+      "id": "3cfd5952-8ed6-4017-afa1-30935a5e7eac",
+      "name": "Supabase_GetOne_Observation_To_Tag",
+      "credentials": {
+        "supabaseApi": {
+          "id": "Xvt090LtOq6K2VDy",
+          "name": "Supabase account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "observation",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "uid",
+              "condition": "eq",
+              "keyValue": "={{ $json.uid }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "status",
+              "fieldValue": "tagging in progress"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        440,
+        0
+      ],
+      "id": "032a140e-93e9-4d69-a400-d92b249b7ef7",
+      "name": "Supabase_Update_Observation_Status_InProgress",
+      "credentials": {
+        "supabaseApi": {
+          "id": "Xvt090LtOq6K2VDy",
+          "name": "Supabase account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "tableId": "workflow_log",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "observation_uid",
+              "fieldValue": "={{ $json[\"uid\"] }}"
+            },
+            {
+              "fieldId": "event_type",
+              "fieldValue": "status update"
+            },
+            {
+              "fieldId": "status_from",
+              "fieldValue": "ready for tagging"
+            },
+            {
+              "fieldId": "status_to",
+              "fieldValue": "tagging in progress"
+            },
+            {
+              "fieldId": "run_by",
+              "fieldValue": "n8n:Tagging_Queue_Worker"
+            },
+            {
+              "fieldId": "workflow_name",
+              "fieldValue": "Tagging Queue Worker"
+            },
+            {
+              "fieldId": "node_name",
+              "fieldValue": "Log Status Update"
+            },
+            {
+              "fieldId": "timestamp",
+              "fieldValue": "={{ $now }}"
+            },
+            {
+              "fieldId": "details",
+              "fieldValue": "={{ JSON.stringify($json) }}"
+            },
+            {
+              "fieldId": "result_code",
+              "fieldValue": "success"
+            },
+            {
+              "fieldId": "error_message"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        660,
+        0
+      ],
+      "id": "eb497ca4-e5c1-4f1a-a544-c061ed286e0d",
+      "name": "Log_Status_Update",
+      "credentials": {
+        "supabaseApi": {
+          "id": "Xvt090LtOq6K2VDy",
+          "name": "Supabase account 2"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule_Trigger_Tagging": {
+      "main": [
+        [
+          {
+            "node": "Supabase_GetOne_Observation_To_Tag",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Supabase_GetOne_Observation_To_Tag": {
+      "main": [
+        [
+          {
+            "node": "Supabase_Update_Observation_Status_InProgress",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Supabase_Update_Observation_Status_InProgress": {
+      "main": [
+        [
+          {
+            "node": "Log_Status_Update",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "c02bc620-28eb-4fae-b487-e3fc712bc1ef",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "0abe8dd3af7b84dd650128b454cc932a6aae1d69499f17eccb6a7dec666a07a5"
+  },
+  "id": "AlmIB8BTP1BfUbht",
+  "tags": []
+}

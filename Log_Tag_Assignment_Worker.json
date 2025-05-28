@@ -1,0 +1,154 @@
+{
+  "name": "Log_Tag_Assignment_Worker",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 1
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "93936c92-279b-4148-aa54-122ecca81ba7",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "tableId": "observation_tags",
+        "returnAll": true,
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "relevance_score",
+              "condition": "gt",
+              "keyValue": "2"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        220,
+        0
+      ],
+      "id": "306ea0b0-1d28-496b-80b3-57edbb8233f8",
+      "name": "Supabase",
+      "credentials": {
+        "supabaseApi": {
+          "id": "Xvt090LtOq6K2VDy",
+          "name": "Supabase account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "tableId": "workflow_log",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "event_type",
+              "fieldValue": "tag assignment"
+            },
+            {
+              "fieldId": "observation_uid",
+              "fieldValue": "={{$json[\"observation_uid\"]}}"
+            },
+            {
+              "fieldId": "timestamp",
+              "fieldValue": "={{$now}}"
+            },
+            {
+              "fieldId": "details",
+              "fieldValue": "={{JSON.stringify($json)}}"
+            },
+            {
+              "fieldId": "run_by",
+              "fieldValue": "n8n:Tagging Execution Worker"
+            },
+            {
+              "fieldId": "workflow_name",
+              "fieldValue": "Tagging Execution Worker"
+            },
+            {
+              "fieldId": "node_name",
+              "fieldValue": "Log Tag Assignment"
+            },
+            {
+              "fieldId": "result_code",
+              "fieldValue": "success"
+            },
+            {
+              "fieldId": "error_message"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        440,
+        0
+      ],
+      "id": "1f45b076-deac-4189-8887-8f6e2f7faa9d",
+      "name": "Supabase1",
+      "credentials": {
+        "supabaseApi": {
+          "id": "Xvt090LtOq6K2VDy",
+          "name": "Supabase account 2"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Supabase",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Supabase": {
+      "main": [
+        [
+          {
+            "node": "Supabase1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Supabase1": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "bb318b44-88e5-4541-bf92-db589043c282",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "0abe8dd3af7b84dd650128b454cc932a6aae1d69499f17eccb6a7dec666a07a5"
+  },
+  "id": "cZ4eYRe6m1OEaiSU",
+  "tags": []
+}

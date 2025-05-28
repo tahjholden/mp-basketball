@@ -1,0 +1,427 @@
+{
+  "name": "AI_Generated_PlanDraft",
+  "nodes": [
+    {
+      "parameters": {
+        "operation": "getAll",
+        "tableId": "goal",
+        "returnAll": true,
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "person_uid",
+              "condition": "eq",
+              "keyValue": "={{$json[\"person_uid\"]}}"
+            },
+            {
+              "keyName": "org_uid",
+              "condition": "eq",
+              "keyValue": "={{$json[\"org_uid\"]}}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        440,
+        -500
+      ],
+      "id": "a85625d2-e893-4a4c-808b-6f5fdc652394",
+      "name": "Supabase_Get_Goals",
+      "credentials": {
+        "supabaseApi": {
+          "id": "Xvt090LtOq6K2VDy",
+          "name": "Supabase account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "tableId": "habit",
+        "returnAll": true,
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "person_uid",
+              "condition": "eq",
+              "keyValue": "={{$json[\"person_uid\"]}}"
+            },
+            {
+              "keyName": "org_uid",
+              "condition": "eq",
+              "keyValue": "={{ $json.org_uid }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        660,
+        -500
+      ],
+      "id": "7b575523-b04f-4fe8-bd33-35c74461355a",
+      "name": "Supabase_Get_Habits",
+      "executeOnce": true,
+      "credentials": {
+        "supabaseApi": {
+          "id": "Xvt090LtOq6K2VDy",
+          "name": "Supabase account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "tableId": "observation",
+        "returnAll": true,
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "person_uid",
+              "condition": "eq",
+              "keyValue": "={{$json[\"person_uid\"]}}"
+            },
+            {
+              "keyName": "org_uid",
+              "condition": "eq",
+              "keyValue": "={{ $json.org_uid }}"
+            },
+            {
+              "keyName": "status",
+              "condition": "eq",
+              "keyValue": "active"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        880,
+        -500
+      ],
+      "id": "42c3022b-29b1-4cc6-a80b-f6b71abeef40",
+      "name": "Supabase_Get_Observations",
+      "executeOnce": true,
+      "credentials": {
+        "supabaseApi": {
+          "id": "Xvt090LtOq6K2VDy",
+          "name": "Supabase account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "tableId": "routine",
+        "returnAll": true,
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "person_uid",
+              "condition": "eq",
+              "keyValue": "={{$json[\"person_uid\"]}}"
+            },
+            {
+              "keyName": "org_uid",
+              "condition": "eq",
+              "keyValue": "={{ $json.org_uid }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1100,
+        -500
+      ],
+      "id": "b6e47495-f9c3-4857-8b87-24b2556ab79b",
+      "name": "Supabase_Get_Routines",
+      "executeOnce": true,
+      "credentials": {
+        "supabaseApi": {
+          "id": "Xvt090LtOq6K2VDy",
+          "name": "Supabase account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 22
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        -500
+      ],
+      "id": "d94bafcf-ebe4-4e48-a169-42e1b38ab8d0",
+      "name": "Schedule_Trigger_DailyPlanner"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "12190fca-1d8f-411a-896e-9387f5f2faee",
+              "name": "person_uid",
+              "value": "4e9f906d-2561-4801-b239-8ec1c3244ed8",
+              "type": "string"
+            },
+            {
+              "id": "cc42d56b-32e0-4205-90a6-0ea56585b6e4",
+              "name": "org_uid",
+              "value": "1dfbb431-e06a-4f0b-b2b1-61d9a92a05d6",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        220,
+        -500
+      ],
+      "id": "e1a5ed44-2dff-4d61-ba1c-9c74f67cc46d",
+      "name": "Set_Context_PersonOrg"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Assumes you named your nodes exactly like this (if not, adjust the $items(...) names)\n// - Supabase_Get_Goals\n// - Supabase_Get_Habits\n// - Supabase_Get_Observations\n// - Supabase_Get_Routines\n\nconst goals = $items(\"Supabase_Get_Goals\").map(item => item.json);\nconst habits = $items(\"Supabase_Get_Habits\").map(item => item.json);\nconst observations = $items(\"Supabase_Get_Observations\").map(item => item.json);\nconst routines = $items(\"Supabase_Get_Routines\").map(item => item.json);\n\nreturn [\n  {\n    json: {\n      context: {\n        person_uid: $json[\"person_uid\"],\n        org_uid: $json[\"org_uid\"]\n      },\n      goals,\n      habits,\n      observations,\n      routines,\n      summary: `Prepared for AI-powered planning at ${new Date().toISOString()}`\n    }\n  }\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1320,
+        -500
+      ],
+      "id": "decb10e3-dcce-4eed-a13d-78e63dec3311",
+      "name": "Combine_UserData_ForAI"
+    },
+    {
+      "parameters": {
+        "tableId": "plan_draft",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "person_uid",
+              "fieldValue": "={{$json[\"person_uid\"]}}"
+            },
+            {
+              "fieldId": "org_uid",
+              "fieldValue": "={{$json[\"org_uid\"]}}"
+            },
+            {
+              "fieldId": "plan_json",
+              "fieldValue": "={{$json[\"plan_json\"]}}"
+            },
+            {
+              "fieldId": "rationale",
+              "fieldValue": "={{ $json.plan_json.rationale }}"
+            },
+            {
+              "fieldId": "status",
+              "fieldValue": "pending"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        2136,
+        -500
+      ],
+      "id": "3a940a02-670e-4e7c-b64a-17f85b5b41fa",
+      "name": "Supabase_Insert_PlanDraft",
+      "alwaysOutputData": false,
+      "executeOnce": false,
+      "credentials": {
+        "supabaseApi": {
+          "id": "Xvt090LtOq6K2VDy",
+          "name": "Supabase account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Parse the AI-generated plan from OpenAI_Generate_DailyPlan for insertion\nconst openaiOutput = $items(\"OpenAI_Generate_PlanDraft\")[0].json;\n\nlet planArray = [];\ntry {\n  // The content may be a JSON string that needs to be parsed\n  planArray = JSON.parse(openaiOutput.message.content);\n} catch (e) {\n  // Return an error object if parsing fails\n  return [{\n    json: {\n      error: 'Could not parse AI plan content',\n      raw: openaiOutput.message.content\n    }\n  }];\n}\n\n// Get today's date in YYYY-MM-DD format\nconst today = new Date();\nconst yyyy = today.getFullYear();\nconst mm = String(today.getMonth() + 1).padStart(2, '0');\nconst dd = String(today.getDate()).padStart(2, '0');\nconst date_for = `${yyyy}-${mm}-${dd}`;\n\n// Add person_uid, org_uid, and date_for for each plan step\nconst context = $items(\"Set_Context_PersonOrg\")[0].json;\n\nreturn [{\n  json: {\n    person_uid: context.person_uid,\n    org_uid: context.org_uid,\n    plan_json: planArray, // entire plan as an array!\n    // ...other fields\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1916,
+        -500
+      ],
+      "id": "dca4793d-9959-4ce8-aabb-d9cf10f9674c",
+      "name": "Parse_AI_PlanDraft",
+      "executeOnce": true
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4.1",
+          "mode": "list",
+          "cachedResultName": "GPT-4.1"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "Context\n\nYou are designing a universal, highly intelligent daily planning agent within HumanOS. The system receives structured arrays of user goals, habits, recent observations (reflections, logs, voice notes), and available routines (with metadata, status, and participation fields).\nYour job is to analyze this data and generate a personalized, actionable, and rationale-backed plan for the user’s day. This plan should directly reference real user data, optimize for follow-through, and clearly explain the reasoning for each recommendation.\n\n⸻\n\nRole\n\nYou are an industry-leading, AI-powered productivity and wellbeing coach with decades of expertise in personal development, behavioral design, and digital systems.\nYou are known for:\n\t•\tCreating detailed, context-aware, and adaptive plans\n\t•\tTranslating complex, multi-modal data (goals, habits, logs, routines) into clear, prioritized actions\n\t•\tAlways providing plain-language rationales for each recommendation\n\n⸻\n\nAction\n\t1.\tReview the provided arrays of goals, habits, observations, and routines. (Each record includes UID, description, status, timestamps, and other fields.)\n\t2.\tFor today, generate a prioritized action plan (3–7 steps), recommending available routines and new actions that maximize alignment with the user’s current goals and habits.\n\t3.\tIf any key goals or habits are missing from recent observations, flag them as “Focus Areas” or suggest a micro-action to re-engage them.\n\t4.\tFor each recommendation:\n\t•\tReference relevant goal_uid, habit_uid, or routine_uid (as appropriate)\n\t•\tWrite a clear, concise action step\n\t•\tProvide a plain-English rationale (1–2 sentences, always referencing user data)\n\t•\tSuggest an optimal time or context (e.g., “morning,” “after lunch,” “evening”)\n\t5.\tOutput a single JSON array. Each object in the array must include:\n\t•\taction (string, plain text instruction)\n\t•\trationale (string, referencing real user data)\n\t•\troutine_uid (string, nullable)\n\t•\tgoal_uid (string, nullable)\n\t•\thabit_uid (string, nullable)\n\t•\tsuggested_time (string, e.g. “7:00 AM”, nullable)\n\t6.\tDo not return markdown, explanations, or extra commentary—JSON array only.\n\n⸻\n\nFormat\n\t•\tInput:\n\t•\tAll user data is provided as JSON arrays:\n\t•\tgoals, habits, observations, routines\n\t•\tOutput:\n\t•\tStrict JSON array, each item as an object with:\n\t•\taction, rationale, routine_uid, goal_uid, habit_uid, suggested_time\n\t•\tExample Output:\n[\n  {\n    \"action\": \"Start your morning with 'Morning Deep Work'—focus on your reading goal.\",\n    \"rationale\": \"You reflected on reading 20 pages yesterday and have an active daily reading goal.\",\n    \"routine_uid\": \"d2051167-404c-44fa-bb06-791e31ee509e\",\n    \"goal_uid\": \"5ea3ad8c-5690-446a-b4ee-f5e8f0b41a9c\",\n    \"habit_uid\": null,\n    \"suggested_time\": \"7:00 AM\"\n  },\n  {\n    \"action\": \"Take a 20-minute walk after lunch.\",\n    \"rationale\": \"Walking is an active goal and routine, and you logged a positive observation about evening walks.\",\n    \"routine_uid\": \"54ef2bd6-c008-4dfc-b6a1-f9daa67e8994\",\n    \"goal_uid\": \"b1f72cbe-cbb4-45b7-b681-3e650a7b64c7\",\n    \"habit_uid\": \"ec13adbe-964c-4491-b961-37223a42ae75\",\n    \"suggested_time\": \"1:00 PM\"\n  },\n  {\n    \"action\": \"Journal for 10 minutes before bed.\",\n    \"rationale\": \"Journaling is an active goal, a completed streak, and missing in yesterday's log.\",\n    \"routine_uid\": \"8698127b-0dd2-4007-a246-026cdee11913\",\n    \"goal_uid\": \"bf370ae2-d61c-4d3e-a5b6-784a3319c9df\",\n    \"habit_uid\": null,\n    \"suggested_time\": \"9:00 PM\"\n  }\n]\nTarget Audience\n\t•\tThe immediate consumer is a ChatGPT-4o or ChatGPT-o1 Large Language Model running inside an automation platform (n8n, Make, etc.).\n\t•\tThe ultimate consumer is an end-user (any reading level), who expects actionable, concise, and contextually-relevant guidance—not technical output.",
+              "role": "system"
+            },
+            {
+              "content": "CONTEXT:\nYou are receiving live JSON arrays representing my active goals, habits, recent observations (journal, voice, logs), and available routines. Each record is complete with UIDs, descriptions, status, and timestamps. Your task is to analyze today’s context and create an actionable, rationale-backed plan.\n\nACTION:\n1. Review each array: `goals`, `habits`, `observations`, and `routines` below.\n2. Identify today’s top priorities—favor active goals and habits, and note any that are missing from recent observations.\n3. Cross-reference routines with current goals/habits/observations.\n   - Prefer routines that match active goals/habits or fill a “gap” in recent logs.\n   - If a goal or habit is not mentioned in recent observations, include a nudge or micro-action for it.\n4. Construct a plan for today:\n   - 3–7 prioritized steps (actions), using routine names when appropriate.\n   - Each step must include:\n      - `action` (plain English, specific)\n      - `rationale` (why it matters, reference user data)\n      - `routine_uid` (nullable)\n      - `goal_uid` (nullable)\n      - `habit_uid` (nullable)\n      - `suggested_time` (nullable)\n5. Output a single JSON array—do not include explanations, markdown, or commentary outside of the array.\n\nINPUT:\n{\n  \"goals\": {{ JSON.stringify($json.goals) }},\n  \"habits\": {{ JSON.stringify($json.habits) }},\n  \"observations\": {{ JSON.stringify($json.observations) }},\n  \"routines\": {{ JSON.stringify($json.routines) }}\n}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        1540,
+        -500
+      ],
+      "id": "2fe27a75-ae63-420f-b0c0-e7c6e72dc40f",
+      "name": "OpenAI_Generate_PlanDraft",
+      "credentials": {
+        "openAiApi": {
+          "id": "KhaGQw1SlGfhaasb",
+          "name": "OpenAi account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Supabase_Get_Goals": {
+      "main": [
+        [
+          {
+            "node": "Supabase_Get_Habits",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Supabase_Get_Habits": {
+      "main": [
+        [
+          {
+            "node": "Supabase_Get_Observations",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Supabase_Get_Observations": {
+      "main": [
+        [
+          {
+            "node": "Supabase_Get_Routines",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Supabase_Get_Routines": {
+      "main": [
+        [
+          {
+            "node": "Combine_UserData_ForAI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule_Trigger_DailyPlanner": {
+      "main": [
+        [
+          {
+            "node": "Set_Context_PersonOrg",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set_Context_PersonOrg": {
+      "main": [
+        [
+          {
+            "node": "Supabase_Get_Goals",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Combine_UserData_ForAI": {
+      "main": [
+        [
+          {
+            "node": "OpenAI_Generate_PlanDraft",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Supabase_Insert_PlanDraft": {
+      "main": [
+        []
+      ]
+    },
+    "Parse_AI_PlanDraft": {
+      "main": [
+        [
+          {
+            "node": "Supabase_Insert_PlanDraft",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI_Generate_PlanDraft": {
+      "main": [
+        [
+          {
+            "node": "Parse_AI_PlanDraft",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "d0952077-779d-470b-9252-6d2bde40dc94",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "0abe8dd3af7b84dd650128b454cc932a6aae1d69499f17eccb6a7dec666a07a5"
+  },
+  "id": "ifTK2Tn8469JWRnC",
+  "tags": []
+}

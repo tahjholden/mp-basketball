@@ -1,0 +1,199 @@
+{
+  "name": "Intake__Observation_Ingestion",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "95b76255-73cd-48f9-b19a-2234c88e4671",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -40,
+        -80
+      ],
+      "id": "674c6881-91ba-44aa-8dc0-35cd9f859951",
+      "name": "Webhook_Intake",
+      "webhookId": "95b76255-73cd-48f9-b19a-2234c88e4671"
+    },
+    {
+      "parameters": {
+        "tableId": "observation",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "status",
+              "fieldValue": "new"
+            },
+            {
+              "fieldId": "payload",
+              "fieldValue": "={{ $json.body.Entry }}"
+            },
+            {
+              "fieldId": "obs_type",
+              "fieldValue": "voice_ios"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        180,
+        -80
+      ],
+      "id": "872b092f-b211-478a-a330-dab589e08ef7",
+      "name": "Supabase_Insert_Observation",
+      "credentials": {
+        "supabaseApi": {
+          "id": "Xvt090LtOq6K2VDy",
+          "name": "Supabase account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Example: Check for required payload, length, and duplicates\nconst errors = [];\n\nif (!$json.payload || $json.payload.trim() === \"\") {\n  errors.push(\"Empty or missing payload\");\n}\nif ($json.payload && $json.payload.length < 10) {\n  errors.push(\"Payload too short\");\n}\n// Example: check for duplicate payload in last 24h (if you have payloads indexed)\n// (You could run a Supabase query for this as a separate node before this validation)\n\nif (errors.length > 0) {\n  return [{\n    json: {\n      ...$json,\n      valid: false,\n      validation_errors: errors\n    }\n  }];\n} else {\n  return [{\n    json: {\n      ...$json,\n      valid: true\n    }\n  }];\n}"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        400,
+        -80
+      ],
+      "id": "c3d82704-ab54-43bd-9586-7d2c97c36dcc",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "tableId": "workflow_log",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "observation_uid",
+              "fieldValue": "={{ $json[\"uid\"] }}"
+            },
+            {
+              "fieldId": "person_uid",
+              "fieldValue": "={{ $json.person_uid }}"
+            },
+            {
+              "fieldId": "event_type",
+              "fieldValue": "intake"
+            },
+            {
+              "fieldId": "status_from",
+              "fieldValue": "null"
+            },
+            {
+              "fieldId": "status_to",
+              "fieldValue": "new"
+            },
+            {
+              "fieldId": "run_by",
+              "fieldValue": "n8n:Intake__Observation_Ingestion"
+            },
+            {
+              "fieldId": "workflow_name",
+              "fieldValue": "Intake__Observation_Ingestion"
+            },
+            {
+              "fieldId": "node_name",
+              "fieldValue": "Log_Intake_Event"
+            },
+            {
+              "fieldId": "timestamp",
+              "fieldValue": "={{ $now }}"
+            },
+            {
+              "fieldId": "details",
+              "fieldValue": "={{ JSON.stringify($json) }}"
+            },
+            {
+              "fieldId": "source",
+              "fieldValue": "={{ $json['source'] || 'webhook' }}"
+            },
+            {
+              "fieldId": "client_ip",
+              "fieldValue": "={{ $json['client_ip'] || '' }}"
+            },
+            {
+              "fieldId": "user_agent",
+              "fieldValue": "={{ $json['user_agent'] || ''}}"
+            },
+            {
+              "fieldId": "result_code",
+              "fieldValue": "={{ $json['valid'] ? 'success' : 'validation_error' }}"
+            },
+            {
+              "fieldId": "error_message",
+              "fieldValue": "={{ $json['validation_errors'] ? $json['validation_errors'].join('; ') : '' }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        620,
+        -80
+      ],
+      "id": "fdca6873-72dc-4427-a4c9-7d3f493a7c1d",
+      "name": "Supabase",
+      "credentials": {
+        "supabaseApi": {
+          "id": "Xvt090LtOq6K2VDy",
+          "name": "Supabase account 2"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook_Intake": {
+      "main": [
+        [
+          {
+            "node": "Supabase_Insert_Observation",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Supabase_Insert_Observation": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Supabase",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "d6cbd206-b088-465e-ad34-eb2fc5b19dd3",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "0abe8dd3af7b84dd650128b454cc932a6aae1d69499f17eccb6a7dec666a07a5"
+  },
+  "id": "bqtZZpxSbZAfJwwM",
+  "tags": []
+}

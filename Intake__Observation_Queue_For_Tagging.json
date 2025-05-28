@@ -1,0 +1,259 @@
+{
+  "name": "Intake__Observation_Queue_For_Tagging",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 1
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -620,
+        640
+      ],
+      "id": "1689c351-1daf-401f-a5a6-9e8f4ae40f59",
+      "name": "Schedule_Trigger"
+    },
+    {
+      "parameters": {
+        "url": "https://tthmhdbnwvrnfgtmnsiw.supabase.co/rest/v1/observation?status=eq.new",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "supabaseApi",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "status",
+              "value": "eq.new"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -400,
+        640
+      ],
+      "id": "e67bfe30-c104-4303-b12c-173251ae84e2",
+      "name": "Supabase_Fetch_New_Observations",
+      "credentials": {
+        "supabaseApi": {
+          "id": "Xvt090LtOq6K2VDy",
+          "name": "Supabase account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        -180,
+        640
+      ],
+      "id": "5d781139-4f87-4831-916a-348cb6ec4020",
+      "name": "Loop_Over_Observations"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "observation",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "uid",
+              "condition": "eq",
+              "keyValue": "={{ $json[\"uid\"] }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "status",
+              "fieldValue": "ready for tagging"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        40,
+        640
+      ],
+      "id": "d0bd5f0c-3487-4676-a04a-c7b2ce3d6709",
+      "name": "Supabase_Update_Observation_Status",
+      "alwaysOutputData": false,
+      "credentials": {
+        "supabaseApi": {
+          "id": "Xvt090LtOq6K2VDy",
+          "name": "Supabase account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "tableId": "workflow_log",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "observation_uid",
+              "fieldValue": "={{ $json[\"uid\"] }}"
+            },
+            {
+              "fieldId": "person_uid",
+              "fieldValue": "={{ $json[\"person_uid\"] || null }}"
+            },
+            {
+              "fieldId": "event_type",
+              "fieldValue": "status update"
+            },
+            {
+              "fieldId": "status_from",
+              "fieldValue": "={{ $json[\"status\"] }}"
+            },
+            {
+              "fieldId": "status_to",
+              "fieldValue": "ready for tagging"
+            },
+            {
+              "fieldId": "run_by",
+              "fieldValue": "n8n:Intake__Observation_Queue_For_Tagging"
+            },
+            {
+              "fieldId": "workflow_name",
+              "fieldValue": "Intake__Observation_Queue_For_Tagging"
+            },
+            {
+              "fieldId": "node_name",
+              "fieldValue": "Log_Status_Update"
+            },
+            {
+              "fieldId": "timestamp",
+              "fieldValue": "={{ $now }}"
+            },
+            {
+              "fieldId": "details",
+              "fieldValue": "={{ JSON.stringify($json) }}"
+            },
+            {
+              "fieldId": "source",
+              "fieldValue": "n8n"
+            },
+            {
+              "fieldId": "client_ip",
+              "fieldValue": "={{ $json[\"client_ip\"] || \"\" }}"
+            },
+            {
+              "fieldId": "user_agent",
+              "fieldValue": "={{ $json[\"user_agent\"] || \"\" }}"
+            },
+            {
+              "fieldId": "result_code",
+              "fieldValue": "success"
+            },
+            {
+              "fieldId": "error_message",
+              "fieldValue": "={{ $json[\"error_message\"] || \"\" }}"
+            },
+            {
+              "fieldId": "created_at",
+              "fieldValue": "={{ $now }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        260,
+        640
+      ],
+      "id": "9b5d404e-973f-4900-b265-ba719af37fa0",
+      "name": "Supabase",
+      "credentials": {
+        "supabaseApi": {
+          "id": "Xvt090LtOq6K2VDy",
+          "name": "Supabase account 2"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule_Trigger": {
+      "main": [
+        [
+          {
+            "node": "Supabase_Fetch_New_Observations",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Supabase_Fetch_New_Observations": {
+      "main": [
+        [
+          {
+            "node": "Loop_Over_Observations",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop_Over_Observations": {
+      "main": [
+        [
+          {
+            "node": "Supabase_Update_Observation_Status",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Loop_Over_Observations",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Supabase_Update_Observation_Status": {
+      "main": [
+        [
+          {
+            "node": "Supabase",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "eb8df403-7318-4af7-99ae-9b9651fe5344",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "0abe8dd3af7b84dd650128b454cc932a6aae1d69499f17eccb6a7dec666a07a5"
+  },
+  "id": "vsLpGrpIjczhjly6",
+  "tags": []
+}

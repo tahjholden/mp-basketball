@@ -1,0 +1,208 @@
+{
+  "name": "Tagging_Assignment_Worker",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 1
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "f369156a-bac0-4753-850d-33c2d1086207",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "tableId": "observation",
+        "limit": 1,
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "status",
+              "condition": "eq",
+              "keyValue": "tagging in progress"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        220,
+        0
+      ],
+      "id": "38cd2ffb-3842-4a89-a315-6d47b02c6662",
+      "name": "Supabase_GetOne_Observation_InProgress",
+      "credentials": {
+        "supabaseApi": {
+          "id": "Xvt090LtOq6K2VDy",
+          "name": "Supabase account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "observation",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "uid",
+              "condition": "eq",
+              "keyValue": "={{ $json[\"uid\"] }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "status",
+              "fieldValue": "tagging assignment started "
+            },
+            {
+              "fieldId": "processed_at",
+              "fieldValue": "={{ $now }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        440,
+        0
+      ],
+      "id": "9eb65198-5071-4f53-abfe-06831bdaf0ba",
+      "name": "Supabase_Update_Observation_Status_AssignmentStarted",
+      "credentials": {
+        "supabaseApi": {
+          "id": "Xvt090LtOq6K2VDy",
+          "name": "Supabase account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "tableId": "workflow_log",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "observation_uid",
+              "fieldValue": "={{ $json[\"uid\"] }}"
+            },
+            {
+              "fieldId": "event_type",
+              "fieldValue": "status update"
+            },
+            {
+              "fieldId": "status_from",
+              "fieldValue": "tagging in progress"
+            },
+            {
+              "fieldId": "status_to",
+              "fieldValue": "tagging assignment started"
+            },
+            {
+              "fieldId": "run_by",
+              "fieldValue": "Tagging Assignment Worker"
+            },
+            {
+              "fieldId": "workflow_name"
+            },
+            {
+              "fieldId": "node_name",
+              "fieldValue": "Log Status Update"
+            },
+            {
+              "fieldId": "timestamp",
+              "fieldValue": "={{ $now }}"
+            },
+            {
+              "fieldId": "details",
+              "fieldValue": "={{ JSON.stringify($json) }}"
+            },
+            {
+              "fieldId": "result_code",
+              "fieldValue": "success"
+            },
+            {
+              "fieldId": "error_message"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        660,
+        0
+      ],
+      "id": "b6a55551-4304-4d58-b2f6-6a06b8bcad3a",
+      "name": "Log Status Update",
+      "credentials": {
+        "supabaseApi": {
+          "id": "Xvt090LtOq6K2VDy",
+          "name": "Supabase account 2"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Supabase_GetOne_Observation_InProgress",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Supabase_GetOne_Observation_InProgress": {
+      "main": [
+        [
+          {
+            "node": "Supabase_Update_Observation_Status_AssignmentStarted",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Supabase_Update_Observation_Status_AssignmentStarted": {
+      "main": [
+        [
+          {
+            "node": "Log Status Update",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "b1afa3f7-1b97-4ce6-acb9-316509128d53",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "0abe8dd3af7b84dd650128b454cc932a6aae1d69499f17eccb6a7dec666a07a5"
+  },
+  "id": "frebYtGxZDltlMoR",
+  "tags": []
+}

@@ -1,0 +1,267 @@
+{
+  "name": "Tagging_Execution_Worker",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 1
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        75
+      ],
+      "id": "45500675-fefd-4f46-a7cf-00691c9885e1",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "tableId": "observation",
+        "returnAll": true,
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "status",
+              "condition": "eq",
+              "keyValue": "tagging assignment started"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        220,
+        75
+      ],
+      "id": "e01eb501-0f59-4cd9-9252-cbbf79c35c1b",
+      "name": "Supabase_GetOne_Observation_AssignmentStarted",
+      "credentials": {
+        "supabaseApi": {
+          "id": "Xvt090LtOq6K2VDy",
+          "name": "Supabase account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "tableId": "tag",
+        "returnAll": true
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        440,
+        0
+      ],
+      "id": "eab4614a-4dca-48ee-b812-f326d4d8a3f6",
+      "name": "Supabase_GetMany_Tags",
+      "credentials": {
+        "supabaseApi": {
+          "id": "Xvt090LtOq6K2VDy",
+          "name": "Supabase account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Get the first observation (there should be only one)\nconst obs = $items(\"Supabase_GetOne_Observation_AssignmentStarted\")[0].json;\n// Get all tags as an array\nconst tags = $items(\"Supabase_GetMany_Tags\").map(item => item.json);\n\n// Output a single object with observation fields + tags array\nreturn [{\n  json: {\n    ...obs,\n    tags: tags\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        660,
+        75
+      ],
+      "id": "981378f1-00b0-4dbb-a5d7-ac5ba371b104",
+      "name": "Format_For_AI",
+      "executeOnce": true
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4.1",
+          "mode": "list",
+          "cachedResultName": "GPT-4.1"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "You are powering an automated, vertical-agnostic tagging system for HumanOS. The system receives incoming observations (free text) and a full array of tags. You must map relevant tags to the observation, with a score and rationale, for downstream analysis and feedback—regardless of domain. All environments are modular and schema-driven. Output must be machine-parseable, audit-friendly, and require no further human clarification.\n\n⸻\n\nROLE\n\nYou are a world-class, expert-level natural language classification engine with deep expertise in universal context tagging, metadata extraction, and explainable AI. You have over 20 years of experience building LLM-driven systems for dynamic schema mapping, vertical-agnostic entity recognition, and transparent feedback loops. Your outputs are robust, transparent, and always suitable for production environments.\n\n⸻\n\nACTION\n\t1.\tReview the observation: Accept the provided text (and metadata).\n\t2.\tReview all tags: Each tag has a unique ID and label. The tag list may be flat or hierarchical, and is dynamic per execution.\n\t3.\tFor each tag, determine relevance:\n\t•\tAssign a score (1–5), where 1 = irrelevant, 5 = directly relevant.\n\t•\tProvide a brief, plain-English rationale for each tag scored ≥2.\n\t•\tMake no assumptions about domain—only use provided data.\n\t4.\tFor all tags scored ≥2, output:\n\t•\ttag_uid\n\t•\ttag_name\n\t•\trelevance_score (2–5)\n\t•\treason (short explanation)\n\t5.\tReturn a single JSON array:\n\t•\tEach item is an object with required fields.\n\t•\tNo extraneous commentary, boilerplate, or vertical-specific terms.\n\n⸻\n\nFORMAT\n\t•\tOutput: JSON array only (no prose, no markdown).\n\t•\tEach array object must contain:\n\t•\ttag_uid (string)\n\t•\ttag_name (string)\n\t•\trelevance_score (integer, 2–5)\n\t•\treason (string)\n\t•\tExample:\n[\n  {\n    \"tag_uid\": \"abc123\",\n    \"tag_name\": \"Accuracy\",\n    \"relevance_score\": 5,\n    \"reason\": \"Observation discusses precision of results.\"\n  },\n  {\n    \"tag_uid\": \"def456\",\n    \"tag_name\": \"Timeliness\",\n    \"relevance_score\": 3,\n    \"reason\": \"Observation references completion within deadline.\"\n  }\n]\n\t•\tDo not include tags with score 1 or any additional text.\nTARGET AUDIENCE\n\nThe target audience is an automated pipeline consuming this output for HumanOS or other structured data environments. Downstream consumers may be AI agents, data scientists, or audit tools. The JSON must be plain English, easily parsed, and explainable by humans without requiring additional training or schema knowledge.",
+              "role": "system"
+            },
+            {
+              "content": "=Observation: {{ $json[\"payload\"] }}\n\nTag array: {{ JSON.stringify($json[\"tags\"]) }}\n\nObservation UID: {{ $json[\"uid\"] }}\n\nInstructions:\nProceed to tag this observation using the tags provided above, following these steps:\n1. For each tag object in the array, compare it against the observation.\n2. Assign a relevance score (1–5) for each tag, where 1 = irrelevant and 5 = directly relevant.\n3. For each tag with a score of 2 or greater, output:\n    - tag_uid\n    - tag_name\n    - relevance_score (integer, 2–5)\n    - reason (plain English, 1–2 sentences explaining why this tag applies)\n4. Output must be a single JSON array, with each array item as an object containing only the fields above.\n5. Do not include any tags with score 1 or add any extra commentary.\n\nEXAMPLE OUTPUT:\n[\n  {\n    \"tag_uid\": \"abc123\",\n    \"tag_name\": \"Accuracy\",\n    \"relevance_score\": 5,\n    \"reason\": \"Observation discusses precision of results.\"\n  },\n  {\n    \"tag_uid\": \"def456\",\n    \"tag_name\": \"Timeliness\",\n    \"relevance_score\": 3,\n    \"reason\": \"Observation references completion within deadline.\"\n  }\n]"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        880,
+        75
+      ],
+      "id": "e63dbb6e-bf92-4c6a-bf80-28443aa467fa",
+      "name": "OpenAI",
+      "credentials": {
+        "openAiApi": {
+          "id": "KhaGQw1SlGfhaasb",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Get the observation UID from the original observation (upstream item)\nconst obs_uid = $items(\"Format_For_AI\")[0].json.uid; // or use the correct upstream node name\n\n// Parse the content (AI output) from the current input\nlet assignments = [];\ntry {\n  // $json.message.content contains the array as a string\n  assignments = JSON.parse($json.message.content || \"[]\");\n} catch(e) {\n  return [{json: {error: 'Invalid AI output', ai: $json.message.content, obs_uid}}];\n}\n\n// Return one item per tag assignment, ready for DB insert\nreturn assignments.map(tag => ({\n  json: {\n    observation_uid: obs_uid,\n    tag_uid: tag.tag_uid,\n    tag_name: tag.tag_name,\n    relevance_score: tag.relevance_score,\n    reason: tag.reason\n  }\n}));"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1256,
+        75
+      ],
+      "id": "710f6805-5322-4ce9-b67b-ac1fa838481a",
+      "name": "Parse_AI_Output"
+    },
+    {
+      "parameters": {
+        "tableId": "observation_tags",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "observation_uid",
+              "fieldValue": "={{ $json[\"observation_uid\"] }}"
+            },
+            {
+              "fieldId": "tag_uid",
+              "fieldValue": "={{ $json[\"tag_uid\"] }}"
+            },
+            {
+              "fieldId": "relevance_score",
+              "fieldValue": "={{ $json[\"relevance_score\"] }}"
+            },
+            {
+              "fieldId": "reason",
+              "fieldValue": "={{ $json[\"reason\"] }}"
+            },
+            {
+              "fieldId": "assigned_at",
+              "fieldValue": "={{ $now }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1476,
+        75
+      ],
+      "id": "ae943214-d3d1-43b7-9bcf-2f17c64fc733",
+      "name": "Supabase_Insert_Tag_Assignment",
+      "credentials": {
+        "supabaseApi": {
+          "id": "Xvt090LtOq6K2VDy",
+          "name": "Supabase account 2"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Supabase_GetOne_Observation_AssignmentStarted",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Supabase_GetOne_Observation_AssignmentStarted": {
+      "main": [
+        [
+          {
+            "node": "Supabase_GetMany_Tags",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Format_For_AI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Supabase_GetMany_Tags": {
+      "main": [
+        [
+          {
+            "node": "Format_For_AI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Format_For_AI": {
+      "main": [
+        [
+          {
+            "node": "OpenAI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI": {
+      "main": [
+        [
+          {
+            "node": "Parse_AI_Output",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse_AI_Output": {
+      "main": [
+        [
+          {
+            "node": "Supabase_Insert_Tag_Assignment",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "ec2c2c48-e064-4358-b5b3-17f30e930c8f",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "0abe8dd3af7b84dd650128b454cc932a6aae1d69499f17eccb6a7dec666a07a5"
+  },
+  "id": "CAhjpkBCeT5mk3F9",
+  "tags": []
+}
