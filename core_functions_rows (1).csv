@@ -1,0 +1,61 @@
+function_uid,function_value,function_type,description,synonyms
+02c29349-5628-462f-81b9-54200f210054,Get,Action,Dribble handoff or quick re-screen after passing,"DHO, get action"
+04a0f093-67e2-4a49-af21-c3a2248d01e0,Split,Action,Split cut or movement after an entry or pass,"split cut, split action"
+09bf003c-464a-4e0f-ba16-3c189c6d35eb,Hit Ahead,Cue,Look up for fast break pass,"advance pass, lead runner"
+0bcffd8c-6fa6-4bbe-ab82-6dab5fd4abe7,Tag,Action,Help on a roller then recover to shooter,"tag help, stunt"
+0e507db3-ed23-4e58-9a2c-405be7f85cb8,Must Pass Before Shot,Constraint,Player must pass at least once before shooting,"pass first, no ISO"
+0ee1d25c-dce9-4581-ade2-151b39d104cd,5v5,Format,Five-on-five live play format,"full team, five per side"
+130e972e-ca3f-4f38-b771-263a14d718cc,Ball Handling,Skill,Control under pressure and change of direction,"dribbling, protect the ball, handle"
+1a213057-608a-4648-ac59-0fbdc43d85d8,Fatigue Challenge,Theme,Players are tested while fatigued,"tired, end of practice"
+1b35d9c2-0622-48f6-b280-12ec1b26f13b,Physicality,Skill,Using strength and contact legally,"body control, toughness"
+1d2b0be6-9674-4f7f-8187-ef7db9421a36,No Jumping,Constraint,Player must stay grounded (no jump stops or leaps),"flat feet, no air"
+243baff9-6167-487a-ac69-8f19b31b8655,No Paint Touch,Constraint,Player cannot enter the paint area,"stay perimeter, outside only"
+25a060ab-a154-4085-9bb1-75091ffa9cd0,Read the Nail,Cue,Decision based on nail defender position,"nail read, help check"
+2840d5c7-646c-425c-8c94-a84f707faba4,Weak Hand Only,Constraint,Player must use non-dominant hand for all actions,off hand only
+2aed4514-69f4-4f07-8be7-f3336ffb32b9,Time Pressure,Theme,Limited time to make decisions or execute actions,"urgency, countdown"
+2b77225c-cf3d-49ba-88e2-041b23ed0066,Cut,Action,Move without the ball to get open,"back cut, flare cut, fill"
+2fa8bcc4-bb43-4384-9279-857031a6d7f2,Score on Floater,Constraint,Player must score using a floater shot,floater only
+32818525-d9a8-4e3f-9a4f-6ae1494e9b62,Drive,Action,Dribble aggressively toward the rim,"attack, paint touch"
+3522ab03-8779-4a9f-9726-a860f2ac7dc1,Drag Behind,Cue,Trail ball handler and drag defense,"trail, lag cut"
+355ec28d-4755-42d3-87b0-204d88ea5407,1v1,Format,One-on-one live play format,"iso, single coverage"
+35656972-2b1f-4525-8f74-023a5e239dde,Transition Defense,Skill,Recovering and defending in transition,"sprint back, stop ball, find man"
+38719204-83e7-4a21-afe1-dab8013dc9cc,Shot Clock: 5s,Constraint,Player must shoot within 5 seconds of touch,"quick shot, clock"
+42a2da96-0dd6-458e-a70a-5403842ffdd2,Shared Basket,Space,Multiple players or groups share one basket,
+459ffe72-201e-441c-89bc-4d41f58a8e17,3v2,Format,Three-on-two (advantage) format,
+506c0ec8-d5e3-41a1-b25d-342119e66d42,Shooting,Skill,"Catch-and-shoot, off-dribble, and range shooting","jump shot, pull-up, spot-up"
+53910230-ed9c-4783-b69c-d85f1c5a116d,Decision-Making,Skill,"Making smart, fast reads","reads, IQ, play recognition"
+5aa5ca50-3081-4f97-97df-b52c4af30b7b,Constraint Stack,Theme,Multiple constraints/rules are applied at once,"combo constraint, layered rule"
+5de43f2d-2e00-4cba-b011-7b239487612f,Full Court,Space,Action/drill occurs in full-court context,
+640fc216-e506-4e55-8288-4be4005c8cbd,Post,Action,Player plays through the post position,"post up, block, inside"
+64f6df05-01d9-4c78-922d-c0f803c22a54,Transition,Action,Quickly convert from defense to offense or vice versa,"fast break, run out"
+670afb65-d34b-458f-9bdf-3365769f88d6,Closeout,Action,Defender closes out to contest a shot,"chop steps, hand up"
+6f4f60fd-5f23-428f-8375-6206a99b3234,Rebounding,Skill,Securing the ball off missed shots,"box out, crash, secure"
+780a7c0b-afe6-4f95-b036-9eb20fde5278,Communication,Skill,Verbal and non-verbal coordination,"talk, call out, signals"
+79583b48-9dcf-41e9-bd47-75649abe54df,4v3,Format,Four-on-three (advantage) format,
+817e07b1-e8b2-400e-bf61-88301e19eaa1,Closeouts,Skill,Approach and footwork to contest a shot,"chop steps, hand up"
+8734fee7-bd18-49f0-a68f-2f3067182002,Kickout,Action,Pass from inside out to perimeter after penetration,"dish out, skip"
+89ead3ea-7627-48e9-abb9-929cd185025b,4v4,Format,Four-on-four live play format,four-on-four
+91b7d31b-00b2-4690-acbb-e99f3795dad4,Off-Ball Movement,Skill,"Cutting, relocating, screening","back cut, flare, fill"
+988acfb5-7501-4781-9061-ed0a8c088373,Live Ball Start,Constraint,Play begins from a live ball situation,"rip, jab, start from live"
+997e7c5f-2148-4b2a-9eaa-37fcf9984618,Passing,Skill,"Ball movement, assists, vision","kickout, dish, drop-off"
+a20a5595-6a1b-47cf-8684-1d58b5fb5ec0,Left-Hand Only,Constraint,Player must use left hand for all actions,"no right hand, left only, off hand"
+abe9b8ef-5b86-4057-951b-c25aa54f0645,Screen,Action,Set a screen to free a teammate,"pick, pick and roll, on-ball screen"
+b0ef2442-c575-427f-8e2c-c6c49bc18644,1 Dribble Max,Constraint,Player limited to one dribble per possession,"single bounce, one dribble"
+b254e89e-28f9-4f6f-8fcf-9e1b107c9960,Slip,Action,Cut to the rim after faking a screen,slip screen
+b413fb5c-d9e7-4d17-8666-bf497d09be5e,Sprint to Space,Cue,Player must sprint into open area,"run wide, rim run"
+b9166e8c-3222-4b03-aa7e-5041a821398d,Penetration,Action,Drive toward the paint to create an advantage,"attack, drive, get paint"
+c77a7341-03e8-46ba-bbc7-932c013e0655,Finishing,Skill,At-rim and short-range scoring,"layups, floaters, paint scoring"
+c9bf9427-6152-4f48-bce4-9ed9cc80e017,Right-Hand Only,Constraint,Player must use right hand for all actions,"no left hand, right only"
+c9ddcab1-f784-4047-a65f-d75063befbb4,2v2,Format,Two-on-two live play format,two-on-two
+d01745d9-aa01-4e5e-844a-b4c8c1f922e0,Stay Home,Cue,Do not help off your man,"no help, lockdown"
+d33f7fa9-cf97-40a9-a188-bb617595bfe0,Lane Area,Space,Action/drill is restricted to the lane area,"paint, key"
+d76c14ae-e504-49f9-ba6c-8f458ebb6134,Help Defense,Skill,Rotating and contesting from help position,"help-side, sink, rotate"
+d9e66661-e9dc-4a7a-be62-dc4c44eb7c7f,Half Court,Space,Action/drill occurs in half-court only,
+dfddf32c-48a4-4417-8cb6-8d3d6516f03c,3v3,Format,Three-on-three live play format,three-on-three
+e58df5e3-7da4-4a28-8f8a-9e4135c2f678,Ball Pressure,Skill,Disrupting the ball handler,"on-ball D, pressure, pick up"
+f20c7c37-f700-4162-bdf3-4717d617b5de,Kickback,Action,Reverse the ball to trailer or perimeter,"dribble push, reverse"
+f3918cf0-cc59-4880-8425-868da3dcc6f0,Stay Vertical,Cue,No swiping or reaching on contests,"wall up, hands up"
+f84bd0e5-caa7-46e4-8daa-0a7800404979,Push/Pull,Cue,Player must react to ball handler’s movement vector,"push cut, pull cut"
+f935275d-ee4c-479c-aaf4-55764798509b,No Dribble,Constraint,"Player cannot dribble; must pass, cut, or shoot","pass only, catch and shoot"
+fbead71f-7e65-4104-a089-a3abf97963e5,Composure,Skill,Staying calm under pressure,"poise, control, regulation"
+fd24a8e4-9905-4005-8aa2-937821587d9e,Chaos Level: High,Theme,Play environment is highly unpredictable and variable,"scramble, disorganized"

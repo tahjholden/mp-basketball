@@ -1,0 +1,36 @@
+id,description,phase_id
+0b28977a-2740-431e-8f5d-c02b956be7c7,Drive through double/triple gaps,db4c3e80-9765-4f0a-8d6a-dca197b4bb4b
+12a4d3fa-f10b-46ad-acd1-fb8a5bd79579,Read closeouts before catch,db4c3e80-9765-4f0a-8d6a-dca197b4bb4b
+1559ee7a-6fcf-4123-ba16-5b49038cf1e1,Fill deep corners first,8747ffd0-e1a2-4dba-97ca-c2aded7c9805
+16b51a26-bdb0-49a2-ad3f-bf58de6dd1d9,Turn small advantages into big advantages,8747ffd0-e1a2-4dba-97ca-c2aded7c9805
+2e586fa7-1222-4a15-a9c8-b0e4166db208,Generate ball speed,db4c3e80-9765-4f0a-8d6a-dca197b4bb4b
+4694bf1a-2157-4702-8a44-b56ff64d67f2,Force offense to jail,db6d1c1-252e-478b-9818-2851eb9ac80b
+573dd462-f235-40f4-ad47-342cca3071b5,Defend the first four passes,952755b3-036f-486b-9725-baaa1d3ec60c
+5ce85163-ad26-4109-9e92-1661795a2355,Create dominoes,db4c3e80-9765-4f0a-8d6a-dca197b4bb4b
+5da32cf0-276c-4e04-a00a-5fddd57d390c,Force bronze shots,952755b3-036f-486b-9725-baaa1d3ec60c
+63e364b0-e80d-4b47-a212-b540efc1e433,Seamless flow—no resets,db4c3e80-9765-4f0a-8d6a-dca197b4bb4b
+672cd11d-0ed3-4114-afff-6ac8f2ad0b41,Lock the ball left,952755b3-036f-486b-9725-baaa1d3ec60c
+7242b033-42f2-412b-840d-a6d24622d5ae,Same pace make or miss,8747ffd0-e1a2-4dba-97ca-c2aded7c9805
+74631e3f-aba7-443e-a8d3-c75afd21fca2,End possession with a Gold or Silver Medal shot,db4c3e80-9765-4f0a-8d6a-dca197b4bb4b
+75bb28b5-9fd9-4d80-9d56-17aa2156b353,Zero second decisions,db4c3e80-9765-4f0a-8d6a-dca197b4bb4b
+7653ced8-5c84-41c2-9a10-b2d693920a6a,Loose balls and changes,db6d1c1-252e-478b-9818-2851eb9ac80b
+7deec932-dc8f-4582-aea2-c130f5f4500b,Isolate the ball from teammates,db6d1c1-252e-478b-9818-2851eb9ac80b
+89487c27-d31b-4b06-a104-618d585254b1,Seamless flow into half court,8747ffd0-e1a2-4dba-97ca-c2aded7c9805
+90f7a8a0-d3fe-42b5-b346-2a3b4e19dd31,Score before defense sets,8747ffd0-e1a2-4dba-97ca-c2aded7c9805
+92facf5c-7508-4e2b-a783-2c81d6d481a3,Advance the ball quickly,8747ffd0-e1a2-4dba-97ca-c2aded7c9805
+930ddbcd-ddfa-4524-a7c1-e909c82b057c,Protect the rim,952755b3-036f-486b-9725-baaa1d3ec60c
+969d22fc-8acf-4757-b908-25e3c3b40d77,"Space with width, then depth",8747ffd0-e1a2-4dba-97ca-c2aded7c9805
+977cba19-bd9d-47a6-8228-d7914a618d7c,Win first 3 steps (Bolt),8747ffd0-e1a2-4dba-97ca-c2aded7c9805
+aa8cd3ce-adaf-4eac-a4d6-d48a1286959d,Get to neutral quickly,952755b3-036f-486b-9725-baaa1d3ec60c
+ad219ddd-a95a-49d0-949d-c9235cd0822d,Relentless pace for 32 minutes,8747ffd0-e1a2-4dba-97ca-c2aded7c9805
+b2603ea5-565b-4d32-b0ae-ba5c63fdb242,Rebound,db6d1c1-252e-478b-9818-2851eb9ac80b
+b7426b40-7cad-4818-abee-5425a22e26b5,Create turnovers,952755b3-036f-486b-9725-baaa1d3ec60c
+b751d655-061b-4c20-ac5d-9b397cc41a0e,Commitment to sprinting,8747ffd0-e1a2-4dba-97ca-c2aded7c9805
+cdb3f48e-7060-41dd-a5fa-968fcdf95f09,"No key, no three, no free",db6d1c1-252e-478b-9818-2851eb9ac80b
+cf3aff98-166c-420a-94d4-7c33d73b399c,Purposeful player movement and use of actions,db4c3e80-9765-4f0a-8d6a-dca197b4bb4b
+dd440979-2446-4bbc-969c-266c77cf46a8,Disrupt rhythm and timing,db6d1c1-252e-478b-9818-2851eb9ac80b
+e3f9e3c6-6932-4f4c-bd70-277c29e278f1,"Drive and kick, space, and share",8747ffd0-e1a2-4dba-97ca-c2aded7c9805
+eeb7eccc-6623-4932-9c46-a99b713205f4,Force left early,952755b3-036f-486b-9725-baaa1d3ec60c
+ef359b37-aedd-4093-9fec-2ea852dd47d0,Turnovers,db6d1c1-252e-478b-9818-2851eb9ac80b
+f1ca0b9f-53c8-4d6c-9cea-f1d5333356cc,Win the ball back,db6d1c1-252e-478b-9818-2851eb9ac80b
+fc7b7d8a-8e9e-4dff-af62-f6bf04f8eae8,Maximize and maintain space,db4c3e80-9765-4f0a-8d6a-dca197b4bb4b

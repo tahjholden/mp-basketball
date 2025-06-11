@@ -1,0 +1,5 @@
+id,name,intent,kpi,description,pillar_id
+874f7fd0-e1a2-4dba-97ca-c2aded7c9805,Transition Offense,Arrive With Advantage,Ball crosses half court in four seconds or less,"Relentless pace, advantage before defense sets",89f320e4-8ba0-4a0d-8655-a4556eb81f68
+952755b3-036f-486b-9725-baaa1d3ec6cd,Transition Defense,Get to Neutral,Defend the first four passes,"Slow opponent, set defense, prevent fast breaks",defa5a39-8b80-4299-afab-ec49caec7c75
+db4c3e80-9765-4f0a-8d6a-dca197b4bbbd,Halfcourt Offense,End Dominoes With Gold or Silver,Big Advantage Shots (eFG%),"Create/maintain advantage, finish with best shot",7c8aab7f-e536-4252-b8ee-5959a03c9541
+ddb6d1c1-252e-478b-9818-2851eb9ac80b,Halfcourt Defense,Force offense to OUR shots,70% of possessions get to JAIL,"Force bad shots, disrupt rhythm, win ball back",defa5a39-8b80-4299-afab-ec49caec7c75
