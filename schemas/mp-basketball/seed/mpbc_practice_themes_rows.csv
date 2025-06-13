@@ -1,0 +1,22 @@
+theme_id,theme_name,theme_slug,theme_category,description,color_hex,is_active,created_at,updated_at
+1,Advantage Creation,advantage_creation,Offense,"Generating offensive advantages: spacing, triggers, attacking mismatches.",#E57373,true,2025-06-02 17:05:42.622297,2025-06-02 17:05:42.622297
+2,Advantage Exploitation,advantage_exploitation,Offense,Converting created advantages into high-value shots or actions.,#F06292,true,2025-06-02 17:05:42.622297,2025-06-02 17:05:42.622297
+3,Spacing and Timing,spacing_timing,Offense,Optimizing court spacing and movement; timing of cuts and fills.,#BA68C8,true,2025-06-02 17:05:42.622297,2025-06-02 17:05:42.622297
+4,Ball Movement,ball_movement,Offense,Moving the ball quickly and unselfishly; beating defenses with the pass.,#7986CB,true,2025-06-02 17:05:42.622297,2025-06-02 17:05:42.622297
+5,Decision Making,decision_making,Universal,"Fast, correct decisions: attacking closeouts, read and react play.",#4FC3F7,true,2025-06-02 17:05:42.622297,2025-06-02 17:05:42.622297
+6,Transition,transition,Offense,Attacking and defending with pace after change of possession.,#81C784,true,2025-06-02 17:05:42.622297,2025-06-02 17:05:42.622297
+7,Defense,defense,Defense,"Containing the ball, helping, rotating, and finishing defensive plays.",#FFD54F,true,2025-06-02 17:05:42.622297,2025-06-02 17:05:42.622297
+8,Pressure / Disruption,pressure_disruption,Defense,"Forcing turnovers, speeding up opponents, and creating chaos.",#FF8A65,true,2025-06-02 17:05:42.622297,2025-06-02 17:05:42.622297
+9,Rebounding & Physicality,rebounding_physicality,Universal,"Dominating the glass, winning 50/50 balls, and setting a physical tone.",#A1887F,true,2025-06-02 17:05:42.622297,2025-06-02 17:05:42.622297
+10,Special Situations,special_situations,Special,"Mastering BLOB/SLOB, end-of-game, and unique scenarios.",#90A4AE,true,2025-06-02 17:05:42.622297,2025-06-02 17:05:42.622297
+11,Compete / Finishing,compete_finishing,Universal,Instilling game-like competition and finishing plays under pressure.,#B0BEC5,true,2025-06-02 17:05:42.622297,2025-06-02 17:05:42.622297
+12,Communication & Leadership,communication_leadership,Universal,"Building habits of talking, leading, and holding teammates accountable.",#DCE775,true,2025-06-02 17:05:42.622297,2025-06-02 17:05:42.622297
+13,Resilience / Next Play,resilience_next_play,Universal,Practicing recovery from mistakes and building mental toughness.,#FFD54F,true,2025-06-02 17:05:42.622297,2025-06-02 17:05:42.622297
+14,Shooting Fundamentals,shooting-fundamentals,Individual Skills,"Focus on proper shooting mechanics, form, and consistency",,true,2025-06-04 04:48:31.590658,2025-06-04 04:48:31.590658
+15,Defensive Concepts,defensive-concepts,Team Defense,"Team defensive positioning, communication, and strategies",,true,2025-06-04 04:48:31.590658,2025-06-04 04:48:31.590658
+16,Ball Handling,ball-handling,Individual Skills,"Dribbling skills, ball control, and change of pace",,true,2025-06-04 04:48:31.590658,2025-06-04 04:48:31.590658
+17,Transition Offense,transition-offense,Team Offense,Fast break opportunities and quick scoring,,true,2025-06-04 04:48:31.590658,2025-06-04 04:48:31.590658
+18,Passing and Movement,passing-movement,Team Skills,"Ball movement, player movement, and court vision",,true,2025-06-04 04:48:31.590658,2025-06-04 04:48:31.590658
+19,Rebounding,rebounding,Team Skills,Offensive and defensive rebounding techniques,,true,2025-06-04 04:48:31.590658,2025-06-04 04:48:31.590658
+20,Conditioning,conditioning,Fitness,Basketball-specific fitness and endurance training,,true,2025-06-04 04:48:31.590658,2025-06-04 04:48:31.590658
+21,Mental Toughness,mental-toughness,Mental Game,"Building confidence, focus, and resilience",,true,2025-06-04 04:48:31.590658,2025-06-04 04:48:31.590658
